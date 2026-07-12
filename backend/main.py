@@ -1,14 +1,20 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+import uuid
 
-from database import Base, engine
-import models
+from database import Base, engine, get_db
+from models import User, Trade
 from market import get_market_prices
+
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="ShortTrade API",
     version="1.0.0"
 )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,20 +25,125 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-def startup():
-    Base.metadata.create_all(bind=engine)
-
-
 @app.get("/")
 def home():
     return {
-        "name": "ShortTrade API",
-        "status": "running",
-        "version": "1.0.0"
+        "app": "ShortTrade",
+        "status": "running"
     }
 
 
+# Create automatic user
+
+@app.post("/user")
+def create_user(db: Session = Depends(get_db)):
+
+    new_id = str(uuid.uuid4())
+
+    user = User(
+        user_id=new_id,
+        balance=0.0
+    )
+
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return {
+        "user_id": user.user_id
+    }
+
+
+# Connect wallet
+
+@app.post("/wallet/{user_id}")
+def connect_wallet(
+    user_id: str,
+    wallet_address: str,
+    db: Session = Depends(get_db)
+):
+
+    user = db.query(User).filter(
+        User.user_id == user_id
+    ).first()
+
+
+    if not user:
+        return {
+            "error": "User not found"
+        }
+
+
+    user.wallet_address = wallet_address
+
+    db.commit()
+
+    return {
+        "message": "Wallet connected",
+        "wallet": wallet_address
+    }
+
+
+
+# Live Market
+
 @app.get("/market")
 async def market():
+
     return await get_market_prices()
+
+
+
+# Create Trade
+
+@app.post("/trade")
+def create_trade(
+    user_id: str,
+    coin: str,
+    trade_type: str,
+    amount: float,
+    price: float,
+    db: Session = Depends(get_db)
+):
+
+    total = amount * price
+
+
+    trade = Trade(
+        user_id=user_id,
+        coin=coin,
+        trade_type=trade_type,
+        amount=amount,
+        price=price,
+        total=total
+    )
+
+
+    db.add(trade)
+
+    db.commit()
+
+    db.refresh(trade)
+
+
+    return {
+        "message": "Trade saved",
+        "trade_id": trade.id
+    }
+
+
+
+# Trade History
+
+@app.get("/trades/{user_id}")
+def get_trades(
+    user_id: str,
+    db: Session = Depends(get_db)
+):
+
+    trades = db.query(Trade).filter(
+        Trade.user_id == user_id
+    ).all()
+
+
+    return trades
