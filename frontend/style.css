@@ -1,0 +1,290 @@
+/* =========================
+   ShortTrade v1.0
+   Part 1
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:#fff;
+}
+
+/* Header */
+
+.header{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+    background:#111827;
+    border-bottom:1px solid #1f2937;
+    position:sticky;
+    top:0;
+}
+
+.logo h2{
+    color:#22c55e;
+}
+
+#connectWallet{
+    background:#22c55e;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+#connectWallet:hover{
+    background:#16a34a;
+}
+
+/* Dashboard */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    border:1px solid #334155;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#94a3b8;
+}
+
+.card p{
+    font-size:18px;
+    font-weight:bold;
+}
+
+/* Market */
+
+.market{
+    padding:20px;
+}
+
+.market h2{
+    margin-bottom:20px;
+}
+
+#marketContainer{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+}
+
+.coin-card{
+    background:#1e293b;
+    border-radius:10px;
+    padding:15px;
+    border:1px solid #334155;
+    transition:.3s;
+}
+
+.coin-card:hover{
+    transform:translateY(-5px);
+}
+/* =========================
+   ShortTrade v1.0
+   Part 2
+========================= */
+
+/* Trade Section */
+
+.trade{
+    padding:20px;
+}
+
+.trade h2{
+    margin-bottom:20px;
+}
+
+.trade select,
+.trade input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:8px;
+    background:#1e293b;
+    color:#fff;
+    font-size:16px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+#buyButton,
+#sellButton{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+#buyButton{
+    background:#22c55e;
+    color:#fff;
+}
+
+#buyButton:hover{
+    background:#16a34a;
+}
+
+#sellButton{
+    background:#ef4444;
+    color:#fff;
+}
+
+#sellButton:hover{
+    background:#dc2626;
+}
+
+/* Trade History */
+
+.history{
+    padding:20px;
+}
+
+.history h2{
+    margin-bottom:20px;
+}
+
+#history{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:10px;
+    padding:20px;
+    min-height:120px;
+    overflow:auto;
+}
+
+.trade-item{
+    padding:12px;
+    border-bottom:1px solid #334155;
+}
+
+.trade-item:last-child{
+    border-bottom:none; 
+}
+/* =========================
+   ShortTrade v1.0
+   Part 3 (Final)
+========================= */
+
+/* Utility */
+
+.green{
+    color:#22c55e;
+}
+
+.red{
+    color:#ef4444;
+}
+
+.center{
+    text-align:center;
+}
+
+.hidden{
+    display:none;
+}
+
+/* Animation */
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.card,
+.coin-card,
+.trade,
+.history{
+    animation:fadeIn .4s ease;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:8px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#475569;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+    .header{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    #marketContainer{
+        grid-template-columns:1fr;
+    }
+
+    .trade select,
+    .trade input{
+        font-size:15px;
+    }
+
+}
+
+/* Desktop */
+
+@media (min-width:1200px){
+
+    body{
+        max-width:1400px;
+        margin:auto;
+    }
+
+}
