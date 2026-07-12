@@ -1,15 +1,17 @@
 from pathlib import Path
 
-# Project Root
+
 BASE_DIR = Path(__file__).resolve().parent
 
-# Database
+
 DATABASE_URL = f"sqlite:///{BASE_DIR}/shorttrade.db"
 
-# CoinGecko API
-COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price"
 
-# Supported Coins
+COINGECKO_API = (
+    "https://api.coingecko.com/api/v3/simple/price"
+)
+
+
 SUPPORTED_COINS = [
     "bitcoin",
     "ethereum",
@@ -19,6 +21,7 @@ SUPPORTED_COINS = [
     "tether"
 ]
 
-# App Information
+
 APP_NAME = "ShortTrade"
+
 APP_VERSION = "1.0.0"
