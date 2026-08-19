@@ -11,7 +11,6 @@ async def get_market_prices():
         "include_24hr_change": "true"
     }
 
-
     try:
 
         async with httpx.AsyncClient(
@@ -23,12 +22,9 @@ async def get_market_prices():
                 params=params
             )
 
-
             response.raise_for_status()
 
-
             return response.json()
-
 
     except Exception as e:
 
