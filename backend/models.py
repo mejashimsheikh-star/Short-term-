@@ -5,11 +5,15 @@ from database import Base
 
 
 class User(Base):
+
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
-    # Automatic User ID
     user_id = Column(
         String,
         unique=True,
@@ -17,17 +21,16 @@ class User(Base):
         nullable=False
     )
 
-    # Coinbase Wallet Address
     wallet_address = Column(
         String,
         unique=True,
         nullable=True
     )
 
-    # Demo Balance
     balance = Column(
         Float,
-        default=0.0
+        default=0.0,
+        nullable=False
     )
 
     created_at = Column(
@@ -37,6 +40,7 @@ class User(Base):
 
 
 class Trade(Base):
+
     __tablename__ = "trades"
 
     id = Column(
@@ -80,4 +84,3 @@ class Trade(Base):
         DateTime,
         default=datetime.utcnow
     )
-
