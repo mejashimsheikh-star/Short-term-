@@ -1,80 +1,78 @@
 // ===============================
-// ShortTrade v1.0
-// app.js (Final)
+// ShortTrade
+// app.js
 // ===============================
 
-// Auto User ID
+const API_BASE = "https://short-term-sq5q.onrender.com/";
 
 let userId = localStorage.getItem("shorttrade_user");
 
-if (!userId) {
 
-    userId = crypto.randomUUID();
+async function createUser() {
 
-    localStorage.setItem("shorttrade_user", userId);
+    try {
 
-}
+        const response = await fetch(
+            `${API_BASE}/user`,
+            {
+                method: "POST"
+            }
+        );
 
-// Show User ID
+        if (!response.ok) {
+            throw new Error("User creation failed");
+        }
 
-const userElement = document.getElementById("userId");
+        const data = await response.json();
 
-if (userElement) {
+        userId = data.user_id;
 
-    userElement.textContent = userId;
+        localStorage.setItem(
+            "shorttrade_user",
+            userId
+        );
 
-}
+        showUser();
 
-// Portfolio
+    } catch (error) {
 
-let portfolio = localStorage.getItem("portfolio");
+        console.error(error);
 
-if (!portfolio) {
+        document.getElementById("userId").textContent =
+            "Unable to create user";
 
-    portfolio = 0;
-
-    localStorage.setItem("portfolio", portfolio);
-
-}
-
-const portfolioElement = document.getElementById("portfolio");
-
-if (portfolioElement) {
-
-    portfolioElement.textContent = Number(portfolio).toFixed(2);
-
-}
-
-// Wallet
-
-const walletElement = document.getElementById("walletAddress");
-
-if (!localStorage.getItem("wallet")) {
-
-    walletElement.textContent = "Not Connected";
-
-} else {
-
-    walletElement.textContent = localStorage.getItem("wallet");
+    }
 
 }
 
-// Save Portfolio
 
-function savePortfolio(value) {
+function showUser() {
 
-    localStorage.setItem("portfolio", value);
+    const userElement =
+        document.getElementById("userId");
 
-    portfolioElement.textContent = Number(value).toFixed(2);
+    if (userElement) {
+
+        userElement.textContent = userId;
+
+    }
 
 }
 
-// Export
 
-window.shortTrade = {
+async function initializeUser() {
 
-    userId,
+    if (!userId) {
 
-    savePortfolio
+        await createUser();
 
-};
+    } else {
+
+        showUser();
+
+    }
+
+}
+
+
+initializeUser();
