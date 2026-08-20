@@ -1,8 +1,11 @@
 import os
 
-DATABASE_URL = os.getenv("postgresql://shorttrade_user:SS1SONI2SXYqlQHZJK56O1GFL1SKAznL@dpg-da2sm31t0dsc73b45jg0-a/shorttrade")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL is missing from the render environment veriables")
+    raise RuntimeError(
+        "DATABASE_URL is missing from the Render environment variables"
+    )
 
 COINGECKO_API = (
     "https://api.coingecko.com/api/v3/simple/price"
