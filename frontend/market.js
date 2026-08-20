@@ -8,7 +8,7 @@ const marketContainer =
 
 
 const API_BASE =
-    "https://short-term-sq5q.onrender.com/";
+    "https://short-term-sq5q.onrender.com";
 
 
 async function loadMarket() {
