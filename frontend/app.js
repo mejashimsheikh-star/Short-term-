@@ -3,7 +3,7 @@
 // app.js
 // ===============================
 
-const API_BASE = "https://short-term-sq5q.onrender.com/";
+const API_BASE = "https://short-term-sq5q.onrender.com";
 
 let userId = localStorage.getItem("shorttrade_user");
 
