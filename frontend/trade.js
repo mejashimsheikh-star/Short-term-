@@ -4,7 +4,7 @@
 // ===============================
 
 const API_BASE =
-    "https://short-term-sq5q.onrender.com/";
+    "https://short-term-sq5q.onrender.com";
 
 
 const buyButton =
