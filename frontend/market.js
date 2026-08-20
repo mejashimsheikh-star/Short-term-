@@ -1,21 +1,33 @@
 // ===============================
-// ShortTrade v1.0
+// ShortTrade
 // market.js
 // ===============================
 
-const marketContainer = document.getElementById("marketContainer");
+const marketContainer =
+    document.getElementById("marketContainer");
 
-const API = "http://127.0.0.1:8000/market";
-// পরে Render-এ Deploy করলে এই URL পরিবর্তন করে
-// আপনার Backend URL বসাব।
+
+const API_BASE =
+    "https://short-term-sq5q.onrender.com/";
+
 
 async function loadMarket() {
 
     try {
 
-        const response = await fetch(API);
+        const response = await fetch(
+            `${API_BASE}/market`
+        );
+
+        if (!response.ok) {
+            throw new Error("Market request failed");
+        }
 
         const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
 
         marketContainer.innerHTML = "";
 
@@ -23,19 +35,28 @@ async function loadMarket() {
 
             const price = data[coin].usd;
 
-            const change = data[coin].usd_24h_change;
+            const change =
+                data[coin].usd_24h_change ?? 0;
 
-            const card = document.createElement("div");
+
+            const card =
+                document.createElement("div");
 
             card.className = "coin-card";
 
+
             card.innerHTML = `
                 <h3>${coin.toUpperCase()}</h3>
-                <h2>$${price}</h2>
+
+                <h2>
+                    $${Number(price).toLocaleString()}
+                </h2>
+
                 <p class="${change >= 0 ? "green" : "red"}">
-                    ${change.toFixed(2)}%
+                    ${Number(change).toFixed(2)}%
                 </p>
             `;
+
 
             marketContainer.appendChild(card);
 
@@ -52,6 +73,10 @@ async function loadMarket() {
 
 }
 
+
 loadMarket();
 
-setInterval(loadMarket, 10000);
+setInterval(
+    loadMarket,
+    10000
+);
