@@ -1,66 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>ShortTrade</title>
-
-    <link rel="stylesheet" href="style.css">
-    
-
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
- <style>
-  :root{
-    --bg:#0A0C0E;
-    --panel:#12171B;
-    --panel-2:#161C21;
-    --border:#232A30;
-    --text:#E8ECEF;
-    --muted:#7C8790;
-    --up:#33FFB0;
-    --down:#FF5C6A;
-    --amber:#FFB300;
-    --amber-dim:#4A3A10;
-  }
-  *{box-sizing:border-box;}
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+<title>ShortTrade</title>
+<!-- Main CSS -->
+<link
+    rel="stylesheet"
+    href="style.css">
+<!-- Google Fonts -->
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com">
+<link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
 </head>
-
 <body>
-
-    <!-- Header -->
-    <header class="header">
-
-        <div class="logo">
-            <h2>BEcoin</h2>
-        </div>
-
-        <button id="connectWallet">
-            Connect Wallet
-        </button>
-
-    </header>
-
-    <!-- Dashboard -->
-
+<!-- =========================
+     HEADER
+========================== -->
+<header class="header">
+    <div class="logo">
+        <h2>BEcoin</h2>
+    </div>
+    <button
+        id="connectWallet"
+        type="button">
+        Connect Wallet
+    </button>
+</header>
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+<main>
+    <!-- =====================
+         DASHBOARD
+    ====================== -->
     <section class="dashboard">
-
+        <!-- User ID -->
         <div class="card">
-            <h3>User ID</h3>
-            <p id="userId">Loading...</p>
+            <h3>
+                User ID
+            </h3>
+            <p id="userId">
+                Loading...
+            </p>
         </div>
-
+        <!-- Wallet -->
         <div class="card">
-            <h3>Wallet</h3>
+            <h3>
+                Wallet
+            </h3>
             <p id="walletAddress">
                 Not Connected
             </p>
         </div>
-
+        <!-- Portfolio -->
         <div class="card">
-            <h3>Portfolio</h3>
+            <h3>
+                Portfolio
+            </h3>
             <p>
                 $
                 <span id="portfolio">
@@ -68,102 +70,85 @@
                 </span>
             </p>
         </div>
-
     </section>
-
-    <!-- Live Market -->
-
+    <!-- =====================
+         LIVE MARKET
+    ====================== -->
     <section class="market">
-
         <h2>
             Live Market
         </h2>
-
         <div id="marketContainer">
-
+            Loading market...
         </div>
-
     </section>
-
-    <!-- Trade -->
-
+    <!-- =====================
+         TRADE
+    ====================== -->
     <section class="trade">
-
         <h2>
             Trade
         </h2>
-
+        <!-- Coin Selection -->
         <select id="coin">
-
             <option value="bitcoin">
                 Bitcoin
             </option>
-
             <option value="ethereum">
                 Ethereum
             </option>
-
             <option value="binancecoin">
                 BNB
             </option>
-
             <option value="solana">
                 Solana
             </option>
-
             <option value="ripple">
                 XRP
             </option>
-
             <option value="tether">
                 USDT
             </option>
-
         </select>
-
+        <!-- Amount -->
         <input
             type="number"
             id="amount"
-            placeholder="Amount">
-
+            placeholder="Amount"
+            min="0"
+            step="any">
+        <!-- Buy / Sell -->
         <div class="buttons">
-
-            <button id="buyButton">
+            <button
+                id="buyButton"
+                type="button">
                 Buy
             </button>
-
-            <button id="sellButton">
+            <button
+                id="sellButton"
+                type="button">
                 Sell
             </button>
-
         </div>
-
     </section>
-
-    <!-- History -->
-
+    <!-- =====================
+         TRADE HISTORY
+    ====================== -->
     <section class="history">
-
         <h2>
             Trade History
         </h2>
-
         <div id="history">
-
             No Trades
-
         </div>
-
     </section>
-
-    <script src="app.js"></script>
-
-    <script src="wallet.js"></script>
-
-    <script src="market.js"></script>
-
-    <script src="trade.js"></script>
-
+</main>
+<!-- =========================
+     JAVASCRIPT FILES
+========================== -->
+<script src="app.js"></script>
+<script src="wallet.js"></script>
+<script src="market.js"></script>
+<script src="trade.js"></script>
 </body>
-
 </html>
