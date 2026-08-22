@@ -2,7 +2,7 @@ services:
   - type: web
     name: shorttrade-api
     env: python
-    region: singapore
+    region: oregon
     plan: free
 
     buildCommand: |
