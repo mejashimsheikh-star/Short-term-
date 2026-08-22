@@ -142,7 +142,70 @@
             No Trades
         </div>
     </section>
+
 </main>
+
+<div class="app">
+
+  <div class="demo-banner">⚠ DEMO MODE — VIRTUAL CURRENCY ONLY — NOT REAL MONEY</div>
+
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker"></div>
+  </div>
+
+  <header>
+    <div class="brand"><span class="dot"></span>PRACTICE TERMINAL <small>/// paper trading</small></div>
+    <div class="balance-row">
+      <div>
+        <div class="balance-label">VIRTUAL BALANCE</div>
+        <div class="balance-val" id="balance">10,000<span class="balance-unit">DEMO</span></div>
+      </div>
+      <div class="pnl" id="pnl">+0.00 session</div>
+    </div>
+  </header>
+
+  <div class="panel">
+    <div class="price-row">
+      <div>
+        <div class="price-sym">SIM/USD · simulated feed</div>
+        <div class="price-now" id="priceNow">$1,000.00</div>
+      </div>
+      <div class="price-delta" id="priceDelta">+0.00%</div>
+    </div>
+    <canvas id="chart"></canvas>
+    <div class="round-row">
+      <span id="roundLabel">Round closes in</span>
+      <div class="timer-ring" id="ring"><span id="ringText">5</span></div>
+    </div>
+
+    <div class="predict-row">
+      <button class="predict-btn btn-up" id="btnUp">▲ UP</button>
+      <button class="predict-btn btn-down" id="btnDown">▼ DOWN</button>
+    </div>
+    <div class="stake-row">
+      <button id="stakeMinus">−</button>
+      <span class="stake-val" id="stakeVal">100 DEMO</span>
+      <button id="stakePlus">+</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">WINS</div><div class="stat-val" id="wins" style="color:var(--up)">0</div></div>
+    <div class="stat-card"><div class="stat-label">LOSSES</div><div class="stat-val" id="losses" style="color:var(--down)">0</div></div>
+    <div class="stat-card"><div class="stat-label">WIN RATE</div><div class="stat-val" id="winrate">—</div></div>
+  </div>
+
+  <div class="log-panel">
+    <div class="log-title">ROUND LOG</div>
+    <div id="logList"><div class="empty-log">No rounds yet — place a prediction above</div></div>
+  </div>
+
+  <footer>
+    This is an educational practice tool with a simulated random-walk price feed.<br>
+    No real assets, deposits, or withdrawals are involved.
+  </footer>
+</div>
+
 <!-- =========================
      JAVASCRIPT FILES
 ========================== -->
