@@ -2,209 +2,932 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
-<title>ShortTrade</title>
-<!-- Main CSS -->
-<link
-    rel="stylesheet"
-    href="style.css">
-<!-- Google Fonts -->
-<link
-    rel="preconnect"
-    href="https://fonts.googleapis.com">
-<link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet">
-</head>
-<body>
-<!-- =========================
-     HEADER
-========================== -->
-<header class="header">
-    <div class="logo">
-        <h2>BEcoin</h2>
-    </div>
-    <button
-        id="connectWallet"
-        type="button">
-        Connect Wallet
-    </button>
-</header>
-<!-- =========================
-     MAIN CONTENT
-========================== -->
-<main>
-    <!-- =====================
-         DASHBOARD
-    ====================== -->
-    <section class="dashboard">
-        <!-- User ID -->
-        <div class="card">
-            <h3>
-                User ID
-            </h3>
-            <p id="userId">
-                Loading...
-            </p>
-        </div>
-        <!-- Wallet -->
-        <div class="card">
-            <h3>
-                Wallet
-            </h3>
-            <p id="walletAddress">
-                Not Connected
-            </p>
-        </div>
-        <!-- Portfolio -->
-        <div class="card">
-            <h3>
-                Portfolio
-            </h3>
-            <p>
-                $
-                <span id="portfolio">
-                    0.00
-                </span>
-            </p>
-        </div>
-    </section>
-    <!-- =====================
-         LIVE MARKET
-    ====================== -->
-    <section class="market">
-        <h2>
-            Live Market
-        </h2>
-        <div id="marketContainer">
-            Loading market...
-        </div>
-    </section>
-    <!-- =====================
-         TRADE
-    ====================== -->
-    <section class="trade">
-        <h2>
-            Trade
-        </h2>
-        <!-- Coin Selection -->
-        <select id="coin">
-            <option value="bitcoin">
-                Bitcoin
-            </option>
-            <option value="ethereum">
-                Ethereum
-            </option>
-            <option value="binancecoin">
-                BNB
-            </option>
-            <option value="solana">
-                Solana
-            </option>
-            <option value="ripple">
-                XRP
-            </option>
-            <option value="tether">
-                USDT
-            </option>
-        </select>
-        <!-- Amount -->
-        <input
-            type="number"
-            id="amount"
-            placeholder="Amount"
-            min="0"
-            step="any">
-        <!-- Buy / Sell -->
-        <div class="buttons">
-            <button
-                id="buyButton"
-                type="button">
-                Buy
-            </button>
-            <button
-                id="sellButton"
-                type="button">
-                Sell
-            </button>
-        </div>
-    </section>
-    <!-- =====================
-         TRADE HISTORY
-    ====================== -->
-    <section class="history">
-        <h2>
-            Trade History
-        </h2>
-        <div id="history">
-            No Trades
-        </div>
-    </section>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f14">
+    <title>BEcoin — Practice Trading</title>
 
-</main>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --bg: #070a0f;
+            --panel: #0d1219;
+            --panel-2: #111821;
+            --border: #202a36;
+            --text: #f4f7fa;
+            --muted: #7d8997;
+            --up: #22c55e;
+            --down: #ef4444;
+            --accent: #f5c542;
+            --accent-dark: #b98e18;
+            --blue: #3b82f6;
+            --shadow: 0 12px 35px rgba(0, 0, 0, .28);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(245, 197, 66, .07), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(59, 130, 246, .06), transparent 25%),
+                var(--bg);
+            color: var(--text);
+            font-family: "IBM Plex Mono", monospace;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            width: min(1180px, 94%);
+            margin: auto;
+            padding-bottom: 45px;
+        }
+
+        /* DEMO WARNING */
+
+        .demo-banner {
+            margin: 18px 0 12px;
+            padding: 10px 14px;
+            border: 1px solid rgba(245, 197, 66, .35);
+            background: rgba(245, 197, 66, .07);
+            color: var(--accent);
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: .8px;
+        }
+
+        /* HEADER */
+
+        .header {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: var(--accent);
+            color: #090b0e;
+            font-family: "Space Grotesk", sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 25px;
+            letter-spacing: -.5px;
+        }
+
+        .logo small {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
+
+        #connectWallet {
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            padding: 11px 17px;
+            border-radius: 7px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        #connectWallet:hover {
+            background: var(--accent);
+            color: #080a0d;
+        }
+
+        /* TICKER */
+
+        .ticker-wrap {
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+            background: rgba(13, 18, 25, .7);
+        }
+
+        .ticker {
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            white-space: nowrap;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            gap: 7px;
+        }
+
+        .ticker-price {
+            color: var(--text);
+        }
+
+        .positive {
+            color: var(--up) !important;
+        }
+
+        .negative {
+            color: var(--down) !important;
+        }
+
+        /* DASHBOARD */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 22px 0;
+        }
+
+        .card,
+        .panel,
+        .stat-card,
+        .log-panel,
+        .trade-panel {
+            border: 1px solid var(--border);
+            background: linear-gradient(145deg, var(--panel), #0a0f15);
+            box-shadow: var(--shadow);
+        }
+
+        .card {
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .card-label {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1.2px;
+            margin-bottom: 9px;
+        }
+
+        .card-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-value.wallet {
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* BALANCE */
+
+        .balance-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 18px 0;
+        }
+
+        .balance-label,
+        .stat-label {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1.4px;
+        }
+
+        .balance-val {
+            margin-top: 5px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .balance-unit {
+            margin-left: 7px;
+            color: var(--accent);
+            font-size: 11px;
+            font-family: "IBM Plex Mono", monospace;
+        }
+
+        .pnl {
+            color: var(--up);
+            font-size: 12px;
+        }
+
+        /* SECTION TITLES */
+
+        .section-title {
+            margin-bottom: 12px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 19px;
+        }
+
+        .section-title span {
+            color: var(--accent);
+        }
+
+        /* MARKET */
+
+        .market {
+            margin-bottom: 22px;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 9px;
+        }
+
+        .market-card {
+            padding: 13px;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            border-radius: 7px;
+        }
+
+        .market-name {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .market-price {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .market-change {
+            font-size: 10px;
+        }
+
+        /* MAIN TRADING AREA */
+
+        .trading-grid {
+            display: grid;
+            grid-template-columns: 1.5fr .85fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .panel {
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .price-sym {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .price-now {
+            margin-top: 5px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .price-delta {
+            font-size: 13px;
+            color: var(--up);
+        }
+
+        #chart {
+            width: 100%;
+            height: 260px;
+            display: block;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin: 14px 0;
+        }
+
+        /* TRADE PANEL */
+
+        .trade-panel {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .field-label {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin: 16px 0 7px;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 13px;
+            color: var(--text);
+            background: var(--panel-2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: var(--accent-dark);
+        }
+
+        .trade-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .trade-buttons button {
+            padding: 13px;
+            border: 0;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .buy-btn {
+            background: var(--up);
+            color: #041008;
+        }
+
+        .sell-btn {
+            background: var(--down);
+            color: #fff;
+        }
+
+        .trade-buttons button:hover,
+        .predict-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
+
+        .trade-info {
+            margin-top: 17px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* PREDICTION */
+
+        .round-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .timer-ring {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .predict-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-top: 16px;
+        }
+
+        .predict-btn {
+            padding: 14px;
+            border: 1px solid;
+            border-radius: 6px;
+            font-weight: 700;
+            transition: .15s;
+        }
+
+        .btn-up {
+            background: rgba(34, 197, 94, .08);
+            border-color: var(--up);
+            color: var(--up);
+        }
+
+        .btn-down {
+            background: rgba(239, 68, 68, .08);
+            border-color: var(--down);
+            color: var(--down);
+        }
+
+        .stake-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 40px;
+            gap: 7px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .stake-row button {
+            height: 38px;
+            border: 1px solid var(--border);
+            background: var(--panel-2);
+            color: var(--text);
+            border-radius: 5px;
+        }
+
+        .stake-val {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-val {
+            margin-top: 6px;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        /* HISTORY */
+
+        .log-panel {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .log-title {
+            padding: 13px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--accent);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+        }
+
+        #history {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: 70px 1fr 1fr 100px;
+            gap: 12px;
+            padding: 13px 16px;
+            border-bottom: 1px solid rgba(32, 42, 54, .7);
+            font-size: 11px;
+        }
+
+        .history-item:last-child {
+            border-bottom: 0;
+        }
+
+        .history-muted {
+            color: var(--muted);
+        }
+
+        .empty-log {
+            padding: 25px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 11px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 25px;
+            color: #596575;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+            .market-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .trading-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .app {
+                width: 92%;
+            }
+
+            .header {
+                min-height: 68px;
+            }
+
+            .logo h1 {
+                font-size: 21px;
+            }
+
+            .dashboard,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .market-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .balance-row {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .balance-val {
+                font-size: 25px;
+            }
+
+            .price-now {
+                font-size: 28px;
+            }
+
+            #chart {
+                height: 210px;
+            }
+
+            .history-item {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
 
 <div class="app">
 
-  <div class="demo-banner">⚠ DEMO MODE — VIRTUAL CURRENCY ONLY — NOT REAL MONEY</div>
+    <!-- DEMO WARNING -->
+    <div class="demo-banner">
+        ⚠ BECOIN DEMO MODE — VIRTUAL CURRENCY ONLY — NO REAL MONEY
+    </div>
 
-  <div class="ticker-wrap">
-    <div class="ticker" id="ticker"></div>
-  </div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-mark">₿</div>
+            <div>
+                <h1>BEcoin</h1>
+                <small>/// PRACTICE TRADING TERMINAL</small>
+            </div>
+        </div>
 
-  <header>
-    <div class="brand"><span class="dot"></span>PRACTICE TERMINAL <small>/// paper trading</small></div>
+        <button id="connectWallet" type="button">
+            Connect Wallet
+        </button>
+    </header>
+
+    <!-- MARKET TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="ticker">
+            <span class="ticker-item">
+                BTC <span class="ticker-price" id="tickerBtc">$0.00</span>
+            </span>
+            <span class="ticker-item">
+                ETH <span class="ticker-price" id="tickerEth">$0.00</span>
+            </span>
+            <span class="ticker-item">
+                BNB <span class="ticker-price" id="tickerBnb">$0.00</span>
+            </span>
+            <span class="ticker-item">
+                SOL <span class="ticker-price" id="tickerSol">$0.00</span>
+            </span>
+            <span class="ticker-item">
+                XRP <span class="ticker-price" id="tickerXrp">$0.00</span>
+            </span>
+            <span class="ticker-item">
+                USDT <span class="ticker-price" id="tickerUsdt">$1.00</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- USER DASHBOARD -->
+    <section class="dashboard">
+
+        <div class="card">
+            <div class="card-label">USER ID</div>
+            <div class="card-value" id="userId">BEC-000001</div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">WALLET</div>
+            <div class="card-value wallet" id="walletAddress">
+                Not Connected
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">VIRTUAL PORTFOLIO</div>
+            <div class="card-value">
+                $<span id="portfolio">10,000.00</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- BALANCE -->
     <div class="balance-row">
-      <div>
-        <div class="balance-label">VIRTUAL BALANCE</div>
-        <div class="balance-val" id="balance">10,000<span class="balance-unit">DEMO</span></div>
-      </div>
-      <div class="pnl" id="pnl">+0.00 session</div>
-    </div>
-  </header>
+        <div>
+            <div class="balance-label">VIRTUAL BALANCE</div>
+            <div class="balance-val">
+                <span id="balance">10,000.00</span>
+                <span class="balance-unit">DEMO</span>
+            </div>
+        </div>
 
-  <div class="panel">
-    <div class="price-row">
-      <div>
-        <div class="price-sym">SIM/USD · simulated feed</div>
-        <div class="price-now" id="priceNow">$1,000.00</div>
-      </div>
-      <div class="price-delta" id="priceDelta">+0.00%</div>
-    </div>
-    <canvas id="chart"></canvas>
-    <div class="round-row">
-      <span id="roundLabel">Round closes in</span>
-      <div class="timer-ring" id="ring"><span id="ringText">5</span></div>
+        <div class="pnl" id="pnl">
+            +0.00 session
+        </div>
     </div>
 
-    <div class="predict-row">
-      <button class="predict-btn btn-up" id="btnUp">▲ UP</button>
-      <button class="predict-btn btn-down" id="btnDown">▼ DOWN</button>
-    </div>
-    <div class="stake-row">
-      <button id="stakeMinus">−</button>
-      <span class="stake-val" id="stakeVal">100 DEMO</span>
-      <button id="stakePlus">+</button>
-    </div>
-  </div>
+    <!-- LIVE MARKET -->
+    <section class="market">
+        <h2 class="section-title">
+            Live <span>Market</span>
+        </h2>
 
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">WINS</div><div class="stat-val" id="wins" style="color:var(--up)">0</div></div>
-    <div class="stat-card"><div class="stat-label">LOSSES</div><div class="stat-val" id="losses" style="color:var(--down)">0</div></div>
-    <div class="stat-card"><div class="stat-label">WIN RATE</div><div class="stat-val" id="winrate">—</div></div>
-  </div>
+        <div class="market-grid">
 
-  <div class="log-panel">
-    <div class="log-title">ROUND LOG</div>
-    <div id="logList"><div class="empty-log">No rounds yet — place a prediction above</div></div>
-  </div>
+            <div class="market-card">
+                <div class="market-name">BITCOIN / BTC</div>
+                <div class="market-price" id="btcPrice">$0.00</div>
+                <div class="market-change positive" id="btcChange">+0.00%</div>
+            </div>
 
-  <footer>
-    This is an educational practice tool with a simulated random-walk price feed.<br>
-    No real assets, deposits, or withdrawals are involved.
-  </footer>
+            <div class="market-card">
+                <div class="market-name">ETHEREUM / ETH</div>
+                <div class="market-price" id="ethPrice">$0.00</div>
+                <div class="market-change positive" id="ethChange">+0.00%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">BNB</div>
+                <div class="market-price" id="bnbPrice">$0.00</div>
+                <div class="market-change positive" id="bnbChange">+0.00%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">SOLANA / SOL</div>
+                <div class="market-price" id="solPrice">$0.00</div>
+                <div class="market-change positive" id="solChange">+0.00%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">XRP</div>
+                <div class="market-price" id="xrpPrice">$0.00</div>
+                <div class="market-change positive" id="xrpChange">+0.00%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">TETHER / USDT</div>
+                <div class="market-price" id="usdtPrice">$1.00</div>
+                <div class="market-change positive" id="usdtChange">+0.00%</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- TRADING AREA -->
+    <section class="trading-grid">
+
+        <!-- PRICE CHART -->
+        <div class="panel">
+
+            <div class="price-row">
+                <div>
+                    <div class="price-sym">
+                        <span id="selectedSymbol">BTC/USD</span>
+                        · BEcoin simulated feed
+                    </div>
+
+                    <div class="price-now" id="priceNow">
+                        $1,000.00
+                    </div>
+                </div>
+
+                <div class="price-delta" id="priceDelta">
+                    +0.00%
+                </div>
+            </div>
+
+            <canvas id="chart"></canvas>
+
+            <!-- PREDICTION -->
+            <div class="round-row">
+                <span id="roundLabel">
+                    Round closes in
+                </span>
+
+                <div class="timer-ring">
+                    <span id="ringText">5</span>
+                </div>
+            </div>
+
+            <div class="predict-row">
+                <button
+                    class="predict-btn btn-up"
+                    id="btnUp"
+                    type="button">
+                    ▲ UP
+                </button>
+
+                <button
+                    class="predict-btn btn-down"
+                    id="btnDown"
+                    type="button">
+                    ▼ DOWN
+                </button>
+            </div>
+
+            <div class="stake-row">
+                <button id="stakeMinus" type="button">−</button>
+
+                <span class="stake-val" id="stakeVal">
+                    100 DEMO
+                </span>
+
+                <button id="stakePlus" type="button">+</button>
+            </div>
+
+        </div>
+
+        <!-- BUY / SELL -->
+        <div class="trade-panel">
+
+            <h2 class="section-title">
+                BEcoin <span>Trade</span>
+            </h2>
+
+            <label class="field-label" for="coin">
+                SELECT ASSET
+            </label>
+
+            <select id="coin">
+                <option value="bitcoin">Bitcoin / BTC</option>
+                <option value="ethereum">Ethereum / ETH</option>
+                <option value="binancecoin">BNB</option>
+                <option value="solana">Solana / SOL</option>
+                <option value="ripple">XRP</option>
+                <option value="tether">USDT</option>
+            </select>
+
+            <label class="field-label" for="amount">
+                AMOUNT / DEMO USD
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="Enter amount"
+                min="1"
+                step="any"
+            >
+
+            <div class="trade-buttons">
+
+                <button
+                    class="buy-btn"
+                    id="buyButton"
+                    type="button">
+                    BUY
+                </button>
+
+                <button
+                    class="sell-btn"
+                    id="sellButton"
+                    type="button">
+                    SELL
+                </button>
+
+            </div>
+
+            <div class="trade-info">
+                BEcoin is currently operating in practice mode.
+                All balances and trades are virtual.
+                No real deposits, withdrawals, or assets are involved.
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-label">WINS</div>
+            <div
+                class="stat-val positive"
+                id="wins">
+                0
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">LOSSES</div>
+            <div
+                class="stat-val negative"
+                id="losses">
+                0
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">WIN RATE</div>
+            <div class="stat-val" id="winrate">
+                —
+            </div>
+        </div>
+
+    </section>
+
+    <!-- TRADE HISTORY -->
+    <section class="log-panel">
+
+        <div class="log-title">
+            BECOIN ACTIVITY / TRADE HISTORY
+        </div>
+
+        <div id="history">
+            <div class="empty-log">
+                No trades yet — place a virtual trade above
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        BEcoin is an educational practice platform using simulated virtual currency.
+        <br>
+        No real assets, deposits, withdrawals, or financial transactions are involved.
+    </footer>
+
 </div>
+
+<!-- JAVASCRIPT -->
+<script src="app.js"></script>
+<script src="wallet.js"></script>
+<script src="market.js"></script>
+<script src="trade.js"></script>
 
 <!-- =========================
      JAVASCRIPT FILES
