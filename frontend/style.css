@@ -2,6 +2,34 @@
    ShortTrade v1.0
    Part 1
 ========================= */
+/* =========================
+   ShortTrade v1.0
+   Part 1
+========================= */
+
+:root{
+    --bg:#0f172a;
+    --panel:#1e293b;
+    --panel2:#111827;
+    --border:#334155;
+    --text:#ffffff;
+    --muted:#94a3b8;
+    --accent:#22c55e;
+    --green:#22c55e;
+    --red:#ef4444;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:#fff;
+}
 
 *{
     margin:0;
