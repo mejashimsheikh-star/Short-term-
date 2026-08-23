@@ -14,6 +14,7 @@ const pool = new Pool({
     }
 });
 
+// Home
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
     });
 });
 
+// Database test
 app.get("/api/db-test", async (req, res) => {
     try {
         const result = await pool.query("SELECT NOW() AS time");
@@ -30,8 +32,9 @@ app.get("/api/db-test", async (req, res) => {
             message: "PostgreSQL connected successfully",
             databaseTime: result.rows[0].time
         });
+
     } catch (error) {
-        console.error("Database error:", error);
+        console.error(error);
 
         res.status(500).json({
             success: false,
@@ -39,6 +42,7 @@ app.get("/api/db-test", async (req, res) => {
         });
     }
 });
+
 // Create users table
 app.get("/api/setup", async (req, res) => {
     try {
@@ -62,10 +66,13 @@ app.get("/api/setup", async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: "Failed to create users table"
+            message: "Failed to create users table",
+            error: error.message
         });
     }
 });
+
+// Start server
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`BEcoin backend running on port ${PORT}`);
 });
