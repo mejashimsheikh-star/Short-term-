@@ -2898,6 +2898,156 @@ window.addEventListener(
     "resize",
     resizeCanvas
 );
+/* =========================
+   LIVE CUSTOMER SUPPORT
+========================= */
+
+const liveSupportBtn =
+    document.getElementById(
+        "liveSupportBtn"
+    );
+
+const supportChat =
+    document.getElementById(
+        "supportChat"
+    );
+
+const closeSupport =
+    document.getElementById(
+        "closeSupport"
+    );
+
+const sendSupport =
+    document.getElementById(
+        "sendSupport"
+    );
+
+const supportInput =
+    document.getElementById(
+        "supportInput"
+    );
+
+const supportMessages =
+    document.getElementById(
+        "supportMessages"
+    );
+
+
+/* OPEN CHAT */
+
+liveSupportBtn.onclick = () => {
+
+    supportChat.classList.add(
+        "show"
+    );
+
+    supportInput.focus();
+};
+
+
+/* CLOSE CHAT */
+
+closeSupport.onclick = () => {
+
+    supportChat.classList.remove(
+        "show"
+    );
+};
+
+
+/* SEND MESSAGE */
+
+function sendSupportMessage() {
+
+    const message =
+        supportInput.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+
+    /* User message */
+
+    const userMessage =
+        document.createElement(
+            "div"
+        );
+
+    userMessage.className =
+        "support-message user";
+
+    userMessage.textContent =
+        message;
+
+    supportMessages.appendChild(
+        userMessage
+    );
+
+
+    supportInput.value = "";
+
+
+    /* Scroll to bottom */
+
+    supportMessages.scrollTop =
+        supportMessages.scrollHeight;
+
+
+    /*
+       DEMO AUTO REPLY
+
+       পরে এখানে WebSocket /
+       Socket.IO backend connection
+       বসানো যাবে।
+    */
+
+    setTimeout(() => {
+
+        const reply =
+            document.createElement(
+                "div"
+            );
+
+        reply.className =
+            "support-message agent";
+
+        reply.textContent =
+            "Thanks for contacting BEcoin Support. An agent will assist you shortly.";
+
+        supportMessages.appendChild(
+            reply
+        );
+
+        supportMessages.scrollTop =
+            supportMessages.scrollHeight;
+
+    }, 800);
+}
+
+
+/* SEND BUTTON */
+
+sendSupport.onclick =
+    sendSupportMessage;
+
+
+/* ENTER KEY */
+
+supportInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            sendSupportMessage();
+
+        }
+
+    }
+);
 
 </script>
 <!-- =========================
