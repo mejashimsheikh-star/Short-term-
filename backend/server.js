@@ -154,3 +154,51 @@ app.listen(PORT, () => {
     );
 
 });
+const express = require("express");
+const { Pool } = require("pg");
+
+const app = express();
+
+app.use(express.json());
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+// Test API
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "BEcoin backend is running"
+    });
+});
+
+// PostgreSQL connection test
+app.get("/api/db-test", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW() AS time");
+
+        res.json({
+            success: true,
+            message: "PostgreSQL connected successfully",
+            databaseTime: result.rows[0].time
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Database connection failed"
+        });
+    }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`BEcoin backend running on port ${PORT}`);
+});
