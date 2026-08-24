@@ -151,6 +151,36 @@ app.post("/api/users", async (req, res) => {
     }
 
 });
+app.get("/api/test-create-user", async (req, res) => {
+    try {
+        const result = await pool.query(
+            `
+            INSERT INTO users
+            (user_code, wallet_address)
+            VALUES ($1, $2)
+            RETURNING id, user_code, wallet_address, balance, created_at
+            `,
+            ["user001", "demo-wallet-001"]
+        );
+
+        res.json({
+            success: true,
+            message: "Test user created",
+            user: result.rows[0]
+        });
+
+    } catch (error) {
+
+        console.error("Test create user error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Test user creation failed",
+            error: error.message,
+            code: error.code
+        });
+    }
+});
 
 // =========================
 // GET USER
