@@ -25,7 +25,12 @@ function requireApiKey(req, res, next) {
 
     next();
 }
+// =========================
+// PROTECTED ROUTES
+// =========================
 
+app.use("/api/users", requireApiKey);
+app.use("/api/wallet", requireApiKey);
 // =========================
 // DATABASE
 // =========================
