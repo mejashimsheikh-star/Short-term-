@@ -185,63 +185,7 @@ app.get("/api/users/:user_code", async (req, res) => {
 
 /* =========================
    UPDATE WALLET BALANCE
-========================= */
-
-app.patch("/api/users/:user_code/balance", async (req, res) => {
-
-    try {
-
-        const { user_code } = req.params;
-        const { amount } = req.body;
-
-        if (amount === undefined) {
-
-            return res.status(400).json({
-                success: false,
-                message: "amount is required"
-            });
-
-        }
-
-        const result = await pool.query(
-            `
-            UPDATE users
-            SET balance = balance + $1
-            WHERE user_code = $2
-            RETURNING *
-            `,
-            [
-                Number(amount),
-                user_code
-            ]
-        );
-
-        if (result.rows.length === 0) {
-
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-
-        }
-
-        res.json({
-            success: true,
-            message: "Balance updated",
-            user: result.rows[0]
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to update balance",
-            error: error.message
-        });
-
-    }
-
-});
+========================
 
 
 /* =========================
