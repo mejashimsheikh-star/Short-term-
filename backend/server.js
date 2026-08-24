@@ -67,12 +67,7 @@ app.get("/api/health", async (req, res) => {
 async function createTables() {
 
     await pool.query(`
-        DROP TABLE IF EXISTS transactions;
-        DROP TABLE IF EXISTS users;
-    `);
-
-    await pool.query(`
-        CREATE TABLE users (
+        CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             user_code VARCHAR(50) UNIQUE NOT NULL,
             wallet_address VARCHAR(255),
@@ -82,7 +77,7 @@ async function createTables() {
     `);
 
     await pool.query(`
-        CREATE TABLE transactions (
+        CREATE TABLE IF NOT EXISTS transactions (
             id SERIAL PRIMARY KEY,
             user_code VARCHAR(50) NOT NULL,
             type VARCHAR(20) NOT NULL,
