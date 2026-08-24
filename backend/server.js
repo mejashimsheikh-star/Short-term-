@@ -143,10 +143,12 @@ app.post("/api/users", async (req, res) => {
 
         console.error("Create user error:", error);
 
-        res.status(500).json({
-            success: false,
-            message: "Failed to create user"
-        });
+         res.status(500).json({
+             success: false,
+             message: "Failed to create user",
+             error: error.message,
+             code: error.code
+         });
     }
 
 });
