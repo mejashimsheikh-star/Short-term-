@@ -12,6 +12,19 @@ const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
+function requireApiKey(req, res, next) {
+
+    const apiKey = req.headers["x-api-key"];
+
+    if (!apiKey || apiKey !== process.env.BECOIN_API_KEY) {
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized"
+        });
+    }
+
+    next();
+}
 
 // =========================
 // DATABASE
