@@ -61,19 +61,37 @@ app.get("/api/health", async (req, res) => {
 });
 
 // =========================
-// CREATE TABLES
-// =========================
-
+// creaate table 
 async function createTables() {
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
+            user_id VARCHAR(100),
             user_code VARCHAR(50) UNIQUE NOT NULL,
             wallet_address VARCHAR(255),
             balance NUMERIC(18,2) NOT NULL DEFAULT 10000.00,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
+    `);
+
+    // Existing database-এর user_id column থাকলে সেটি ব্যবহার করবে
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS user_id VARCHAR(100)
+    `);
+
+    // পুরোনো users-এর user_id পূরণ করা
+    await pool.query(`
+        UPDATE users
+        SET user_id = user_code
+        WHERE user_id IS NULL
+    `);
+
+    // Existing user_id NOT NULL constraint থাকলে সরানো
+    await pool.query(`
+        ALTER TABLE users
+        ALTER COLUMN user_id DROP NOT NULL
     `);
 
     await pool.query(`
@@ -113,17 +131,17 @@ app.post("/api/users", async (req, res) => {
         }
 
         const result = await pool.query(
-            `
-            INSERT INTO users
-            (user_code, wallet_address)
-            VALUES ($1, $2)
-            RETURNING id, user_code, wallet_address, balance, created_at
-            `,
-            [
-                user_code.trim(),
-                wallet_address || null
-            ]
-        );
+    `
+    INSERT INTO users
+    (user_id, user_code, wallet_address)
+    VALUES ($1, $1, $2)
+    RETURNING id, user_id, user_code, wallet_address, balance, created_at
+    `,
+    [
+        user_code.trim(),
+        wallet_address || null
+    ]
+);
 
         res.status(201).json({
             success: true,
@@ -151,36 +169,7 @@ app.post("/api/users", async (req, res) => {
     }
 
 });
-app.get("/api/test-create-user", async (req, res) => {
-    try {
-        const result = await pool.query(
-            `
-            INSERT INTO users
-            (user_code, wallet_address)
-            VALUES ($1, $2)
-            RETURNING id, user_code, wallet_address, balance, created_at
-            `,
-            ["user001", "demo-wallet-001"]
-        );
 
-        res.json({
-            success: true,
-            message: "Test user created",
-            user: result.rows[0]
-        });
-
-    } catch (error) {
-
-        console.error("Test create user error:", error);
-
-        res.status(500).json({
-            success: false,
-            message: "Test user creation failed",
-            error: error.message,
-            code: error.code
-        });
-    }
-});
 
 // =========================
 // GET USER
