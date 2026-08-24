@@ -89,30 +89,47 @@ app.post("/api/users", async (req, res) => {
 
     try {
 
-        let {
-            user_code,
-            wallet_address
-        } = req.body;
+        const { user_code, password, wallet_address } = req.body;
 
-        if (!user_code) {
-
+        if (!user_code || !password) {
             return res.status(400).json({
                 success: false,
-                message: "user_code is required"
+                message: "user_code and password are required"
             });
-
         }
+
+        if (typeof user_code !== "string" || user_code.length < 3 || user_code.length > 50) {
+            return res.status(400).json({
+                success: false,
+                message: "user_code must be between 3 and 50 characters"
+            });
+        }
+
+        if (typeof password !== "string" || password.length < 8) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 8 characters"
+            });
+        }
+
+        const passwordHash = await bcrypt.hash(password, 12);
 
         const result = await pool.query(
             `
             INSERT INTO users
-            (user_code, wallet_address)
-            VALUES ($1, $2)
-            RETURNING *
+            (user_code, wallet_address, password_hash)
+            VALUES ($1, $2, $3)
+            RETURNING
+                id,
+                user_code,
+                wallet_address,
+                balance,
+                created_at
             `,
             [
-                user_code,
-                wallet_address || null
+                user_code.trim(),
+                wallet_address || null,
+                passwordHash
             ]
         );
 
@@ -125,18 +142,17 @@ app.post("/api/users", async (req, res) => {
     } catch (error) {
 
         if (error.code === "23505") {
-
             return res.status(409).json({
                 success: false,
                 message: "User code already exists"
             });
-
         }
+
+        console.error("Create user error:", error);
 
         res.status(500).json({
             success: false,
-            message: "Failed to create user",
-            error: error.message
+            message: "Failed to create user"
         });
 
     }
