@@ -1873,16 +1873,18 @@
 
 
 <script>
-
 /* =====================================================
-   BECOIN DEMO APP
+   BECOIN FRONTEND
+   Backend connected
 ===================================================== */
+
+const API_URL = "https://short-term-95sa.onrender.com";
+const USER_CODE = "BEC-000001";
 
 let balance = 10000;
 let startingBalance = 10000;
 
 let stake = 100;
-
 let currentPrice = 1000;
 let previousPrice = 1000;
 
@@ -1898,149 +1900,98 @@ let priceHistory = [];
 let walletAction = "deposit";
 
 
-/* =========================
+/* =====================================================
    ELEMENTS
-========================= */
+===================================================== */
 
-const balanceEl =
-    document.getElementById("balance");
+const balanceEl = document.getElementById("balance");
+const portfolioEl = document.getElementById("portfolio");
+const walletBalanceEl = document.getElementById("walletBalance");
+const pnlEl = document.getElementById("pnl");
 
-const portfolioEl =
-    document.getElementById("portfolio");
+const priceNowEl = document.getElementById("priceNow");
+const priceDeltaEl = document.getElementById("priceDelta");
 
-const walletBalanceEl =
-    document.getElementById("walletBalance");
+const ringTextEl = document.getElementById("ringText");
+const roundLabelEl = document.getElementById("roundLabel");
 
-const pnlEl =
-    document.getElementById("pnl");
-
-const priceNowEl =
-    document.getElementById("priceNow");
-
-const priceDeltaEl =
-    document.getElementById("priceDelta");
-
-const ringTextEl =
-    document.getElementById("ringText");
-
-const roundLabelEl =
-    document.getElementById("roundLabel");
-
-const stakeValEl =
-    document.getElementById("stakeVal");
-
-const historyEl =
-    document.getElementById("history");
+const stakeValEl = document.getElementById("stakeVal");
+const historyEl = document.getElementById("history");
 
 const walletTransactions =
     document.getElementById("walletTransactions");
 
-const canvas =
-    document.getElementById("chart");
-
-const ctx =
-    canvas.getContext("2d");
+const canvas = document.getElementById("chart");
+const ctx = canvas.getContext("2d");
 
 
-/* =========================
+/* =====================================================
    PAGE NAVIGATION
-========================= */
+===================================================== */
 
-document
-    .querySelectorAll(".nav-btn")
-    .forEach(button => {
+document.querySelectorAll(".nav-btn").forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+    button.addEventListener("click", () => {
 
-                const page =
-                    button.dataset.page;
+        const page = button.dataset.page;
 
-                document
-                    .querySelectorAll(".page")
-                    .forEach(p => {
-                        p.classList.remove(
-                            "active"
-                        );
-                    });
+        document.querySelectorAll(".page").forEach(p => {
+            p.classList.remove("active");
+        });
 
-                document
-                    .getElementById(page)
-                    .classList.add(
-                        "active"
-                    );
+        document.getElementById(page).classList.add("active");
 
-                document
-                    .querySelectorAll(".nav-btn")
-                    .forEach(btn => {
-                        btn.classList.remove(
-                            "active"
-                        );
-                    });
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
 
-                button.classList.add(
-                    "active"
-                );
+        button.classList.add("active");
 
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
-                setTimeout(
-                    resizeCanvas,
-                    50
-                );
-            }
-        );
-
+        setTimeout(resizeCanvas, 50);
     });
 
+});
 
-/* =========================
+
+/* =====================================================
    MONEY FORMAT
-========================= */
+===================================================== */
 
 function money(value) {
 
     return "$" +
-        Number(value).toLocaleString(
-            undefined,
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
+        Number(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
 }
 
 
-/* =========================
-   BALANCE UPDATE
-========================= */
+/* =====================================================
+   BALANCE UI
+===================================================== */
 
 function updateBalance() {
 
-    const formatted =
-        balance.toLocaleString(
-            undefined,
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
+    const formatted = Number(balance).toLocaleString(
+        undefined,
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
 
-    balanceEl.textContent =
-        formatted;
+    balanceEl.textContent = formatted;
+    portfolioEl.textContent = formatted;
+    walletBalanceEl.textContent = formatted;
 
-    portfolioEl.textContent =
-        formatted;
-
-    walletBalanceEl.textContent =
-        formatted;
-
-    const pnl =
-        balance - startingBalance;
+    const pnl = balance - startingBalance;
 
     pnlEl.textContent =
         (pnl >= 0 ? "+" : "") +
@@ -2054,65 +2005,54 @@ function updateBalance() {
 }
 
 
-/* =========================
+/* =====================================================
    STAKE
-========================= */
+===================================================== */
 
 function updateStake() {
 
     stakeValEl.textContent =
-        stake.toLocaleString() +
-        " DEMO";
+        stake.toLocaleString() + " DEMO";
+
 }
 
-document
-    .getElementById("stakeMinus")
-    .onclick = () => {
 
-        stake =
-            Math.max(
-                50,
-                stake - 50
-            );
+document.getElementById("stakeMinus").onclick = () => {
 
-        updateStake();
-    };
+    stake = Math.max(50, stake - 50);
+
+    updateStake();
+
+};
 
 
-document
-    .getElementById("stakePlus")
-    .onclick = () => {
+document.getElementById("stakePlus").onclick = () => {
 
-        stake =
-            Math.min(
-                5000,
-                stake + 50
-            );
+    stake = Math.min(5000, stake + 50);
 
-        updateStake();
-    };
+    updateStake();
+
+};
 
 
-/* =========================
+/* =====================================================
    PRICE ENGINE
-========================= */
+===================================================== */
 
 function movePrice() {
 
-    previousPrice =
-        currentPrice;
+    previousPrice = currentPrice;
 
     currentPrice +=
-        (Math.random() - .5) * 18;
+        (Math.random() - 0.5) * 18;
 
     if (currentPrice < 100) {
         currentPrice = 100;
     }
 
     const change =
-        ((currentPrice -
-            previousPrice) /
-            previousPrice) * 100;
+        ((currentPrice - previousPrice) /
+        previousPrice) * 100;
 
     priceNowEl.textContent =
         money(currentPrice);
@@ -2127,9 +2067,7 @@ function movePrice() {
             ? "green"
             : "red";
 
-    priceHistory.push(
-        currentPrice
-    );
+    priceHistory.push(currentPrice);
 
     if (priceHistory.length > 60) {
         priceHistory.shift();
@@ -2139,23 +2077,20 @@ function movePrice() {
 }
 
 
-/* =========================
+/* =====================================================
    CHART
-========================= */
+===================================================== */
 
 function resizeCanvas() {
 
-    const rect =
-        canvas.getBoundingClientRect();
+    if (!canvas) return;
 
-    const dpr =
-        window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
 
-    canvas.width =
-        rect.width * dpr;
+    const dpr = window.devicePixelRatio || 1;
 
-    canvas.height =
-        rect.height * dpr;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
 
     ctx.setTransform(
         dpr,
@@ -2172,113 +2107,78 @@ function resizeCanvas() {
 
 function drawChart() {
 
-    const width =
-        canvas.clientWidth;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
 
-    const height =
-        canvas.clientHeight;
+    ctx.clearRect(0, 0, width, height);
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-    if (
-        priceHistory.length < 2
-    ) {
+    if (priceHistory.length < 2) {
         return;
     }
 
-    const min =
-        Math.min(...priceHistory);
+    const min = Math.min(...priceHistory);
+    const max = Math.max(...priceHistory);
 
-    const max =
-        Math.max(...priceHistory);
-
-    const range =
-        max - min || 1;
+    const range = max - min || 1;
 
 
     /* Grid */
 
-    ctx.strokeStyle =
-        "#202a36";
-
+    ctx.strokeStyle = "#202a36";
     ctx.lineWidth = 1;
 
-    for (
-        let i = 1;
-        i < 5;
-        i++
-    ) {
+    for (let i = 1; i < 5; i++) {
 
-        const y =
-            height / 5 * i;
+        const y = (height / 5) * i;
 
         ctx.beginPath();
 
-        ctx.moveTo(
-            0,
-            y
-        );
-
-        ctx.lineTo(
-            width,
-            y
-        );
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
 
         ctx.stroke();
     }
 
 
-    /* Line */
+    /* Price line */
 
     ctx.beginPath();
 
-    priceHistory.forEach(
-        (price, index) => {
+    priceHistory.forEach((price, index) => {
 
-            const x =
-                index /
-                (priceHistory.length - 1)
-                * width;
+        const x =
+            index /
+            (priceHistory.length - 1) *
+            width;
 
-            const y =
-                height -
-                ((price - min) /
-                range) *
-                (height - 20) -
-                10;
+        const y =
+            height -
+            ((price - min) / range) *
+            (height - 20) -
+            10;
 
-            if (index === 0) {
-                ctx.moveTo(
-                    x,
-                    y
-                );
-            } else {
-                ctx.lineTo(
-                    x,
-                    y
-                );
-            }
+        if (index === 0) {
+
+            ctx.moveTo(x, y);
+
+        } else {
+
+            ctx.lineTo(x, y);
 
         }
-    );
 
-    ctx.strokeStyle =
-        "#f5c542";
+    });
 
+    ctx.strokeStyle = "#f5c542";
     ctx.lineWidth = 2;
 
     ctx.stroke();
 }
 
 
-/* =========================
-   UP / DOWN
-========================= */
+/* =====================================================
+   PREDICTION
+===================================================== */
 
 function startPrediction(direction) {
 
@@ -2288,20 +2188,16 @@ function startPrediction(direction) {
 
     if (stake > balance) {
 
-        alert(
-            "Insufficient DEMO balance."
-        );
+        alert("Insufficient DEMO balance.");
 
         return;
     }
 
-    prediction =
-        direction;
+    prediction = direction;
 
     roundActive = true;
 
-    const startingPrice =
-        currentPrice;
+    const startingPrice = currentPrice;
 
     let seconds = 5;
 
@@ -2309,61 +2205,44 @@ function startPrediction(direction) {
 
     updateBalance();
 
-    document
-        .getElementById("btnUp")
-        .disabled = true;
-
-    document
-        .getElementById("btnDown")
-        .disabled = true;
+    document.getElementById("btnUp").disabled = true;
+    document.getElementById("btnDown").disabled = true;
 
     roundLabelEl.textContent =
         direction === "UP"
             ? "Prediction: ▲ UP"
             : "Prediction: ▼ DOWN";
 
-    ringTextEl.textContent =
-        seconds;
+    ringTextEl.textContent = seconds;
 
 
-    roundTimer =
-        setInterval(
-            () => {
+    roundTimer = setInterval(() => {
 
-                seconds--;
+        seconds--;
 
-                ringTextEl.textContent =
-                    seconds;
+        ringTextEl.textContent = seconds;
 
-                movePrice();
-                movePrice();
+        movePrice();
+        movePrice();
 
-                if (
-                    seconds <= 0
-                ) {
+        if (seconds <= 0) {
 
-                    clearInterval(
-                        roundTimer
-                    );
+            clearInterval(roundTimer);
 
-                    finishPrediction(
-                        startingPrice,
-                        currentPrice,
-                        direction
-                    );
-                }
+            finishPrediction(
+                startingPrice,
+                currentPrice,
+                direction
+            );
 
-            },
-            1000
-        );
+        }
+
+    }, 1000);
+
 }
 
 
-function finishPrediction(
-    start,
-    end,
-    direction
-) {
+function finishPrediction(start, end, direction) {
 
     const won =
         direction === "UP"
@@ -2374,13 +2253,7 @@ function finishPrediction(
 
         wins++;
 
-        /*
-            80% virtual payout.
-            Stake + 80% profit.
-        */
-
-        balance +=
-            stake * 1.80;
+        balance += stake * 1.80;
 
     } else {
 
@@ -2402,37 +2275,27 @@ function finishPrediction(
     roundActive = false;
     prediction = null;
 
-    document
-        .getElementById("btnUp")
-        .disabled = false;
-
-    document
-        .getElementById("btnDown")
-        .disabled = false;
+    document.getElementById("btnUp").disabled = false;
+    document.getElementById("btnDown").disabled = false;
 
     roundLabelEl.textContent =
         "Round closes in";
 
-    ringTextEl.textContent =
-        "5";
+    ringTextEl.textContent = "5";
 }
 
 
-document
-    .getElementById("btnUp")
-    .onclick =
+document.getElementById("btnUp").onclick =
     () => startPrediction("UP");
 
 
-document
-    .getElementById("btnDown")
-    .onclick =
+document.getElementById("btnDown").onclick =
     () => startPrediction("DOWN");
 
 
-/* =========================
-   HISTORY
-========================= */
+/* =====================================================
+   TRADE HISTORY
+===================================================== */
 
 function addHistory(
     direction,
@@ -2443,81 +2306,53 @@ function addHistory(
 ) {
 
     const empty =
-        historyEl.querySelector(
-            ".empty"
-        );
+        historyEl.querySelector(".empty");
 
     if (empty) {
         empty.remove();
     }
 
     const item =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-    item.className =
-        "history-item";
+    item.className = "history-item";
 
     const result =
         won
-            ? "WIN +" +
-              (amount * .8).toFixed(2)
-            : "LOSS -" +
-              amount.toFixed(2);
+            ? "WIN +" + (amount * 0.8).toFixed(2)
+            : "LOSS -" + amount.toFixed(2);
 
     item.innerHTML = `
 
-        <div class="${
-            direction === "UP"
-                ? "green"
-                : "red"
-        }">
-            ${
-                direction === "UP"
-                    ? "▲ UP"
-                    : "▼ DOWN"
-            }
+        <div class="${direction === "UP" ? "green" : "red"}">
+            ${direction === "UP" ? "▲ UP" : "▼ DOWN"}
         </div>
 
         <div>
-            ${money(start)}
-            →
-            ${money(end)}
+            ${money(start)} → ${money(end)}
         </div>
 
         <div>
             ${amount.toFixed(2)} DEMO
         </div>
 
-        <div class="${
-            won
-                ? "green"
-                : "red"
-        }">
+        <div class="${won ? "green" : "red"}">
             ${result}
         </div>
+
     `;
 
-    historyEl.prepend(
-        item
-    );
+    historyEl.prepend(item);
 }
 
 
-/* =========================
+/* =====================================================
    STATS
-========================= */
+===================================================== */
 
 function updateStats() {
 
-    /*
-       Create stats dynamically
-       if needed.
-    */
-
-    const total =
-        wins + losses;
+    const total = wins + losses;
 
     if (total > 0) {
 
@@ -2527,45 +2362,36 @@ function updateStats() {
             " | Losses: " +
             losses +
             " | Win Rate: " +
-            ((wins / total) * 100)
-                .toFixed(1) +
+            ((wins / total) * 100).toFixed(1) +
             "%";
+
     }
+
 }
 
 
-/* =========================
-   BUY / SELL
-========================= */
+/* =====================================================
+   SPOT BUY
+===================================================== */
 
-document
-    .getElementById("buyButton")
-    .onclick = () => {
+document.getElementById("buyButton").onclick =
+    () => {
 
         const amount =
             Number(
-                document.getElementById(
-                    "amount"
-                ).value
+                document.getElementById("amount").value
             );
 
-        if (
-            !amount ||
-            amount <= 0
-        ) {
+        if (!amount || amount <= 0) {
 
-            alert(
-                "Enter a valid DEMO amount."
-            );
+            alert("Enter a valid DEMO amount.");
 
             return;
         }
 
         if (amount > balance) {
 
-            alert(
-                "Insufficient DEMO balance."
-            );
+            alert("Insufficient DEMO balance.");
 
             return;
         }
@@ -2574,36 +2400,28 @@ document
 
         updateBalance();
 
-        addSpotHistory(
-            "BUY",
-            amount
-        );
+        addSpotHistory("BUY", amount);
 
-        alert(
-            "Virtual BUY completed."
-        );
+        alert("Virtual BUY completed.");
+
     };
 
 
-document
-    .getElementById("sellButton")
-    .onclick = () => {
+/* =====================================================
+   SPOT SELL
+===================================================== */
+
+document.getElementById("sellButton").onclick =
+    () => {
 
         const amount =
             Number(
-                document.getElementById(
-                    "amount"
-                ).value
+                document.getElementById("amount").value
             );
 
-        if (
-            !amount ||
-            amount <= 0
-        ) {
+        if (!amount || amount <= 0) {
 
-            alert(
-                "Enter a valid DEMO amount."
-            );
+            alert("Enter a valid DEMO amount.");
 
             return;
         }
@@ -2612,46 +2430,30 @@ document
 
         updateBalance();
 
-        addSpotHistory(
-            "SELL",
-            amount
-        );
+        addSpotHistory("SELL", amount);
 
-        alert(
-            "Virtual SELL completed."
-        );
+        alert("Virtual SELL completed.");
+
     };
 
 
-function addSpotHistory(
-    action,
-    amount
-) {
+function addSpotHistory(action, amount) {
 
     const empty =
-        historyEl.querySelector(
-            ".empty"
-        );
+        historyEl.querySelector(".empty");
 
     if (empty) {
         empty.remove();
     }
 
     const item =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-    item.className =
-        "history-item";
+    item.className = "history-item";
 
     item.innerHTML = `
 
-        <div class="${
-            action === "BUY"
-                ? "green"
-                : "red"
-        }">
+        <div class="${action === "BUY" ? "green" : "red"}">
             ${action}
         </div>
 
@@ -2666,350 +2468,73 @@ function addSpotHistory(
         <div>
             ${money(currentPrice)}
         </div>
+
     `;
 
-    historyEl.prepend(
-        item
-    );
+    historyEl.prepend(item);
 }
 
 
 /* =====================================================
-   WALLET
+   WALLET MODAL
 ===================================================== */
 
 const walletModal =
-    document.getElementById(
-        "walletModal"
-    );
+    document.getElementById("walletModal");
 
 const walletAmount =
-    document.getElementById(
-        "walletAmount"
-    );
+    document.getElementById("walletAmount");
 
 const modalTitle =
-    document.getElementById(
-        "modalTitle"
-    );
+    document.getElementById("modalTitle");
+
+const confirmWalletAction =
+    document.getElementById("confirmWalletAction");
 
 
-document
-    .getElementById("depositBtn")
-    .onclick = () => {
+document.getElementById("depositBtn").onclick =
+    () => {
 
-        walletAction =
-            "deposit";
+        walletAction = "deposit";
 
         modalTitle.textContent =
             "Deposit DEMO";
 
         walletAmount.value = "";
 
-        walletModal.classList.add(
-            "show"
-        );
+        walletModal.classList.add("show");
+
     };
 
 
-document
-    .getElementById("withdrawBtn")
-    .onclick = () => {
+document.getElementById("withdrawBtn").onclick =
+    () => {
 
-        walletAction =
-            "withdraw";
+        walletAction = "withdraw";
 
         modalTitle.textContent =
             "Withdraw DEMO";
 
         walletAmount.value = "";
 
-        walletModal.classList.add(
-            "show"
-        );
+        walletModal.classList.add("show");
+
     };
 
 
-document
-    .getElementById("closeModal")
-    .onclick = () => {
+document.getElementById("closeModal").onclick =
+    () => {
 
-        walletModal.classList.remove(
-            "show"
-        );
+        walletModal.classList.remove("show");
+
     };
 
 
-document
-    .getElementById(
-        "confirmWalletAction"
-    )
-    .onclick = () => {
-
-        const amount =
-            Number(
-                walletAmount.value
-            );
-
-        if (
-            !amount ||
-            amount <= 0
-        ) {
-
-            alert(
-                "Enter a valid amount."
-            );
-
-            return;
-        }
-
-
-        if (
-            walletAction ===
-            "deposit"
-        ) {
-
-            balance += amount;
-
-            addWalletTransaction(
-                "Deposit",
-                amount
-            );
-
-        } else {
-
-            if (
-                amount > balance
-            ) {
-
-                alert(
-                    "Insufficient DEMO balance."
-                );
-
-                return;
-            }
-
-            balance -= amount;
-
-            addWalletTransaction(
-                "Withdraw",
-                amount
-            );
-        }
-
-
-        updateBalance();
-
-        walletModal.classList.remove(
-            "show"
-        );
-    };
-
-
-function addWalletTransaction(
-    type,
-    amount
-) {
-
-    const empty =
-        walletTransactions
-            .querySelector(".empty");
-
-    if (empty) {
-        empty.remove();
-    }
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-    item.className =
-        "transaction";
-
-    const color =
-        type === "Deposit"
-            ? "green"
-            : "red";
-
-    item.innerHTML = `
-
-        <div>
-            ${new Date().toLocaleTimeString()}
-        </div>
-
-        <div class="${color}">
-            ${type}
-        </div>
-
-        <div class="${color}">
-            ${
-                type === "Deposit"
-                    ? "+"
-                    : "-"
-            }
-            ${amount.toFixed(2)} DEMO
-        </div>
-
-    `;
-
-    walletTransactions.prepend(
-        item
-    );
-}
-
-
-/* =========================
-   CLOSE MODAL
-========================= */
-
-walletModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            walletModal
-        ) {
-
-            walletModal.classList.remove(
-                "show"
-            );
-        }
-    }
-);
-
-
-/* =========================
-   WALLET
- /* =====================================================
-   BECOIN BACKEND WALLET
+/* =====================================================
+   BACKEND DEPOSIT / WITHDRAW
 ===================================================== */
 
-const API_URL =
-    "https://short-term-95sa.onrender.com";
-
-
-/* =========================
-   CURRENT USER
-========================= */
-
-const USER_CODE =
-    "BEC-000001";
-
-
-/* =========================
-   LOAD USER FROM DATABASE
-========================= */
-
-async function loadUser() {
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/api/users/${USER_CODE}`
-        );
-
-        const data =
-            await response.json();
-
-        if (!data.success) {
-
-            console.log(
-                "User not found"
-            );
-
-            return;
-
-        }
-
-        balance =
-            Number(data.user.balance);
-
-        updateBalance();
-
-        console.log(
-            "User loaded:",
-            data.user
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Failed to load user:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================
-   CREATE USER
-========================= */
-
-async function createUser() {
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/api/users`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    user_code:
-                        USER_CODE,
-                    wallet_address:
-                        null
-                })
-            }
-        );
-
-        const data =
-            await response.json();
-
-        console.log(
-            "Create user:",
-            data
-        );
-
-        if (data.success) {
-
-            balance =
-                Number(
-                    data.user.balance
-                );
-
-            updateBalance();
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Create user failed:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================
-   DEPOSIT
-========================= */
-
-async function backendDeposit(
-    amount
-) {
+async function backendDeposit(amount) {
 
     try {
 
@@ -3020,15 +2545,12 @@ async function backendDeposit(
                     method: "POST",
 
                     headers: {
-                        "Content-Type":
-                            "application/json"
+                        "Content-Type": "application/json"
                     },
 
                     body: JSON.stringify({
-                        user_code:
-                            USER_CODE,
-                        amount:
-                            Number(amount)
+                        user_code: USER_CODE,
+                        amount: Number(amount)
                     })
                 }
             );
@@ -3044,18 +2566,11 @@ async function backendDeposit(
             );
 
             return false;
-
         }
 
-        balance =
-            Number(data.balance);
+        balance = Number(data.balance);
 
         updateBalance();
-
-        addWalletTransaction(
-            "Deposit",
-            amount
-        );
 
         return true;
 
@@ -3068,19 +2583,11 @@ async function backendDeposit(
         );
 
         return false;
-
     }
-
 }
 
 
-/* =========================
-   WITHDRAW
-========================= */
-
-async function backendWithdraw(
-    amount
-) {
+async function backendWithdraw(amount) {
 
     try {
 
@@ -3091,15 +2598,12 @@ async function backendWithdraw(
                     method: "POST",
 
                     headers: {
-                        "Content-Type":
-                            "application/json"
+                        "Content-Type": "application/json"
                     },
 
                     body: JSON.stringify({
-                        user_code:
-                            USER_CODE,
-                        amount:
-                            Number(amount)
+                        user_code: USER_CODE,
+                        amount: Number(amount)
                     })
                 }
             );
@@ -3115,18 +2619,11 @@ async function backendWithdraw(
             );
 
             return false;
-
         }
 
-        balance =
-            Number(data.balance);
+        balance = Number(data.balance);
 
         updateBalance();
-
-        addWalletTransaction(
-            "Withdraw",
-            amount
-        );
 
         return true;
 
@@ -3139,97 +2636,192 @@ async function backendWithdraw(
         );
 
         return false;
-
     }
-
 }
 
 
-/* =========================
+/* =====================================================
    WALLET CONFIRM
-========================= */
+===================================================== */
 
-document
-    .getElementById(
-        "confirmWalletAction"
-    )
-    .onclick = async () => {
+confirmWalletAction.onclick =
+    async () => {
 
         const amount =
-            Number(
-                walletAmount.value
-            );
+            Number(walletAmount.value);
 
-        if (
-            !amount ||
-            amount <= 0
-        ) {
+        if (!amount || amount <= 0) {
 
-            alert(
-                "Enter a valid amount."
-            );
+            alert("Enter a valid amount.");
 
             return;
-
         }
 
+        confirmWalletAction.disabled = true;
 
-        const button =
-            document.getElementById(
-                "confirmWalletAction"
-            );
-
-        button.disabled = true;
-
-        button.textContent =
+        confirmWalletAction.textContent =
             "Processing...";
-
 
         let success = false;
 
-
-        if (
-            walletAction ===
-            "deposit"
-        ) {
+        if (walletAction === "deposit") {
 
             success =
-                await backendDeposit(
-                    amount
-                );
+                await backendDeposit(amount);
 
         } else {
 
             success =
-                await backendWithdraw(
-                    amount
-                );
+                await backendWithdraw(amount);
 
         }
 
+        confirmWalletAction.disabled = false;
 
-        button.disabled = false;
-
-        button.textContent =
+        confirmWalletAction.textContent =
             "Confirm";
-
 
         if (success) {
 
             walletAmount.value = "";
 
-            walletModal.classList.remove(
-                "show"
-            );
+            walletModal.classList.remove("show");
 
+            await loadTransactions();
         }
 
     };
 
 
-/* =========================
-   LOAD TRANSACTIONS
-========================= */
+/* =====================================================
+   LOAD USER
+===================================================== */
+
+async function loadUser() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/users/${USER_CODE}`
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            console.log(
+                "User not found:",
+                data
+            );
+
+            return false;
+        }
+
+        balance =
+            Number(data.user.balance);
+
+        startingBalance = balance;
+
+        updateBalance();
+
+        if (data.user.wallet_address) {
+
+            document.getElementById(
+                "walletAddress"
+            ).textContent =
+                data.user.wallet_address;
+
+        }
+
+        console.log(
+            "User loaded successfully:",
+            data.user
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load user:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/* =====================================================
+   CREATE USER
+===================================================== */
+
+async function createUser() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/users`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        user_code: USER_CODE,
+                        wallet_address: null
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "Create user:",
+            data
+        );
+
+        if (!data.success) {
+
+            console.log(
+                "User creation failed:",
+                data
+            );
+
+            return false;
+        }
+
+        balance =
+            Number(data.user.balance);
+
+        startingBalance = balance;
+
+        updateBalance();
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Create user failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/* =====================================================
+   LOAD WALLET TRANSACTIONS
+===================================================== */
 
 async function loadTransactions() {
 
@@ -3244,15 +2836,19 @@ async function loadTransactions() {
             await response.json();
 
         if (!data.success) {
+
+            console.log(
+                "Transaction loading failed:",
+                data
+            );
+
             return;
         }
 
         walletTransactions.innerHTML = "";
 
-
-        if (
-            data.transactions.length === 0
-        ) {
+        if (!data.transactions ||
+            data.transactions.length === 0) {
 
             walletTransactions.innerHTML =
                 `
@@ -3262,23 +2858,17 @@ async function loadTransactions() {
                 `;
 
             return;
-
         }
 
+        data.transactions.forEach(transaction => {
 
-        data.transactions.forEach(
-            transaction => {
+            addWalletTransaction(
+                transaction.type,
+                Number(transaction.amount),
+                transaction.created_at
+            );
 
-                addWalletTransaction(
-                    transaction.type,
-                    Number(
-                        transaction.amount
-                    ),
-                    transaction.created_at
-                );
-
-            }
-        );
+        });
 
     } catch (error) {
 
@@ -3288,13 +2878,12 @@ async function loadTransactions() {
         );
 
     }
-
 }
 
 
-/* =========================
-   TRANSACTION UI
-========================= */
+/* =====================================================
+   WALLET TRANSACTION UI
+===================================================== */
 
 function addWalletTransaction(
     type,
@@ -3303,48 +2892,31 @@ function addWalletTransaction(
 ) {
 
     const empty =
-        walletTransactions
-            .querySelector(".empty");
+        walletTransactions.querySelector(".empty");
 
     if (empty) {
         empty.remove();
     }
 
-
     const item =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-    item.className =
-        "transaction";
-
+    item.className = "transaction";
 
     const isDeposit =
-        type.toLowerCase() ===
+        String(type).toLowerCase() ===
         "deposit";
 
-
     const color =
-        isDeposit
-            ? "green"
-            : "red";
-
+        isDeposit ? "green" : "red";
 
     const sign =
-        isDeposit
-            ? "+"
-            : "-";
-
+        isDeposit ? "+" : "-";
 
     const time =
         createdAt
-            ? new Date(
-                createdAt
-              ).toLocaleString()
-            : new Date()
-                .toLocaleString();
-
+            ? new Date(createdAt).toLocaleString()
+            : new Date().toLocaleString();
 
     item.innerHTML = `
 
@@ -3357,113 +2929,78 @@ function addWalletTransaction(
         </div>
 
         <div class="${color}">
-            ${sign}
-            ${Number(amount).toFixed(2)}
-            DEMO
+            ${sign}${Number(amount).toFixed(2)} DEMO
         </div>
 
     `;
 
+    walletTransactions.prepend(item);
+}
 
-    walletTransactions.prepend(
-        item
+
+/* =====================================================
+   INITIAL BACKEND LOAD
+===================================================== */
+
+async function initBackend() {
+
+    console.log(
+        "Connecting to BEcoin backend..."
     );
+
+    const loaded =
+        await loadUser();
+
+    if (!loaded) {
+
+        console.log(
+            "Creating demo user..."
+        );
+
+        await createUser();
+
+    }
+
+    await loadTransactions();
 
 }
 
 
-/* =========================
-   INITIAL BACKEND LOAD
-========================= */
-
-(async function initBackend() {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_URL}/api/users/${USER_CODE}`
-            );
-
-        if (response.ok) {
-
-            await loadUser();
-
-        } else {
-
-            await createUser();
-
-        }
-
-        await loadTransactions();
-
-    } catch (error) {
-
-        console.error(
-            "Backend initialization failed:",
-            error
-        );
-
-    }
-
-})();
-
-
-
-/* =========================
+/* =====================================================
    COIN SELECT
-========================= */
+===================================================== */
 
-document
-    .getElementById("coin")
-    .addEventListener(
-        "change",
-        function () {
+document.getElementById("coin")
+    .addEventListener("change", function () {
 
-            const symbols = {
+        const symbols = {
 
-                bitcoin:
-                    "BTC/USD",
+            bitcoin: "BTC/USD",
+            ethereum: "ETH/USD",
+            binancecoin: "BNB/USD",
+            solana: "SOL/USD",
+            ripple: "XRP/USD",
+            tether: "USDT/USD"
 
-                ethereum:
-                    "ETH/USD",
+        };
 
-                binancecoin:
-                    "BNB/USD",
+        document.getElementById(
+            "selectedSymbol"
+        ).textContent =
+            symbols[this.value];
 
-                solana:
-                    "SOL/USD",
-
-                ripple:
-                    "XRP/USD",
-
-                tether:
-                    "USDT/USD"
-            };
-
-            document
-                .getElementById(
-                    "selectedSymbol"
-                )
-                .textContent =
-                symbols[
-                    this.value
-                ];
-        }
-    );
+    });
 
 
-/* =========================
+/* =====================================================
    RESET DEMO
-========================= */
+===================================================== */
 
 function resetDemo() {
 
-    if (
-        !confirm(
-            "Reset your DEMO account to 10,000?"
-        )
-    ) {
+    if (!confirm(
+        "Reset your DEMO account to 10,000?"
+    )) {
         return;
     }
 
@@ -3482,20 +3019,25 @@ function resetDemo() {
     updateStake();
 
     historyEl.innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             No trades yet.
-        </div>`;
+        </div>
+        `;
 
     walletTransactions.innerHTML =
-        `<div class="empty">
+        `
+        <div class="empty">
             No wallet transactions yet.
-        </div>`;
+        </div>
+        `;
+
 }
 
 
-/* =========================
-   SIMULATED MARKET
-========================= */
+/* =====================================================
+   MARKET
+===================================================== */
 
 const marketCoins = {
 
@@ -3522,126 +3064,56 @@ const marketCoins = {
     usdt: {
         price: 1
     }
+
 };
 
 
 function updateMarket() {
 
-    Object.keys(
-        marketCoins
-    ).forEach(
-        key => {
+    Object.keys(marketCoins).forEach(key => {
 
-            if (
-                key !== "usdt"
-            ) {
+        if (key !== "usdt") {
 
-                marketCoins[key]
-                    .price *=
-                    1 +
-                    (
-                        Math.random() -
-                        .5
-                    ) * .004;
-            }
+            marketCoins[key].price *=
+                1 +
+                (Math.random() - 0.5) *
+                0.004;
+
         }
-    );
+
+    });
 
 
-    document.getElementById(
-        "btcPrice"
-    ).textContent =
-        money(
-            marketCoins.btc.price
-        );
+    document.getElementById("btcPrice")
+        .textContent =
+        money(marketCoins.btc.price);
 
-    document.getElementById(
-        "ethPrice"
-    ).textContent =
-        money(
-            marketCoins.eth.price
-        );
+    document.getElementById("ethPrice")
+        .textContent =
+        money(marketCoins.eth.price);
 
-    document.getElementById(
-        "bnbPrice"
-    ).textContent =
-        money(
-            marketCoins.bnb.price
-        );
+    document.getElementById("bnbPrice")
+        .textContent =
+        money(marketCoins.bnb.price);
 
-    document.getElementById(
-        "solPrice"
-    ).textContent =
-        money(
-            marketCoins.sol.price
-        );
+    document.getElementById("solPrice")
+        .textContent =
+        money(marketCoins.sol.price);
 
-    document.getElementById(
-        "xrpPrice"
-    ).textContent =
-        money(
-            marketCoins.xrp.price
-        );
+    document.getElementById("xrpPrice")
+        .textContent =
+        money(marketCoins.xrp.price);
 
-    document.getElementById(
-        "usdtPrice"
-    ).textContent =
+    document.getElementById("usdtPrice")
+        .textContent =
         "$1.00";
+
 }
 
 
-/* =========================
-   INITIAL CHART
-========================= */
-
-for (
-    let i = 0;
-    i < 50;
-    i++
-) {
-
-    currentPrice +=
-        (Math.random() - .5) * 10;
-
-    priceHistory.push(
-        currentPrice
-    );
-}
-
-resizeCanvas();
-
-updateBalance();
-
-updateStake();
-
-updateMarket();
-
-
-/* =========================
-   MARKET INTERVAL
-========================= */
-
-setInterval(
-    () => {
-
-        updateMarket();
-
-        if (!roundActive) {
-            movePrice();
-        }
-
-    },
-    1200
-);
-
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-/* =========================
-   LIVE CUSTOMER SUPPORT
-========================= */
+/* =====================================================
+   LIVE SUPPORT
+===================================================== */
 
 const liveSupportBtn =
     document.getElementById(
@@ -3674,29 +3146,29 @@ const supportMessages =
     );
 
 
-/* OPEN CHAT */
+if (liveSupportBtn) {
 
-liveSupportBtn.onclick = () => {
+    liveSupportBtn.onclick = () => {
 
-    supportChat.classList.add(
-        "show"
-    );
+        supportChat.classList.add("show");
 
-    supportInput.focus();
-};
+        supportInput.focus();
 
+    };
 
-/* CLOSE CHAT */
-
-closeSupport.onclick = () => {
-
-    supportChat.classList.remove(
-        "show"
-    );
-};
+}
 
 
-/* SEND MESSAGE */
+if (closeSupport) {
+
+    closeSupport.onclick = () => {
+
+        supportChat.classList.remove("show");
+
+    };
+
+}
+
 
 function sendSupportMessage() {
 
@@ -3707,13 +3179,8 @@ function sendSupportMessage() {
         return;
     }
 
-
-    /* User message */
-
     const userMessage =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     userMessage.className =
         "support-message user";
@@ -3725,30 +3192,16 @@ function sendSupportMessage() {
         userMessage
     );
 
-
     supportInput.value = "";
-
-
-    /* Scroll to bottom */
 
     supportMessages.scrollTop =
         supportMessages.scrollHeight;
 
 
-    /*
-       DEMO AUTO REPLY
-
-       পরে এখানে WebSocket /
-       Socket.IO backend connection
-       বসানো যাবে।
-    */
-
     setTimeout(() => {
 
         const reply =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         reply.className =
             "support-message agent";
@@ -3764,30 +3217,82 @@ function sendSupportMessage() {
             supportMessages.scrollHeight;
 
     }, 800);
+
 }
 
 
-/* SEND BUTTON */
+if (sendSupport) {
 
-sendSupport.onclick =
-    sendSupportMessage;
+    sendSupport.onclick =
+        sendSupportMessage;
+
+}
 
 
-/* ENTER KEY */
+if (supportInput) {
 
-supportInput.addEventListener(
-    "keydown",
-    event => {
+    supportInput.addEventListener(
+        "keydown",
+        event => {
 
-        if (
-            event.key === "Enter"
-        ) {
+            if (event.key === "Enter") {
 
-            sendSupportMessage();
+                sendSupportMessage();
+
+            }
 
         }
+    );
+
+}
+
+
+/* =====================================================
+   INITIAL APP
+===================================================== */
+
+for (let i = 0; i < 50; i++) {
+
+    currentPrice +=
+        (Math.random() - 0.5) * 10;
+
+    priceHistory.push(
+        currentPrice
+    );
+
+}
+
+resizeCanvas();
+
+updateBalance();
+
+updateStake();
+
+updateMarket();
+
+initBackend();
+
+
+/* =====================================================
+   MARKET INTERVAL
+===================================================== */
+
+setInterval(() => {
+
+    updateMarket();
+
+    if (!roundActive) {
+
+        movePrice();
 
     }
+
+}, 1200);
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
 );
 
 </script>
