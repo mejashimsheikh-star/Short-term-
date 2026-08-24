@@ -7,10 +7,6 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
 
-/* =========================
-   DATABASE
-========================= */
-
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -37,7 +33,6 @@ app.get("/", (req, res) => {
 
 app.get("/api/db-test", async (req, res) => {
     try {
-
         const result = await pool.query(
             "SELECT NOW() AS time"
         );
@@ -49,52 +44,112 @@ app.get("/api/db-test", async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error(
-            "Database error:",
-            error
-        );
+        console.error(error);
 
         res.status(500).json({
             success: false,
-            message: "Database connection failed"
+            message: "Database connection failed",
+            error: error.message
         });
     }
 });
 
 
 /* =========================
-   DATABASE SETUP
+   DATABASE MIGRATION
 ========================= */
 
 app.get("/api/setup", async (req, res) => {
     try {
 
+        /*
+         * Create users table if it does not exist.
+         */
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
-                user_code VARCHAR(50) UNIQUE NOT NULL,
+                user_code VARCHAR(50) UNIQUE,
                 wallet_address VARCHAR(100),
                 balance NUMERIC(18,2) DEFAULT 10000.00,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
 
+
+        /*
+         * Add missing columns to an
+         * already-existing users table.
+         */
+
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS
+            user_code VARCHAR(50);
+        `);
+
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS
+            wallet_address VARCHAR(100);
+        `);
+
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS
+            balance NUMERIC(18,2)
+            DEFAULT 10000.00;
+        `);
+
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS
+            created_at TIMESTAMP
+            DEFAULT CURRENT_TIMESTAMP;
+        `);
+
+
+        /*
+         * Give existing users a user code
+         * if they do not have one.
+         */
+
+        await pool.query(`
+            UPDATE users
+            SET user_code =
+                'BEC-' || LPAD(id::TEXT, 6, '0')
+            WHERE user_code IS NULL;
+        `);
+
+
+        /*
+         * Give NULL balances the default
+         * demo balance.
+         */
+
+        await pool.query(`
+            UPDATE users
+            SET balance = 10000.00
+            WHERE balance IS NULL;
+        `);
+
+
         res.json({
             success: true,
-            message: "Users table created successfully"
+            message:
+                "Database migration completed successfully"
         });
 
     } catch (error) {
 
         console.error(
-            "Setup error:",
+            "Migration error:",
             error
         );
 
         res.status(500).json({
             success: false,
-            message: "Failed to create users table",
+            message:
+                "Database migration failed",
             error: error.message
         });
     }
@@ -106,6 +161,7 @@ app.get("/api/setup", async (req, res) => {
 ========================= */
 
 app.post("/api/users", async (req, res) => {
+
     try {
 
         const userCode =
@@ -143,7 +199,8 @@ app.post("/api/users", async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: "User created successfully",
+            message:
+                "User created successfully",
             user: result.rows[0]
         });
 
@@ -156,7 +213,8 @@ app.post("/api/users", async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: "Failed to create user",
+            message:
+                "Failed to create user",
             error: error.message
         });
     }
@@ -173,8 +231,17 @@ app.get(
 
         try {
 
-            const { id } =
-                req.params;
+            const id =
+                Number(req.params.id);
+
+            if (!Number.isInteger(id)) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Invalid user ID"
+                });
+            }
 
             const result =
                 await pool.query(
@@ -197,7 +264,8 @@ app.get(
 
                 return res.status(404).json({
                     success: false,
-                    message: "User not found"
+                    message:
+                        "User not found"
                 });
             }
 
@@ -215,7 +283,8 @@ app.get(
 
             res.status(500).json({
                 success: false,
-                message: "Failed to get user",
+                message:
+                    "Failed to get user",
                 error: error.message
             });
         }
@@ -224,7 +293,7 @@ app.get(
 
 
 /* =========================
-   UPDATE WALLET ADDRESS
+   UPDATE WALLET
 ========================= */
 
 app.put(
@@ -233,16 +302,14 @@ app.put(
 
         try {
 
-            const { id } =
-                req.params;
+            const id =
+                Number(req.params.id);
 
             const {
                 walletAddress
             } = req.body;
 
-            if (
-                !walletAddress
-            ) {
+            if (!walletAddress) {
 
                 return res.status(400).json({
                     success: false,
@@ -275,23 +342,21 @@ app.put(
 
                 return res.status(404).json({
                     success: false,
-                    message: "User not found"
+                    message:
+                        "User not found"
                 });
             }
 
             res.json({
                 success: true,
                 message:
-                    "Wallet address updated",
+                    "Wallet updated successfully",
                 user: result.rows[0]
             });
 
         } catch (error) {
 
-            console.error(
-                "Wallet update error:",
-                error
-            );
+            console.error(error);
 
             res.status(500).json({
                 success: false,
@@ -314,20 +379,14 @@ app.put(
 
         try {
 
-            const { id } =
-                req.params;
+            const id =
+                Number(req.params.id);
 
-            const {
-                amount
-            } = req.body;
-
-            const numericAmount =
-                Number(amount);
+            const amount =
+                Number(req.body.amount);
 
             if (
-                !Number.isFinite(
-                    numericAmount
-                )
+                !Number.isFinite(amount)
             ) {
 
                 return res.status(400).json({
@@ -351,7 +410,7 @@ app.put(
                         balance
                     `,
                     [
-                        numericAmount,
+                        amount,
                         id
                     ]
                 );
@@ -370,16 +429,13 @@ app.put(
             res.json({
                 success: true,
                 message:
-                    "Balance updated",
+                    "Balance updated successfully",
                 user: result.rows[0]
             });
 
         } catch (error) {
 
-            console.error(
-                "Balance update error:",
-                error
-            );
+            console.error(error);
 
             res.status(500).json({
                 success: false,
@@ -393,17 +449,15 @@ app.put(
 
 
 /* =========================
-   START SERVER
+   SERVER
 ========================= */
 
 app.listen(
     PORT,
     "0.0.0.0",
     () => {
-
         console.log(
             `BEcoin backend running on port ${PORT}`
         );
-
     }
 );
