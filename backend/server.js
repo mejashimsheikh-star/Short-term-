@@ -159,6 +159,102 @@ app.post("/api/users", async (req, res) => {
 
 });
 
+/* =========================
+   LOGIN
+========================= */
+
+app.post("/api/auth/login", async (req, res) => {
+
+    try {
+
+        const { user_code, password } = req.body;
+
+        if (!user_code || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "user_code and password are required"
+            });
+        }
+
+        const result = await pool.query(
+            `
+            SELECT
+                id,
+                user_code,
+                wallet_address,
+                password_hash,
+                balance
+            FROM users
+            WHERE user_code = $1
+            `,
+            [user_code.trim()]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid user_code or password"
+            });
+        }
+
+        const user = result.rows[0];
+
+        const passwordMatch = await bcrypt.compare(
+            password,
+            user.password_hash
+        );
+
+        if (!passwordMatch) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid user_code or password"
+            });
+        }
+
+        if (!process.env.JWT_SECRET) {
+            console.error("JWT_SECRET is not configured");
+
+            return res.status(500).json({
+                success: false,
+                message: "Authentication service is not configured"
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                userCode: user.user_code
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h"
+            }
+        );
+
+        res.json({
+            success: true,
+            message: "Login successful",
+            token,
+            user: {
+                id: user.id,
+                user_code: user.user_code,
+                wallet_address: user.wallet_address,
+                balance: user.balance
+            }
+        });
+
+    } catch (error) {
+
+        console.error("Login error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Login failed"
+        });
+
+    }
+
+});
 
 /* =========================
    GET USER
