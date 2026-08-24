@@ -70,28 +70,41 @@ async function createTables() {
             user_id VARCHAR(100),
             user_code VARCHAR(50) UNIQUE NOT NULL,
             wallet_address VARCHAR(255),
-            balance NUMERIC(18,2) NOT NULL DEFAULT 10000.00,
+            balance NUMERIC(18,2) DEFAULT 10000.00,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
 
-    // Existing database-এর user_id column থাকলে সেটি ব্যবহার করবে
     await pool.query(`
         ALTER TABLE users
         ADD COLUMN IF NOT EXISTS user_id VARCHAR(100)
     `);
 
-    // পুরোনো users-এর user_id পূরণ করা
     await pool.query(`
         UPDATE users
         SET user_id = user_code
         WHERE user_id IS NULL
     `);
 
-    // Existing user_id NOT NULL constraint থাকলে সরানো
     await pool.query(`
         ALTER TABLE users
         ALTER COLUMN user_id DROP NOT NULL
+    `);
+
+    await pool.query(`
+        UPDATE users
+        SET balance = 10000.00
+        WHERE balance IS NULL
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ALTER COLUMN balance SET DEFAULT 10000.00
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ALTER COLUMN balance SET NOT NULL
     `);
 
     await pool.query(`
