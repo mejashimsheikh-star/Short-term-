@@ -253,6 +253,7 @@ async function startServer() {
     try {
 
         await createTables();
+        await createTransactionTable();
 
         console.log("Database tables ready");
 
@@ -276,5 +277,264 @@ async function startServer() {
     }
 
 }
+/* =========================
+   TRANSACTIONS TABLE
+========================= */
+
+async function createTransactionTable() {
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS transactions (
+            id SERIAL PRIMARY KEY,
+            user_code VARCHAR(50) NOT NULL,
+            type VARCHAR(20) NOT NULL,
+            amount NUMERIC(18,2) NOT NULL,
+            balance_after NUMERIC(18,2) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+}
+
+
+/* =========================
+   DEPOSIT
+========================= */
+
+app.post("/api/wallet/deposit", async (req, res) => {
+
+    const client = await pool.connect();
+
+    try {
+
+        const { user_code, amount } = req.body;
+
+        if (!user_code || !amount || Number(amount) <= 0) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Valid user_code and amount are required"
+            });
+
+        }
+
+        await client.query("BEGIN");
+
+        const userResult = await client.query(
+            `
+            UPDATE users
+            SET balance = balance + $1
+            WHERE user_code = $2
+            RETURNING *
+            `,
+            [Number(amount), user_code]
+        );
+
+        if (userResult.rows.length === 0) {
+
+            await client.query("ROLLBACK");
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+
+        }
+
+        const user = userResult.rows[0];
+
+        await client.query(
+            `
+            INSERT INTO transactions
+            (user_code, type, amount, balance_after)
+            VALUES ($1, $2, $3, $4)
+            `,
+            [
+                user_code,
+                "deposit",
+                Number(amount),
+                user.balance
+            ]
+        );
+
+        await client.query("COMMIT");
+
+        res.json({
+            success: true,
+            message: "Deposit successful",
+            balance: user.balance
+        });
+
+    } catch (error) {
+
+        await client.query("ROLLBACK");
+
+        res.status(500).json({
+            success: false,
+            message: "Deposit failed",
+            error: error.message
+        });
+
+    } finally {
+
+        client.release();
+
+    }
+
+});
+
+
+/* =========================
+   WITHDRAW
+========================= */
+
+app.post("/api/wallet/withdraw", async (req, res) => {
+
+    const client = await pool.connect();
+
+    try {
+
+        const { user_code, amount } = req.body;
+
+        if (!user_code || !amount || Number(amount) <= 0) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Valid user_code and amount are required"
+            });
+
+        }
+
+        await client.query("BEGIN");
+
+        const userResult = await client.query(
+            `
+            SELECT *
+            FROM users
+            WHERE user_code = $1
+            FOR UPDATE
+            `,
+            [user_code]
+        );
+
+        if (userResult.rows.length === 0) {
+
+            await client.query("ROLLBACK");
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+
+        }
+
+        const user = userResult.rows[0];
+
+        if (Number(user.balance) < Number(amount)) {
+
+            await client.query("ROLLBACK");
+
+            return res.status(400).json({
+                success: false,
+                message: "Insufficient balance"
+            });
+
+        }
+
+        const updateResult = await client.query(
+            `
+            UPDATE users
+            SET balance = balance - $1
+            WHERE user_code = $2
+            RETURNING *
+            `,
+            [Number(amount), user_code]
+        );
+
+        const updatedUser = updateResult.rows[0];
+
+        await client.query(
+            `
+            INSERT INTO transactions
+            (user_code, type, amount, balance_after)
+            VALUES ($1, $2, $3, $4)
+            `,
+            [
+                user_code,
+                "withdraw",
+                Number(amount),
+                updatedUser.balance
+            ]
+        );
+
+        await client.query("COMMIT");
+
+        res.json({
+            success: true,
+            message: "Withdrawal successful",
+            balance: updatedUser.balance
+        });
+
+    } catch (error) {
+
+        await client.query("ROLLBACK");
+
+        res.status(500).json({
+            success: false,
+            message: "Withdrawal failed",
+            error: error.message
+        });
+
+    } finally {
+
+        client.release();
+
+    }
+
+});
+
+
+/* =========================
+   TRANSACTION HISTORY
+========================= */
+
+app.get("/api/wallet/:user_code/transactions", async (req, res) => {
+
+    try {
+
+        const { user_code } = req.params;
+
+        const result = await pool.query(
+            `
+            SELECT
+                id,
+                type,
+                amount,
+                balance_after,
+                created_at
+            FROM transactions
+            WHERE user_code = $1
+            ORDER BY created_at DESC
+            `,
+            [user_code]
+        );
+
+        res.json({
+            success: true,
+            transactions: result.rows
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to get transactions",
+            error: error.message
+        });
+
+    }
+
+});
+
 
 startServer();
