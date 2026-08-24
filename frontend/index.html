@@ -2881,40 +2881,533 @@ walletModal.addEventListener(
 
 
 /* =========================
-   WALLET CONNECT
+   WALLET
+ /* =====================================================
+   BECOIN BACKEND WALLET
+===================================================== */
+
+const API_URL =
+    "https://short-term-95sa.onrender.com";
+
+
+/* =========================
+   CURRENT USER
+========================= */
+
+const USER_CODE =
+    "BEC-000001";
+
+
+/* =========================
+   LOAD USER FROM DATABASE
+========================= */
+
+async function loadUser() {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/api/users/${USER_CODE}`
+        );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            console.log(
+                "User not found"
+            );
+
+            return;
+
+        }
+
+        balance =
+            Number(data.user.balance);
+
+        updateBalance();
+
+        console.log(
+            "User loaded:",
+            data.user
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load user:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   CREATE USER
+========================= */
+
+async function createUser() {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/api/users`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    user_code:
+                        USER_CODE,
+                    wallet_address:
+                        null
+                })
+            }
+        );
+
+        const data =
+            await response.json();
+
+        console.log(
+            "Create user:",
+            data
+        );
+
+        if (data.success) {
+
+            balance =
+                Number(
+                    data.user.balance
+                );
+
+            updateBalance();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Create user failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   DEPOSIT
+========================= */
+
+async function backendDeposit(
+    amount
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/wallet/deposit`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        user_code:
+                            USER_CODE,
+                        amount:
+                            Number(amount)
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            alert(
+                data.message ||
+                "Deposit failed"
+            );
+
+            return false;
+
+        }
+
+        balance =
+            Number(data.balance);
+
+        updateBalance();
+
+        addWalletTransaction(
+            "Deposit",
+            amount
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Backend connection failed."
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================
+   WITHDRAW
+========================= */
+
+async function backendWithdraw(
+    amount
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/wallet/withdraw`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        user_code:
+                            USER_CODE,
+                        amount:
+                            Number(amount)
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            alert(
+                data.message ||
+                "Withdrawal failed"
+            );
+
+            return false;
+
+        }
+
+        balance =
+            Number(data.balance);
+
+        updateBalance();
+
+        addWalletTransaction(
+            "Withdraw",
+            amount
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Backend connection failed."
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================
+   WALLET CONFIRM
 ========================= */
 
 document
     .getElementById(
-        "connectWallet"
+        "confirmWalletAction"
     )
-    .onclick = function () {
+    .onclick = async () => {
 
-        const wallet =
-            document.getElementById(
-                "walletAddress"
+        const amount =
+            Number(
+                walletAmount.value
             );
 
         if (
-            wallet.textContent.trim() ===
-            "Not Connected"
+            !amount ||
+            amount <= 0
         ) {
 
-            wallet.textContent =
-                "0xBEc0...Demo";
+            alert(
+                "Enter a valid amount."
+            );
 
-            this.textContent =
-                "Connected";
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "confirmWalletAction"
+            );
+
+        button.disabled = true;
+
+        button.textContent =
+            "Processing...";
+
+
+        let success = false;
+
+
+        if (
+            walletAction ===
+            "deposit"
+        ) {
+
+            success =
+                await backendDeposit(
+                    amount
+                );
 
         } else {
 
-            wallet.textContent =
-                "Not Connected";
+            success =
+                await backendWithdraw(
+                    amount
+                );
 
-            this.textContent =
-                "Connect Wallet";
         }
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Confirm";
+
+
+        if (success) {
+
+            walletAmount.value = "";
+
+            walletModal.classList.remove(
+                "show"
+            );
+
+        }
+
     };
+
+
+/* =========================
+   LOAD TRANSACTIONS
+========================= */
+
+async function loadTransactions() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/wallet/${USER_CODE}/transactions`
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+        walletTransactions.innerHTML = "";
+
+
+        if (
+            data.transactions.length === 0
+        ) {
+
+            walletTransactions.innerHTML =
+                `
+                <div class="empty">
+                    No wallet transactions yet.
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        data.transactions.forEach(
+            transaction => {
+
+                addWalletTransaction(
+                    transaction.type,
+                    Number(
+                        transaction.amount
+                    ),
+                    transaction.created_at
+                );
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Transaction loading failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TRANSACTION UI
+========================= */
+
+function addWalletTransaction(
+    type,
+    amount,
+    createdAt = null
+) {
+
+    const empty =
+        walletTransactions
+            .querySelector(".empty");
+
+    if (empty) {
+        empty.remove();
+    }
+
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+    item.className =
+        "transaction";
+
+
+    const isDeposit =
+        type.toLowerCase() ===
+        "deposit";
+
+
+    const color =
+        isDeposit
+            ? "green"
+            : "red";
+
+
+    const sign =
+        isDeposit
+            ? "+"
+            : "-";
+
+
+    const time =
+        createdAt
+            ? new Date(
+                createdAt
+              ).toLocaleString()
+            : new Date()
+                .toLocaleString();
+
+
+    item.innerHTML = `
+
+        <div>
+            ${time}
+        </div>
+
+        <div class="${color}">
+            ${type}
+        </div>
+
+        <div class="${color}">
+            ${sign}
+            ${Number(amount).toFixed(2)}
+            DEMO
+        </div>
+
+    `;
+
+
+    walletTransactions.prepend(
+        item
+    );
+
+}
+
+
+/* =========================
+   INITIAL BACKEND LOAD
+========================= */
+
+(async function initBackend() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/api/users/${USER_CODE}`
+            );
+
+        if (response.ok) {
+
+            await loadUser();
+
+        } else {
+
+            await createUser();
+
+        }
+
+        await loadTransactions();
+
+    } catch (error) {
+
+        console.error(
+            "Backend initialization failed:",
+            error
+        );
+
+    }
+
+})();
+
 
 
 /* =========================
