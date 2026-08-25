@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 
@@ -12,6 +13,18 @@ const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        success: false,
+        message: "Too many requests, please try again later"
+    }
+});
+
+app.use("/api", apiLimiter);
 function requireApiKey(req, res, next) {
 
     const apiKey = req.headers["x-api-key"];
