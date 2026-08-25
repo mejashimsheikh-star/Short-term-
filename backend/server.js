@@ -15,8 +15,20 @@ app.use(express.json());
 function requireApiKey(req, res, next) {
 
     const apiKey = req.headers["x-api-key"];
+    const serverApiKey = process.env.BECOIN_API_KEY;
 
-    if (!apiKey || apiKey !== process.env.BECOIN_API_KEY) {
+    if (!serverApiKey) {
+        console.error("BECOIN_API_KEY is missing on server");
+
+        return res.status(500).json({
+            success: false,
+            message: "Server API key is not configured"
+        });
+    }
+
+    if (!apiKey || apiKey !== serverApiKey) {
+        console.log("API key authentication failed");
+
         return res.status(401).json({
             success: false,
             message: "Unauthorized"
