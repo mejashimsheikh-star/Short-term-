@@ -118,6 +118,29 @@ async function createTables() {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
+    `);
+
+    // Fix created_at default for existing users table
+
+    await pool.query(`
+
+        ALTER TABLE users
+
+        ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP
+
+    `);
+
+    // Fix old users where created_at is NULL
+
+    await pool.query(`
+
+        UPDATE users
+
+        SET created_at = CURRENT_TIMESTAMP
+
+        WHERE created_at IS NULL
+
+    `);
 
     await pool.query(`
         ALTER TABLE users
