@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
+app.set("trust proxy", 1);
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
