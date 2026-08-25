@@ -108,14 +108,28 @@ app.get("/api/health", async (req, res) => {
 // creaate table 
 async function createTables() {
 
+    // =========================
+    // USERS TABLE
+    // =========================
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             user_code VARCHAR(50) UNIQUE NOT NULL,
             wallet_address VARCHAR(255),
             balance NUMERIC(18,2) NOT NULL DEFAULT 10000.00,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            role VARCHAR(20) NOT NULL DEFAULT 'user'
         )
+    `);
+
+    // =========================
+    // USERS TABLE MIGRATION
+    // =========================
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'user'
     `);
 
     await pool.query(`
@@ -123,11 +137,16 @@ async function createTables() {
         ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP
     `);
 
+    // Fix old users with NULL created_at
     await pool.query(`
         UPDATE users
         SET created_at = CURRENT_TIMESTAMP
         WHERE created_at IS NULL
     `);
+
+    // =========================
+    // TRANSACTIONS TABLE
+    // =========================
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS transactions (
