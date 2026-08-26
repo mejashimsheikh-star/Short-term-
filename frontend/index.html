@@ -775,8 +775,8 @@ input:focus,select:focus{
 
 <div class="app">
 
-<div class="demo-banner">
-⚠ BEcoin DEMO TRADING PLATFORM — VIRTUAL FUNDS ONLY
+<div class="banner">
+⚠ BEcoin TRADING PLATFORM 
 </div>
 
 <header class="header">
@@ -787,14 +787,10 @@ input:focus,select:focus{
 
 <div>
 <h1>BEcoin</h1>
-<small>DEMO TRADING PLATFORM</small>
+<small>BEcoin TRADING PLATFORM</small>
 </div>
 
 </div>
-
-<button id="connectWallet">
-Connect Wallet
-</button>
 
 </header>
 
@@ -806,7 +802,7 @@ Connect Wallet
 <h2 class="page-title">Welcome to BEcoin</h2>
 
 <p class="page-subtitle">
-Practice trading with virtual DEMO funds.
+Practice trading with BEcoin
 </p>
 
 <div class="dashboard">
@@ -821,15 +817,6 @@ Loading...
 
 </div>
 
-<div class="card">
-
-<div class="label">WALLET</div>
-
-<div class="value" id="walletAddress">
-Not Connected
-</div>
-
-</div>
 
 <div class="card">
 
@@ -846,7 +833,7 @@ $<span id="portfolio">0.00</span>
 <div class="card balance-card">
 
 <div class="label">
-VIRTUAL BALANCE
+BALANCE
 </div>
 
 <div>
@@ -855,8 +842,7 @@ VIRTUAL BALANCE
 0.00
 </span>
 
-<span class="demo">
-DEMO
+<span class="real">REAL
 </span>
 
 </div>
@@ -1099,7 +1085,7 @@ BEcoin Wallet
 </h2>
 
 <p class="page-subtitle">
-Manage your virtual DEMO balance.
+Manage your balance.
 </p>
 
 <div class="card wallet-balance">
@@ -1532,9 +1518,6 @@ const API_URL =
  IMPORTANT:
 
 
- If your backend creates/returns another user_id,
- replace this with the real authenticated user_id.
-*/
 
 const USER_CODE =
 localStorage.getItem("becoin_user_id") ||
