@@ -484,6 +484,8 @@ await pool.query(`
     ON CONFLICT (id)
     DO NOTHING
 `);
+console.log("All database tables ready");
+}
 // ======================================================
 // ADMIN LOGIN
 // ======================================================
