@@ -35,7 +35,15 @@ const io = new Server(server, {
 // MIDDLEWARE
 // ======================================================
 
-app.use(cors());
+app.use(cors({
+
+        origin: process.env.FRONTEND_ORIGIN,
+
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+
+        allowedHeaders: ["Content-Type", "Authorization"]
+
+    }));
 app.use(express.json());
 app.set("trust proxy", 1);
 
