@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#070a0f">
 
 <title>BEcoin Trading Platform</title>
@@ -38,9 +38,7 @@ body{
     padding-bottom:100px;
 }
 
-button,
-input,
-select{
+button,input,select{
     font:inherit;
 }
 
@@ -50,6 +48,7 @@ button{
 
 button:disabled{
     cursor:not-allowed;
+    opacity:.55;
 }
 
 .app{
@@ -65,6 +64,7 @@ button:disabled{
     background:rgba(245,197,66,.06);
     border:1px solid rgba(245,197,66,.25);
     font-size:12px;
+    border-radius:6px;
 }
 
 .header{
@@ -123,8 +123,6 @@ button:disabled{
     color:var(--green);
 }
 
-/* PAGES */
-
 .page{
     display:none;
     padding-top:22px;
@@ -144,8 +142,6 @@ button:disabled{
     font-size:11px;
     margin-bottom:20px;
 }
-
-/* CARDS */
 
 .card{
     background:linear-gradient(145deg,var(--panel),#0a0f15);
@@ -207,8 +203,6 @@ button:disabled{
     color:var(--red)!important;
 }
 
-/* MARKET */
-
 .market-grid{
     display:grid;
     grid-template-columns:repeat(6,1fr);
@@ -237,8 +231,6 @@ button:disabled{
     font-size:9px;
     margin-top:5px;
 }
-
-/* TRADE */
 
 .trade-grid{
     display:grid;
@@ -317,10 +309,6 @@ button:disabled{
     border:1px solid var(--red);
 }
 
-.prediction-buttons button:disabled{
-    opacity:.45;
-}
-
 .stake-row{
     display:grid;
     grid-template-columns:42px 1fr 42px;
@@ -342,8 +330,6 @@ button:disabled{
     font-size:11px;
 }
 
-/* FORM */
-
 .field{
     margin-bottom:14px;
 }
@@ -355,8 +341,7 @@ button:disabled{
     margin-bottom:7px;
 }
 
-input,
-select{
+input,select{
     width:100%;
     padding:12px;
     color:var(--text);
@@ -366,8 +351,7 @@ select{
     outline:none;
 }
 
-input:focus,
-select:focus{
+input:focus,select:focus{
     border-color:var(--accent);
 }
 
@@ -393,8 +377,6 @@ select:focus{
     background:var(--red);
     color:white;
 }
-
-/* HISTORY */
 
 .history{
     margin-top:18px;
@@ -424,8 +406,6 @@ select:focus{
     text-align:center;
     font-size:10px;
 }
-
-/* WALLET */
 
 .wallet-balance{
     text-align:center;
@@ -480,8 +460,6 @@ select:focus{
     font-size:9px;
 }
 
-/* SUPPORT */
-
 .support-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -524,8 +502,6 @@ select:focus{
     background:rgba(245,197,66,.08);
 }
 
-/* SETTINGS */
-
 .settings-list{
     background:var(--panel);
     border:1px solid var(--border);
@@ -538,9 +514,9 @@ select:focus{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:15px;
     padding:13px 16px;
     border-bottom:1px solid var(--border);
+    gap:15px;
 }
 
 .setting:last-child{
@@ -561,8 +537,6 @@ select:focus{
     width:auto;
     min-width:120px;
 }
-
-/* NAVIGATION */
 
 .bottom-nav{
     position:fixed;
@@ -595,21 +569,15 @@ select:focus{
     margin-bottom:3px;
 }
 
-.nav-btn:hover{
-    color:var(--text);
-}
-
 .nav-btn.active{
     color:var(--accent);
     background:rgba(245,197,66,.07);
 }
 
-/* MODAL */
-
 .modal{
     position:fixed;
     inset:0;
-    z-index:200;
+    z-index:300;
     display:none;
     align-items:center;
     justify-content:center;
@@ -632,7 +600,6 @@ select:focus{
 .modal-header{
     display:flex;
     justify-content:space-between;
-    align-items:center;
     margin-bottom:18px;
 }
 
@@ -654,8 +621,6 @@ select:focus{
     font-weight:700;
 }
 
-/* LIVE SUPPORT */
-
 .live-support-btn{
     position:fixed;
     right:22px;
@@ -671,7 +636,8 @@ select:focus{
 }
 
 .live-support-btn:hover{
-    background:rgba(245,197,66,.1);
+    background:var(--accent);
+    color:#080a0d;
 }
 
 .support-chat{
@@ -688,7 +654,7 @@ select:focus{
     border-radius:12px;
     overflow:hidden;
     box-shadow:0 20px 60px rgba(0,0,0,.55);
-    z-index:200;
+    z-index:250;
 }
 
 .support-chat.show{
@@ -753,9 +719,18 @@ select:focus{
     border:1px solid rgba(245,197,66,.3);
 }
 
+.support-status{
+    padding:6px 12px;
+    text-align:center;
+    color:var(--muted);
+    font-size:8px;
+    border-top:1px solid var(--border);
+    background:var(--panel2);
+}
+
 .support-input{
     display:grid;
-    grid-template-columns:1fr 48px;
+    grid-template-columns:1fr 45px;
     gap:7px;
     padding:10px;
     border-top:1px solid var(--border);
@@ -764,7 +739,7 @@ select:focus{
 
 .support-input input{
     min-width:0;
-    padding:11px;
+    padding:10px;
 }
 
 .support-input button{
@@ -775,10 +750,11 @@ select:focus{
     font-weight:700;
 }
 
-/* MOBILE */
+.support-input button:hover{
+    filter:brightness(1.08);
+}
 
 @media(max-width:900px){
-
     .market-grid{
         grid-template-columns:repeat(3,1fr);
     }
@@ -789,7 +765,6 @@ select:focus{
 }
 
 @media(max-width:650px){
-
     .dashboard{
         grid-template-columns:1fr;
     }
@@ -841,8 +816,8 @@ select:focus{
     }
 
     #connectWallet{
-        padding:8px 10px;
         font-size:10px;
+        padding:9px;
     }
 }
 </style>
@@ -852,738 +827,523 @@ select:focus{
 
 <div class="app">
 
-    <div class="demo-banner">
-        ⚠ BEcoin TRADING PLATFORM
-    </div>
+<div class="demo-banner">
+⚠ BEcoin TRADING PLATFORM
+</div>
 
-    <header class="header">
+<header class="header">
 
-        <div class="brand">
+<div class="brand">
+<div class="brand-icon">₿</div>
 
-            <div class="brand-icon">₿</div>
+<div>
+<h1>BEcoin</h1>
+<small>BEcoin TRADING PLATFORM</small>
+</div>
+</div>
 
-            <div>
-                <h1>BEcoin</h1>
-                <small>BEcoin TRADING PLATFORM</small>
-            </div>
+<button id="connectWallet" type="button">
+Connect Wallet
+</button>
 
-        </div>
+</header>
 
-        <button id="connectWallet" type="button">
-            Connect Wallet
-        </button>
 
-    </header>
+<!-- ================= HOME ================= -->
 
+<section class="page active" id="homePage">
 
-    <!-- ================= HOME ================= -->
+<h2 class="page-title">Welcome to BEcoin</h2>
 
-    <section class="page active" id="homePage">
+<p class="page-subtitle">
+Practice trading with BEcoin
+</p>
 
-        <h2 class="page-title">
-            Welcome to BEcoin
-        </h2>
+<div class="dashboard">
 
-        <p class="page-subtitle">
-            Practice trading with BEcoin
-        </p>
+<div class="card">
+<div class="label">USER ID</div>
+<div class="value" id="userCode">Creating...</div>
+</div>
 
-        <div class="dashboard">
+<div class="card">
+<div class="label">PORTFOLIO</div>
+<div class="value">$<span id="portfolio">0.00</span></div>
+</div>
 
-            <div class="card">
+</div>
 
-                <div class="label">
-                    USER ID
-                </div>
+<div class="card balance-card">
 
-                <div class="value" id="userCode">
-                    Loading...
-                </div>
+<div class="label">BALANCE</div>
 
-            </div>
+<div>
+<span class="balance" id="balance">0.00</span>
+<span class="real">ACCOUNT</span>
+</div>
 
-            <div class="card">
+<div class="pnl" id="pnl">
++0.00 session
+</div>
 
-                <div class="label">
-                    PORTFOLIO
-                </div>
+</div>
 
-                <div class="value">
-                    $<span id="portfolio">0.00</span>
-                </div>
+<h2 class="page-title">Live Market</h2>
 
-            </div>
+<div class="market-grid">
 
-        </div>
+<div class="market-card">
+<div class="coin-name">BTC</div>
+<div class="coin-price" id="btcPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
 
+<div class="market-card">
+<div class="coin-name">ETH</div>
+<div class="coin-price" id="ethPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
 
-        <div class="card balance-card">
+<div class="market-card">
+<div class="coin-name">BNB</div>
+<div class="coin-price" id="bnbPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
 
-            <div class="label">
-                BALANCE
-            </div>
+<div class="market-card">
+<div class="coin-name">SOL</div>
+<div class="coin-price" id="solPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
 
-            <div>
-                <span class="balance" id="balance">
-                    0.00
-                </span>
+<div class="market-card">
+<div class="coin-name">XRP</div>
+<div class="coin-price" id="xrpPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
 
-                <span class="real">
-                    ACCOUNT
-                </span>
-            </div>
+<div class="market-card">
+<div class="coin-name">USDT</div>
+<div class="coin-price">$1.00</div>
+<div class="coin-change green">STABLE</div>
+</div>
 
-            <div class="pnl" id="pnl">
-                +0.00 session
-            </div>
+</div>
 
-        </div>
+</section>
 
 
-        <h2 class="page-title">
-            Live Market
-        </h2>
+<!-- ================= TRADE ================= -->
 
+<section class="page" id="tradePage">
 
-        <div class="market-grid">
+<h2 class="page-title">BEcoin Trade</h2>
 
-            <div class="market-card">
-                <div class="coin-name">BTC</div>
-                <div class="coin-price" id="btcPrice">$0.00</div>
-                <div class="coin-change green">LIVE</div>
-            </div>
+<p class="page-subtitle">
+Simulated UP/DOWN trading.
+</p>
 
-            <div class="market-card">
-                <div class="coin-name">ETH</div>
-                <div class="coin-price" id="ethPrice">$0.00</div>
-                <div class="coin-change green">LIVE</div>
-            </div>
+<div class="trade-grid">
 
-            <div class="market-card">
-                <div class="coin-name">BNB</div>
-                <div class="coin-price" id="bnbPrice">$0.00</div>
-                <div class="coin-change green">LIVE</div>
-            </div>
+<div class="card">
 
-            <div class="market-card">
-                <div class="coin-name">SOL</div>
-                <div class="coin-price" id="solPrice">$0.00</div>
-                <div class="coin-change green">LIVE</div>
-            </div>
+<div class="price-box">
 
-            <div class="market-card">
-                <div class="coin-name">XRP</div>
-                <div class="coin-price" id="xrpPrice">$0.00</div>
-                <div class="coin-change green">LIVE</div>
-            </div>
+<div>
 
-            <div class="market-card">
-                <div class="coin-name">USDT</div>
-                <div class="coin-price">$1.00</div>
-                <div class="coin-change green">STABLE</div>
-            </div>
+<div class="symbol">
+<span id="selectedSymbol">BTC/USD</span>
+· SIMULATED
+</div>
 
-        </div>
+<div class="price" id="priceNow">
+$1,000.00
+</div>
 
-    </section>
+</div>
 
+<div id="priceDelta" class="green">
++0.00%
+</div>
 
-    <!-- ================= TRADE ================= -->
+</div>
 
-    <section class="page" id="tradePage">
+<canvas id="chart"></canvas>
 
-        <h2 class="page-title">
-            BEcoin Trade
-        </h2>
+<div class="timer-row">
 
-        <p class="page-subtitle">
-            Simulated UP/DOWN trading.
-        </p>
+<span id="roundLabel">Round ready</span>
 
+<div class="timer">
+<span id="ringText">5</span>
+</div>
 
-        <div class="trade-grid">
+</div>
 
-            <div class="card">
+<div class="prediction-buttons">
 
-                <div class="price-box">
+<button class="up" id="btnUp" type="button">
+▲ UP
+</button>
 
-                    <div>
+<button class="down" id="btnDown" type="button">
+▼ DOWN
+</button>
 
-                        <div class="symbol">
-                            <span id="selectedSymbol">
-                                BTC/USD
-                            </span>
-                            · SIMULATED
-                        </div>
+</div>
 
-                        <div class="price" id="priceNow">
-                            $1,000.00
-                        </div>
+<div class="stake-row">
 
-                    </div>
+<button id="stakeMinus" type="button">−</button>
 
-                    <div id="priceDelta" class="green">
-                        +0.00%
-                    </div>
+<div class="stake-value" id="stakeVal">
+100
+</div>
 
-                </div>
+<button id="stakePlus" type="button">+</button>
 
+</div>
 
-                <canvas id="chart"></canvas>
+</div>
 
 
-                <div class="timer-row">
+<div class="card">
 
-                    <span id="roundLabel">
-                        Round ready
-                    </span>
+<h3 class="card-title">Spot Trade</h3>
 
-                    <div class="timer">
-                        <span id="ringText">5</span>
-                    </div>
+<div class="field">
 
-                </div>
+<label for="coin">SELECT ASSET</label>
 
+<select id="coin">
+<option value="bitcoin">Bitcoin / BTC</option>
+<option value="ethereum">Ethereum / ETH</option>
+<option value="binancecoin">BNB</option>
+<option value="solana">Solana / SOL</option>
+<option value="ripple">XRP</option>
+<option value="tether">USDT</option>
+</select>
 
-                <div class="prediction-buttons">
+</div>
 
-                    <button
-                        class="up"
-                        id="btnUp"
-                        type="button">
-                        ▲ UP
-                    </button>
+<div class="field">
 
-                    <button
-                        class="down"
-                        id="btnDown"
-                        type="button">
-                        ▼ DOWN
-                    </button>
+<label for="amount">AMOUNT / USD</label>
 
-                </div>
+<input
+type="number"
+id="amount"
+min="1"
+step="0.01"
+placeholder="Enter amount">
 
+</div>
 
-                <div class="stake-row">
+<div class="buy-sell">
 
-                    <button id="stakeMinus" type="button">
-                        −
-                    </button>
+<button class="buy" id="buyButton" type="button">
+BUY
+</button>
 
-                    <div class="stake-value" id="stakeVal">
-                        100
-                    </div>
+<button class="sell" id="sellButton" type="button">
+SELL
+</button>
 
-                    <button id="stakePlus" type="button">
-                        +
-                    </button>
+</div>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
 
-            <div class="card">
+<div class="card history">
 
-                <h3 class="card-title">
-                    Spot Trade
-                </h3>
+<div class="history-title">
+TRADE HISTORY
+</div>
 
+<div id="history">
 
-                <div class="field">
+<div class="empty">
+No trades yet.
+</div>
 
-                    <label for="coin">
-                        SELECT ASSET
-                    </label>
+</div>
 
-                    <select id="coin">
+</div>
 
-                        <option value="bitcoin">
-                            Bitcoin / BTC
-                        </option>
+</section>
 
-                        <option value="ethereum">
-                            Ethereum / ETH
-                        </option>
 
-                        <option value="binancecoin">
-                            BNB
-                        </option>
+<!-- ================= WALLET ================= -->
 
-                        <option value="solana">
-                            Solana / SOL
-                        </option>
+<section class="page" id="walletPage">
 
-                        <option value="ripple">
-                            XRP
-                        </option>
+<h2 class="page-title">BEcoin Wallet</h2>
 
-                        <option value="tether">
-                            USDT
-                        </option>
+<p class="page-subtitle">
+Manage your balance.
+</p>
 
-                    </select>
+<div class="card wallet-balance">
 
-                </div>
+<div class="label">
+AVAILABLE BALANCE
+</div>
 
+<div class="amount">
+$<span id="walletBalance">0.00</span>
+</div>
 
-                <div class="field">
+<div class="real">
+ACCOUNT FUNDS
+</div>
 
-                    <label for="amount">
-                        AMOUNT / USD
-                    </label>
+<div class="wallet-address">
+Wallet:
+<span id="walletAddress">Not connected</span>
+</div>
 
-                    <input
-                        type="number"
-                        id="amount"
-                        min="1"
-                        step="0.01"
-                        placeholder="Enter amount">
+</div>
 
-                </div>
+<div class="wallet-actions">
 
+<button class="wallet-action" id="depositBtn" type="button">
+<strong>＋ Deposit</strong>
+<span>Add funds</span>
+</button>
 
-                <div class="buy-sell">
+<button class="wallet-action" id="withdrawBtn" type="button">
+<strong>− Withdraw</strong>
+<span>Remove funds</span>
+</button>
 
-                    <button
-                        class="buy"
-                        id="buyButton"
-                        type="button">
-                        BUY
-                    </button>
+</div>
 
-                    <button
-                        class="sell"
-                        id="sellButton"
-                        type="button">
-                        SELL
-                    </button>
+<div class="card">
 
-                </div>
+<h3 class="card-title">
+Transaction History
+</h3>
 
-            </div>
+<div id="walletTransactions">
 
-        </div>
+<div class="empty">
+No wallet transactions yet.
+</div>
 
+</div>
 
-        <div class="card history">
+</div>
 
-            <div class="history-title">
-                TRADE HISTORY
-            </div>
+</section>
 
-            <div id="history">
 
-                <div class="empty">
-                    No trades yet.
-                </div>
+<!-- ================= SUPPORT ================= -->
 
-            </div>
+<section class="page" id="supportPage">
 
-        </div>
+<h2 class="page-title">Customer Service</h2>
 
-    </section>
+<p class="page-subtitle">
+Need help? Contact BEcoin support.
+</p>
 
+<div class="support-grid">
 
-    <!-- ================= WALLET ================= -->
+<div class="support-card">
 
-    <section class="page" id="walletPage">
+<div class="support-icon">❓</div>
 
-        <h2 class="page-title">
-            BEcoin Wallet
-        </h2>
+<h3>FAQ</h3>
 
-        <p class="page-subtitle">
-            Manage your balance.
-        </p>
+<p>
+Learn how BEcoin trading works.
+</p>
 
+<button
+class="support-btn"
+id="faqBtn"
+type="button">
+View FAQ
+</button>
 
-        <div class="card wallet-balance">
+</div>
 
-            <div class="label">
-                AVAILABLE BALANCE
-            </div>
 
-            <div class="amount">
-                $<span id="walletBalance">
-                    0.00
-                </span>
-            </div>
+<div class="support-card">
 
-            <div class="real">
-                ACCOUNT FUNDS
-            </div>
+<div class="support-icon">💬</div>
 
-            <div class="wallet-address">
-                Wallet:
-                <span id="walletAddress">
-                    Not connected
-                </span>
-            </div>
+<h3>Live Support</h3>
 
-        </div>
+<p>
+Chat with BEcoin support.
+</p>
 
+<button
+class="support-btn"
+id="openChatBtn"
+type="button">
+Open Chat
+</button>
 
-        <div class="wallet-actions">
+</div>
 
-            <button
-                class="wallet-action"
-                id="depositBtn"
-                type="button">
 
-                <strong>
-                    ＋ Deposit
-                </strong>
+<div class="support-card">
 
-                <span>
-                    Add funds
-                </span>
+<div class="support-icon">🛡️</div>
 
-            </button>
+<h3>Account Safety</h3>
 
+<p>
+Keep your account credentials and wallet information secure.
+</p>
 
-            <button
-                class="wallet-action"
-                id="withdrawBtn"
-                type="button">
+<button
+class="support-btn"
+id="safetyBtn"
+type="button">
+Learn More
+</button>
 
-                <strong>
-                    − Withdraw
-                </strong>
+</div>
 
-                <span>
-                    Remove funds
-                </span>
+</div>
 
-            </button>
+</section>
 
-        </div>
 
+<!-- ================= SETTINGS ================= -->
 
-        <div class="card">
+<section class="page" id="settingsPage">
 
-            <h3 class="card-title">
-                Transaction History
-            </h3>
+<h2 class="page-title">Settings</h2>
 
-            <div id="walletTransactions">
+<p class="page-subtitle">
+Manage your BEcoin preferences.
+</p>
 
-                <div class="empty">
-                    No wallet transactions yet.
-                </div>
+<div class="settings-list">
 
-            </div>
+<div class="setting">
 
-        </div>
+<div>
+<div class="setting-title">Account</div>
+<div class="setting-desc" id="settingsUser">
+Creating...
+</div>
+</div>
 
-    </section>
+<span class="real">BEcoin</span>
 
+</div>
 
-    <!-- ================= SUPPORT ================= -->
 
-    <section class="page" id="supportPage">
+<div class="setting">
 
-        <h2 class="page-title">
-            Customer Service
-        </h2>
+<div>
+<div class="setting-title">Language</div>
+<div class="setting-desc">
+Choose interface language
+</div>
+</div>
 
-        <p class="page-subtitle">
-            Need help? Contact BEcoin support.
-        </p>
+<select id="language">
+<option>English</option>
+<option>বাংলা</option>
+</select>
 
+</div>
 
-        <div class="support-grid">
 
-            <div class="support-card">
+<div class="setting">
 
-                <div class="support-icon">
-                    ❓
-                </div>
+<div>
+<div class="setting-title">Notifications</div>
+<div class="setting-desc">
+Trading notifications
+</div>
+</div>
 
-                <h3>
-                    FAQ
-                </h3>
+<input
+type="checkbox"
+id="notifications"
+checked
+style="width:20px">
 
-                <p>
-                    Learn how BEcoin trading works.
-                </p>
+</div>
 
-                <button
-                    class="support-btn"
-                    type="button"
-                    id="faqBtn">
-                    View FAQ
-                </button>
 
-            </div>
+<div class="setting">
 
+<div>
+<div class="setting-title">Demo Mode</div>
+<div class="setting-desc">
+Simulated trading mode
+</div>
+</div>
 
-            <div class="support-card">
+<span class="green">ON</span>
 
-                <div class="support-icon">
-                    💬
-                </div>
+</div>
 
-                <h3>
-                    Live Support
-                </h3>
 
-                <p>
-                    Chat with BEcoin support.
-                </p>
+<div class="setting">
 
-                <button
-                    class="support-btn"
-                    type="button"
-                    id="openChatBtn">
-                    Open Chat
-                </button>
+<div>
+<div class="setting-title">Reset Account Display</div>
+<div class="setting-desc">
+Reset local display
+</div>
+</div>
 
-            </div>
+<button
+class="support-btn"
+id="resetBtn"
+style="width:auto;margin:0"
+type="button">
+Reset
+</button>
 
+</div>
 
-            <div class="support-card">
+</div>
 
-                <div class="support-icon">
-                    🛡️
-                </div>
-
-                <h3>
-                    Account Safety
-                </h3>
-
-                <p>
-                    Keep your account credentials and wallet information secure.
-                </p>
-
-                <button
-                    class="support-btn"
-                    type="button"
-                    id="safetyBtn">
-                    Learn More
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= SETTINGS ================= -->
-
-    <section class="page" id="settingsPage">
-
-        <h2 class="page-title">
-            Settings
-        </h2>
-
-        <p class="page-subtitle">
-            Manage your BEcoin preferences.
-        </p>
-
-
-        <div class="settings-list">
-
-            <div class="setting">
-
-                <div>
-
-                    <div class="setting-title">
-                        Account
-                    </div>
-
-                    <div
-                        class="setting-desc"
-                        id="settingsUser">
-                        Loading...
-                    </div>
-
-                </div>
-
-                <span class="real">
-                    BEcoin
-                </span>
-
-            </div>
-
-
-            <div class="setting">
-
-                <div>
-
-                    <div class="setting-title">
-                        Language
-                    </div>
-
-                    <div class="setting-desc">
-                        Choose interface language
-                    </div>
-
-                </div>
-
-                <select id="language">
-
-                    <option>
-                        English
-                    </option>
-
-                    <option>
-                        বাংলা
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="setting">
-
-                <div>
-
-                    <div class="setting-title">
-                        Notifications
-                    </div>
-
-                    <div class="setting-desc">
-                        Trading notifications
-                    </div>
-
-                </div>
-
-                <input
-                    type="checkbox"
-                    id="notifications"
-                    checked
-                    style="width:20px">
-
-            </div>
-
-
-            <div class="setting">
-
-                <div>
-
-                    <div class="setting-title">
-                        Demo Mode
-                    </div>
-
-                    <div class="setting-desc">
-                        Simulated trading mode
-                    </div>
-
-                </div>
-
-                <span class="green">
-                    ON
-                </span>
-
-            </div>
-
-
-            <div class="setting">
-
-                <div>
-
-                    <div class="setting-title">
-                        Reset Account Display
-                    </div>
-
-                    <div class="setting-desc">
-                        Reset local display
-                    </div>
-
-                </div>
-
-                <button
-                    class="support-btn"
-                    id="resetBtn"
-                    style="width:auto;margin:0"
-                    type="button">
-                    Reset
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 </div>
 
 
 <!-- ================= NAVIGATION ================= -->
 
-<nav class="bottom-nav">
+<nav class="bottom-nav" id="bottomNav">
 
-    <button
-        class="nav-btn active"
-        data-page="homePage"
-        type="button">
+<button class="nav-btn active" data-page="homePage" type="button">
+<span class="nav-icon">🏠</span>
+Home
+</button>
 
-        <span class="nav-icon">
-            🏠
-        </span>
+<button class="nav-btn" data-page="tradePage" type="button">
+<span class="nav-icon">📈</span>
+Trade
+</button>
 
-        Home
+<button class="nav-btn" data-page="walletPage" type="button">
+<span class="nav-icon">👛</span>
+Wallet
+</button>
 
-    </button>
+<button class="nav-btn" data-page="supportPage" type="button">
+<span class="nav-icon">🎧</span>
+Support
+</button>
 
-
-    <button
-        class="nav-btn"
-        data-page="tradePage"
-        type="button">
-
-        <span class="nav-icon">
-            📈
-        </span>
-
-        Trade
-
-    </button>
-
-
-    <button
-        class="nav-btn"
-        data-page="walletPage"
-        type="button">
-
-        <span class="nav-icon">
-            👛
-        </span>
-
-        Wallet
-
-    </button>
-
-
-    <button
-        class="nav-btn"
-        data-page="supportPage"
-        type="button">
-
-        <span class="nav-icon">
-            🎧
-        </span>
-
-        Support
-
-    </button>
-
-
-    <button
-        class="nav-btn"
-        data-page="settingsPage"
-        type="button">
-
-        <span class="nav-icon">
-            ⚙️
-        </span>
-
-        Settings
-
-    </button>
+<button class="nav-btn" data-page="settingsPage" type="button">
+<span class="nav-icon">⚙️</span>
+Settings
+</button>
 
 </nav>
 
@@ -1592,125 +1352,121 @@ select:focus{
 
 <div class="modal" id="walletModal">
 
-    <div class="modal-box">
+<div class="modal-box">
 
-        <div class="modal-header">
+<div class="modal-header">
 
-            <h3 id="modalTitle">
-                Deposit
-            </h3>
+<h3 id="modalTitle">Deposit</h3>
 
-            <button
-                class="close"
-                id="closeModal"
-                type="button">
-                ×
-            </button>
+<button class="close" id="closeModal" type="button">
+×
+</button>
 
-        </div>
+</div>
 
+<div class="field">
 
-        <div class="field">
+<label for="walletAmount">
+AMOUNT
+</label>
 
-            <label for="walletAmount">
-                AMOUNT
-            </label>
+<input
+type="number"
+id="walletAmount"
+min="1"
+step="0.01"
+placeholder="Enter amount">
 
-            <input
-                type="number"
-                id="walletAmount"
-                min="1"
-                step="0.01"
-                placeholder="Enter amount">
+</div>
 
-        </div>
+<button
+class="modal-action"
+id="confirmWalletAction"
+type="button">
+Confirm
+</button>
 
-
-        <button
-            class="modal-action"
-            id="confirmWalletAction"
-            type="button">
-            Confirm
-        </button>
-
-    </div>
+</div>
 
 </div>
 
 
-<!-- ================= LIVE SUPPORT BUTTON ================= -->
+<!-- ================= LIVE SUPPORT ================= -->
 
 <button
-    class="live-support-btn"
-    id="liveSupportBtn"
-    type="button">
-    💬
+class="live-support-btn"
+id="liveSupportBtn"
+type="button"
+aria-label="Open live support">
+💬
 </button>
 
 
-<!-- ================= LIVE SUPPORT CHAT ================= -->
-
 <div
-    class="support-chat"
-    id="supportChat">
+class="support-chat"
+id="supportChat">
 
-    <div class="support-chat-header">
+<div class="support-chat-header">
 
-        <div>
+<div>
 
-            <strong>
-                BEcoin Support
-            </strong>
+<strong>BEcoin Support</strong>
 
-            <small id="supportStatus">
-                ● Connecting...
-            </small>
+<small id="supportOnlineStatus">
+● Connecting...
+</small>
 
-        </div>
+</div>
 
-        <button
-            id="closeSupport"
-            type="button">
-            ×
-        </button>
-
-    </div>
-
-
-    <div
-        class="support-messages"
-        id="supportMessages">
-
-        <div class="support-message agent">
-            Hello! Welcome to BEcoin Support. How can we help you?
-        </div>
-
-    </div>
-
-
-    <!-- IMPORTANT: MESSAGE INPUT -->
-
-    <div class="support-input">
-
-        <input
-            type="text"
-            id="supportInput"
-            placeholder="Type your message..."
-            autocomplete="off">
-
-        <button
-            id="sendSupport"
-            type="button">
-            ➤
-        </button>
-
-    </div>
+<button
+id="closeSupport"
+type="button"
+aria-label="Close support">
+×
+</button>
 
 </div>
 
 
-<!-- ================= SOCKET.IO ================= -->
+<div
+class="support-messages"
+id="supportMessages">
 
+<div class="support-message agent">
+Hello! 👋 Welcome to BEcoin Support. How can we help you?
+</div>
+
+</div>
+
+
+<div
+class="support-status"
+id="supportStatus">
+Connecting to support server...
+</div>
+
+
+<div class="support-input">
+
+<input
+type="text"
+id="supportInput"
+placeholder="Type your message..."
+autocomplete="off"
+maxlength="1000">
+
+<button
+id="sendSupport"
+type="button">
+➤
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Socket.IO -->
 <script src="https://short-term-95sa.onrender.com/socket.io/socket.io.js"></script>
 
 
@@ -1718,33 +1474,39 @@ select:focus{
 "use strict";
 
 /* =====================================================
-   BECOIN FRONTEND
+   BECOIN CONFIG
 ===================================================== */
 
-const API_URL =
-    "https://short-term-95sa.onrender.com";
+const API_URL = "https://short-term-95sa.onrender.com";
 
 
 /* =====================================================
    USER ID
 ===================================================== */
 
-let USER_CODE =
-    localStorage.getItem("becoin_user_id");
+function createUserId(){
 
-if (!USER_CODE) {
-
-    USER_CODE =
-        "BEC-" +
+    return "BEC-" +
         Math.floor(
             100000 +
             Math.random() * 900000
         );
 
+}
+
+let USER_CODE =
+    localStorage.getItem("becoin_user_id");
+
+if(!USER_CODE){
+
+    USER_CODE =
+        createUserId();
+
     localStorage.setItem(
         "becoin_user_id",
         USER_CODE
     );
+
 }
 
 
@@ -1795,37 +1557,65 @@ const canvas =
     document.getElementById("chart");
 
 const ctx =
-    canvas
-        ? canvas.getContext("2d")
-        : null;
+    canvas ?
+    canvas.getContext("2d") :
+    null;
 
 const walletAddressEl =
     document.getElementById("walletAddress");
 
 const connectWalletButton =
-    document.getElementById(
-        "connectWallet"
-    );
+    document.getElementById("connectWallet");
 
 const supportChat =
-    document.getElementById(
-        "supportChat"
-    );
+    document.getElementById("supportChat");
 
 const supportInput =
-    document.getElementById(
-        "supportInput"
-    );
+    document.getElementById("supportInput");
 
 const supportMessages =
-    document.getElementById(
-        "supportMessages"
-    );
+    document.getElementById("supportMessages");
 
 const supportStatus =
+    document.getElementById("supportStatus");
+
+const supportOnlineStatus =
     document.getElementById(
-        "supportStatus"
+        "supportOnlineStatus"
     );
+
+
+/* =====================================================
+   USER DISPLAY
+===================================================== */
+
+if(userCodeEl){
+    userCodeEl.textContent =
+        USER_CODE;
+}
+
+if(settingsUser){
+    settingsUser.textContent =
+        USER_CODE;
+}
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function money(value){
+
+    return "$" +
+        Number(value || 0).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        );
+
+}
 
 
 /* =====================================================
@@ -1833,18 +1623,18 @@ const supportStatus =
 ===================================================== */
 
 let balance = 0;
+
 let startingBalance = 0;
 
 let stake = 100;
 
 let currentPrice = 1000;
+
 let previousPrice = 1000;
 
 let roundActive = false;
-let roundTimer = null;
 
-let wins = 0;
-let losses = 0;
+let roundTimer = null;
 
 let priceHistory = [];
 
@@ -1854,168 +1644,10 @@ let socket = null;
 
 
 /* =====================================================
-   USER DISPLAY
-===================================================== */
-
-if (userCodeEl) {
-    userCodeEl.textContent =
-        USER_CODE;
-}
-
-if (settingsUser) {
-    settingsUser.textContent =
-        USER_CODE;
-}
-
-
-/* =====================================================
-   SOCKET.IO
-   IMPORTANT:
-   Socket error will NOT break navigation.
-===================================================== */
-
-if (
-    typeof window.io ===
-    "function"
-) {
-
-    try {
-
-        socket = io(API_URL, {
-            transports: [
-                "websocket",
-                "polling"
-            ],
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000
-        });
-
-
-        socket.on(
-            "connect",
-            () => {
-
-                console.log(
-                    "Socket connected:",
-                    socket.id
-                );
-
-                if (supportStatus) {
-
-                    supportStatus.textContent =
-                        "● Online Support";
-
-                    supportStatus.className =
-                        "green";
-
-                }
-
-                socket.emit(
-                    "join_support",
-                    {
-                        user_code:
-                            USER_CODE
-                    }
-                );
-
-            }
-        );
-
-
-        socket.on(
-            "disconnect",
-            () => {
-
-                if (supportStatus) {
-
-                    supportStatus.textContent =
-                        "● Offline Support";
-
-                    supportStatus.className =
-                        "red";
-
-                }
-
-            }
-        );
-
-
-        socket.on(
-            "connect_error",
-            error => {
-
-                console.warn(
-                    "Socket connection error:",
-                    error.message
-                );
-
-                if (supportStatus) {
-
-                    supportStatus.textContent =
-                        "● Support unavailable";
-
-                    supportStatus.className =
-                        "red";
-
-                }
-
-            }
-        );
-
-
-    } catch (error) {
-
-        console.warn(
-            "Socket initialization failed:",
-            error
-        );
-
-    }
-
-} else {
-
-    console.warn(
-        "Socket.IO library not available."
-    );
-
-    if (supportStatus) {
-
-        supportStatus.textContent =
-            "● Support unavailable";
-
-        supportStatus.className =
-            "red";
-
-    }
-
-}
-
-
-/* =====================================================
-   MONEY
-===================================================== */
-
-function money(value) {
-
-    return "$" +
-        Number(value || 0)
-            .toLocaleString(
-                undefined,
-                {
-                    minimumFractionDigits:2,
-                    maximumFractionDigits:2
-                }
-            );
-
-}
-
-
-/* =====================================================
    BALANCE
 ===================================================== */
 
-function updateBalance() {
+function updateBalance(){
 
     balance =
         Number(balance) || 0;
@@ -2029,17 +1661,17 @@ function updateBalance() {
             }
         );
 
-    if (balanceEl) {
+    if(balanceEl){
         balanceEl.textContent =
             formatted;
     }
 
-    if (portfolioEl) {
+    if(portfolioEl){
         portfolioEl.textContent =
             formatted;
     }
 
-    if (walletBalanceEl) {
+    if(walletBalanceEl){
         walletBalanceEl.textContent =
             formatted;
     }
@@ -2048,7 +1680,7 @@ function updateBalance() {
         balance -
         startingBalance;
 
-    if (pnlEl) {
+    if(pnlEl){
 
         pnlEl.textContent =
             (pnl >= 0 ? "+" : "") +
@@ -2057,126 +1689,21 @@ function updateBalance() {
 
         pnlEl.className =
             pnl >= 0
-                ? "pnl green"
-                : "pnl red";
+            ? "pnl green"
+            : "pnl red";
 
     }
 
 }
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function navigateTo(pageId) {
-
-    const pages =
-        document.querySelectorAll(
-            ".page"
-        );
-
-    const buttons =
-        document.querySelectorAll(
-            ".nav-btn"
-        );
-
-    let target =
-        document.getElementById(
-            pageId
-        );
-
-    if (!target) {
-        return;
-    }
-
-
-    pages.forEach(
-        page => {
-
-            page.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    buttons.forEach(
-        button => {
-
-            button.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    target.classList.add(
-        "active"
-    );
-
-
-    const activeButton =
-        document.querySelector(
-            '.nav-btn[data-page="' +
-            pageId +
-            '"]'
-        );
-
-    if (activeButton) {
-
-        activeButton.classList.add(
-            "active"
-        );
-
-    }
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-
-    setTimeout(
-        resizeCanvas,
-        100
-    );
-
-}
-
-
-document.querySelectorAll(
-    ".nav-btn"
-).forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-
-                navigateTo(
-                    this.dataset.page
-                );
-
-            }
-        );
-
-    }
-);
 
 
 /* =====================================================
    STAKE
 ===================================================== */
 
-function updateStake() {
+function updateStake(){
 
-    if (stakeValEl) {
+    if(stakeValEl){
 
         stakeValEl.textContent =
             stake.toLocaleString();
@@ -2195,12 +1722,11 @@ const stakePlus =
         "stakePlus"
     );
 
-
-if (stakeMinus) {
+if(stakeMinus){
 
     stakeMinus.addEventListener(
         "click",
-        () => {
+        function(){
 
             stake =
                 Math.max(
@@ -2215,12 +1741,11 @@ if (stakeMinus) {
 
 }
 
-
-if (stakePlus) {
+if(stakePlus){
 
     stakePlus.addEventListener(
         "click",
-        () => {
+        function(){
 
             stake =
                 Math.min(
@@ -2237,10 +1762,107 @@ if (stakePlus) {
 
 
 /* =====================================================
+   NAVIGATION
+===================================================== */
+
+function navigateToPage(pageId){
+
+    const pages =
+        document.querySelectorAll(
+            ".page"
+        );
+
+    const buttons =
+        document.querySelectorAll(
+            ".nav-btn"
+        );
+
+    let targetFound = false;
+
+    pages.forEach(
+        function(page){
+
+            if(page.id === pageId){
+
+                page.classList.add(
+                    "active"
+                );
+
+                targetFound = true;
+
+            }else{
+
+                page.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+    buttons.forEach(
+        function(button){
+
+            button.classList.toggle(
+                "active",
+                button.dataset.page === pageId
+            );
+
+        }
+    );
+
+    if(targetFound){
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+        setTimeout(
+            resizeCanvas,
+            100
+        );
+
+    }
+
+}
+
+
+/* Attach navigation */
+
+document.querySelectorAll(
+    ".nav-btn"
+).forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(event){
+
+                event.preventDefault();
+
+                const pageId =
+                    this.getAttribute(
+                        "data-page"
+                    );
+
+                navigateToPage(
+                    pageId
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
    PRICE
 ===================================================== */
 
-function movePrice() {
+function movePrice(){
 
     previousPrice =
         currentPrice;
@@ -2248,7 +1870,7 @@ function movePrice() {
     currentPrice +=
         (Math.random() - 0.5) * 18;
 
-    if (currentPrice < 100) {
+    if(currentPrice < 100){
         currentPrice = 100;
     }
 
@@ -2259,16 +1881,14 @@ function movePrice() {
             previousPrice
         ) * 100;
 
-
-    if (priceNowEl) {
+    if(priceNowEl){
 
         priceNowEl.textContent =
             money(currentPrice);
 
     }
 
-
-    if (priceDeltaEl) {
+    if(priceDeltaEl){
 
         priceDeltaEl.textContent =
             (change >= 0 ? "+" : "") +
@@ -2277,23 +1897,17 @@ function movePrice() {
 
         priceDeltaEl.className =
             change >= 0
-                ? "green"
-                : "red";
+            ? "green"
+            : "red";
 
     }
-
 
     priceHistory.push(
         currentPrice
     );
 
-    if (
-        priceHistory.length >
-        60
-    ) {
-
+    if(priceHistory.length > 60){
         priceHistory.shift();
-
     }
 
     drawChart();
@@ -2305,25 +1919,24 @@ function movePrice() {
    CHART RESIZE
 ===================================================== */
 
-function resizeCanvas() {
+function resizeCanvas(){
 
-    if (!canvas || !ctx) {
+    if(!canvas || !ctx){
         return;
     }
 
     const rect =
         canvas.getBoundingClientRect();
 
-    if (
+    if(
         rect.width <= 0 ||
         rect.height <= 0
-    ) {
+    ){
         return;
     }
 
     const dpr =
-        window.devicePixelRatio ||
-        1;
+        window.devicePixelRatio || 1;
 
     canvas.width =
         Math.round(
@@ -2353,9 +1966,9 @@ function resizeCanvas() {
    CHART
 ===================================================== */
 
-function drawChart() {
+function drawChart(){
 
-    if (!canvas || !ctx) {
+    if(!canvas || !ctx){
         return;
     }
 
@@ -2365,10 +1978,10 @@ function drawChart() {
     const height =
         canvas.clientHeight;
 
-    if (
+    if(
         width <= 0 ||
         height <= 0
-    ) {
+    ){
         return;
     }
 
@@ -2379,13 +1992,9 @@ function drawChart() {
         height
     );
 
-    if (
-        priceHistory.length <
-        2
-    ) {
+    if(priceHistory.length < 2){
         return;
     }
-
 
     const min =
         Math.min(
@@ -2408,11 +2017,7 @@ function drawChart() {
 
     ctx.lineWidth = 1;
 
-    for (
-        let i = 1;
-        i < 5;
-        i++
-    ) {
+    for(let i=1;i<5;i++){
 
         const y =
             (height / 5) * i;
@@ -2439,7 +2044,7 @@ function drawChart() {
     ctx.beginPath();
 
     priceHistory.forEach(
-        (price,index) => {
+        function(price,index){
 
             const x =
                 index /
@@ -2455,14 +2060,14 @@ function drawChart() {
                 (height - 20) -
                 10;
 
-            if (index === 0) {
+            if(index === 0){
 
                 ctx.moveTo(
                     x,
                     y
                 );
 
-            } else {
+            }else{
 
                 ctx.lineTo(
                     x,
@@ -2473,7 +2078,6 @@ function drawChart() {
 
         }
     );
-
 
     ctx.strokeStyle =
         "#f5c542";
@@ -2489,15 +2093,13 @@ function drawChart() {
    PREDICTION
 ===================================================== */
 
-function startPrediction(
-    direction
-) {
+function startPrediction(direction){
 
-    if (roundActive) {
+    if(roundActive){
         return;
     }
 
-    if (stake > balance) {
+    if(stake > balance){
 
         alert(
             "Insufficient balance."
@@ -2505,7 +2107,6 @@ function startPrediction(
 
         return;
     }
-
 
     roundActive = true;
 
@@ -2515,7 +2116,6 @@ function startPrediction(
     balance -= stake;
 
     updateBalance();
-
 
     const btnUp =
         document.getElementById(
@@ -2527,52 +2127,45 @@ function startPrediction(
             "btnDown"
         );
 
-
-    if (btnUp) {
+    if(btnUp){
         btnUp.disabled = true;
     }
 
-    if (btnDown) {
+    if(btnDown){
         btnDown.disabled = true;
     }
 
-
-    if (roundLabelEl) {
+    if(roundLabelEl){
 
         roundLabelEl.textContent =
             direction === "UP"
-                ? "Prediction: ▲ UP"
-                : "Prediction: ▼ DOWN";
+            ? "Prediction: ▲ UP"
+            : "Prediction: ▼ DOWN";
 
     }
 
-
     let seconds = 5;
 
-    if (ringTextEl) {
+    if(ringTextEl){
         ringTextEl.textContent =
             seconds;
     }
 
-
     roundTimer =
         setInterval(
-            () => {
+            function(){
 
                 seconds--;
 
-                if (ringTextEl) {
-
+                if(ringTextEl){
                     ringTextEl.textContent =
                         seconds;
-
                 }
 
                 movePrice();
                 movePrice();
 
-
-                if (seconds <= 0) {
+                if(seconds <= 0){
 
                     clearInterval(
                         roundTimer
@@ -2599,27 +2192,19 @@ function finishPrediction(
     start,
     end,
     direction
-) {
+){
 
     const won =
         direction === "UP"
-            ? end > start
-            : end < start;
+        ? end > start
+        : end < start;
 
-
-    if (won) {
-
-        wins++;
+    if(won){
 
         balance +=
             stake * 1.8;
 
-    } else {
-
-        losses++;
-
     }
-
 
     addHistory(
         direction,
@@ -2631,9 +2216,7 @@ function finishPrediction(
 
     updateBalance();
 
-
     roundActive = false;
-
 
     const btnUp =
         document.getElementById(
@@ -2645,22 +2228,22 @@ function finishPrediction(
             "btnDown"
         );
 
-
-    if (btnUp) {
+    if(btnUp){
         btnUp.disabled = false;
     }
 
-    if (btnDown) {
+    if(btnDown){
         btnDown.disabled = false;
     }
 
-
-    if (roundLabelEl) {
+    if(roundLabelEl){
         roundLabelEl.textContent =
-            "Round ready";
+            won
+            ? "Round WIN"
+            : "Round LOSS";
     }
 
-    if (ringTextEl) {
+    if(ringTextEl){
         ringTextEl.textContent =
             "5";
     }
@@ -2668,39 +2251,23 @@ function finishPrediction(
 }
 
 
-const btnUp =
-    document.getElementById(
-        "btnUp"
-    );
+document.getElementById(
+    "btnUp"
+).addEventListener(
+    "click",
+    function(){
+        startPrediction("UP");
+    }
+);
 
-const btnDown =
-    document.getElementById(
-        "btnDown"
-    );
-
-
-if (btnUp) {
-
-    btnUp.addEventListener(
-        "click",
-        () => {
-            startPrediction("UP");
-        }
-    );
-
-}
-
-
-if (btnDown) {
-
-    btnDown.addEventListener(
-        "click",
-        () => {
-            startPrediction("DOWN");
-        }
-    );
-
-}
+document.getElementById(
+    "btnDown"
+).addEventListener(
+    "click",
+    function(){
+        startPrediction("DOWN");
+    }
+);
 
 
 /* =====================================================
@@ -2713,9 +2280,9 @@ function addHistory(
     end,
     amount,
     won
-) {
+){
 
-    if (!historyEl) {
+    if(!historyEl){
         return;
     }
 
@@ -2724,10 +2291,9 @@ function addHistory(
             ".empty"
         );
 
-    if (empty) {
+    if(empty){
         empty.remove();
     }
-
 
     const item =
         document.createElement(
@@ -2737,35 +2303,29 @@ function addHistory(
     item.className =
         "history-item";
 
-
     const result =
         won
-            ? "WIN +" +
-              (
-                  amount * 0.8
-              ).toFixed(2)
-            : "LOSS -" +
-              amount.toFixed(2);
-
+        ? "WIN +" +
+          (amount * 0.8).toFixed(2)
+        : "LOSS -" +
+          amount.toFixed(2);
 
     item.innerHTML = `
 
         <div class="${
             direction === "UP"
-                ? "green"
-                : "red"
+            ? "green"
+            : "red"
         }">
             ${
                 direction === "UP"
-                    ? "▲ UP"
-                    : "▼ DOWN"
+                ? "▲ UP"
+                : "▼ DOWN"
             }
         </div>
 
         <div>
-            ${money(start)}
-            →
-            ${money(end)}
+            ${money(start)} → ${money(end)}
         </div>
 
         <div>
@@ -2774,14 +2334,13 @@ function addHistory(
 
         <div class="${
             won
-                ? "green"
-                : "red"
+            ? "green"
+            : "red"
         }">
             ${result}
         </div>
 
     `;
-
 
     historyEl.prepend(
         item
@@ -2794,114 +2353,93 @@ function addHistory(
    SPOT BUY
 ===================================================== */
 
-const buyButton =
-    document.getElementById(
-        "buyButton"
-    );
+document.getElementById(
+    "buyButton"
+).addEventListener(
+    "click",
+    function(){
 
-
-if (buyButton) {
-
-    buyButton.addEventListener(
-        "click",
-        () => {
-
-            const amount =
-                Number(
-                    document.getElementById(
-                        "amount"
-                    )?.value
-                );
-
-
-            if (
-                !amount ||
-                amount <= 0
-            ) {
-
-                alert(
-                    "Enter a valid amount."
-                );
-
-                return;
-            }
-
-
-            if (amount > balance) {
-
-                alert(
-                    "Insufficient balance."
-                );
-
-                return;
-            }
-
-
-            balance -= amount;
-
-            updateBalance();
-
-            addSpotHistory(
-                "BUY",
-                amount
+        const amount =
+            Number(
+                document.getElementById(
+                    "amount"
+                ).value
             );
 
-        }
-    );
+        if(
+            !amount ||
+            amount <= 0
+        ){
 
-}
+            alert(
+                "Enter a valid amount."
+            );
+
+            return;
+        }
+
+        if(amount > balance){
+
+            alert(
+                "Insufficient balance."
+            );
+
+            return;
+        }
+
+        balance -= amount;
+
+        updateBalance();
+
+        addSpotHistory(
+            "BUY",
+            amount
+        );
+
+    }
+);
 
 
 /* =====================================================
    SPOT SELL
 ===================================================== */
 
-const sellButton =
-    document.getElementById(
-        "sellButton"
-    );
+document.getElementById(
+    "sellButton"
+).addEventListener(
+    "click",
+    function(){
 
-
-if (sellButton) {
-
-    sellButton.addEventListener(
-        "click",
-        () => {
-
-            const amount =
-                Number(
-                    document.getElementById(
-                        "amount"
-                    )?.value
-                );
-
-
-            if (
-                !amount ||
-                amount <= 0
-            ) {
-
-                alert(
-                    "Enter a valid amount."
-                );
-
-                return;
-            }
-
-
-            balance += amount;
-
-            updateBalance();
-
-            addSpotHistory(
-                "SELL",
-                amount
+        const amount =
+            Number(
+                document.getElementById(
+                    "amount"
+                ).value
             );
 
-        }
-    );
+        if(
+            !amount ||
+            amount <= 0
+        ){
 
-}
+            alert(
+                "Enter a valid amount."
+            );
+
+            return;
+        }
+
+        balance += amount;
+
+        updateBalance();
+
+        addSpotHistory(
+            "SELL",
+            amount
+        );
+
+    }
+);
 
 
 /* =====================================================
@@ -2911,22 +2449,20 @@ if (sellButton) {
 function addSpotHistory(
     action,
     amount
-) {
+){
 
-    if (!historyEl) {
+    if(!historyEl){
         return;
     }
-
 
     const empty =
         historyEl.querySelector(
             ".empty"
         );
 
-    if (empty) {
+    if(empty){
         empty.remove();
     }
-
 
     const item =
         document.createElement(
@@ -2936,13 +2472,12 @@ function addSpotHistory(
     item.className =
         "history-item";
 
-
     item.innerHTML = `
 
         <div class="${
             action === "BUY"
-                ? "green"
-                : "red"
+            ? "green"
+            : "red"
         }">
             ${action}
         </div>
@@ -2960,7 +2495,6 @@ function addSpotHistory(
         </div>
 
     `;
-
 
     historyEl.prepend(
         item
@@ -3009,93 +2543,91 @@ const closeModal =
     );
 
 
-if (depositBtn) {
+depositBtn.addEventListener(
+    "click",
+    function(){
 
-    depositBtn.addEventListener(
-        "click",
-        () => {
+        walletAction =
+            "deposit";
 
-            walletAction =
-                "deposit";
+        modalTitle.textContent =
+            "Deposit";
 
-            modalTitle.textContent =
-                "Deposit";
+        walletAmount.value =
+            "";
 
-            walletAmount.value =
-                "";
+        walletModal.classList.add(
+            "show"
+        );
 
-            walletModal.classList.add(
-                "show"
-            );
+        setTimeout(
+            function(){
+                walletAmount.focus();
+            },
+            50
+        );
 
-        }
-    );
-
-}
-
-
-if (withdrawBtn) {
-
-    withdrawBtn.addEventListener(
-        "click",
-        () => {
-
-            walletAction =
-                "withdraw";
-
-            modalTitle.textContent =
-                "Withdraw";
-
-            walletAmount.value =
-                "";
-
-            walletModal.classList.add(
-                "show"
-            );
-
-        }
-    );
-
-}
+    }
+);
 
 
-if (closeModal) {
+withdrawBtn.addEventListener(
+    "click",
+    function(){
 
-    closeModal.addEventListener(
-        "click",
-        () => {
+        walletAction =
+            "withdraw";
+
+        modalTitle.textContent =
+            "Withdraw";
+
+        walletAmount.value =
+            "";
+
+        walletModal.classList.add(
+            "show"
+        );
+
+        setTimeout(
+            function(){
+                walletAmount.focus();
+            },
+            50
+        );
+
+    }
+);
+
+
+closeModal.addEventListener(
+    "click",
+    function(){
+
+        walletModal.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+walletModal.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target ===
+            walletModal
+        ){
 
             walletModal.classList.remove(
                 "show"
             );
 
         }
-    );
 
-}
-
-
-if (walletModal) {
-
-    walletModal.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                walletModal
-            ) {
-
-                walletModal.classList.remove(
-                    "show"
-                );
-
-            }
-
-        }
-    );
-
-}
+    }
+);
 
 
 /* =====================================================
@@ -3104,9 +2636,9 @@ if (walletModal) {
 
 async function backendDeposit(
     amount
-) {
+){
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -3123,22 +2655,19 @@ async function backendDeposit(
                     body:JSON.stringify({
                         user_code:
                             USER_CODE,
-
                         amount:
                             Number(amount)
                     })
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (
+        if(
             !response.ok ||
             !data.success
-        ) {
+        ){
 
             alert(
                 data.message ||
@@ -3146,9 +2675,7 @@ async function backendDeposit(
             );
 
             return false;
-
         }
-
 
         balance =
             Number(
@@ -3159,7 +2686,7 @@ async function backendDeposit(
 
         return true;
 
-    } catch (error) {
+    }catch(error){
 
         console.error(
             "Deposit error:",
@@ -3183,9 +2710,9 @@ async function backendDeposit(
 
 async function backendWithdraw(
     amount
-) {
+){
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -3202,22 +2729,19 @@ async function backendWithdraw(
                     body:JSON.stringify({
                         user_code:
                             USER_CODE,
-
                         amount:
                             Number(amount)
                     })
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (
+        if(
             !response.ok ||
             !data.success
-        ) {
+        ){
 
             alert(
                 data.message ||
@@ -3225,9 +2749,7 @@ async function backendWithdraw(
             );
 
             return false;
-
         }
-
 
         balance =
             Number(
@@ -3238,7 +2760,7 @@ async function backendWithdraw(
 
         return true;
 
-    } catch (error) {
+    }catch(error){
 
         console.error(
             "Withdraw error:",
@@ -3260,95 +2782,97 @@ async function backendWithdraw(
    WALLET CONFIRM
 ===================================================== */
 
-if (confirmWalletAction) {
+confirmWalletAction.addEventListener(
+    "click",
+    async function(){
 
-    confirmWalletAction.addEventListener(
-        "click",
-        async () => {
+        const amount =
+            Number(
+                walletAmount.value
+            );
 
-            const amount =
-                Number(
-                    walletAmount.value
+        if(
+            !amount ||
+            amount <= 0
+        ){
+
+            alert(
+                "Enter a valid amount."
+            );
+
+            return;
+        }
+
+        if(
+            walletAction ===
+            "withdraw" &&
+            amount > balance
+        ){
+
+            alert(
+                "Insufficient balance."
+            );
+
+            return;
+        }
+
+        confirmWalletAction.disabled =
+            true;
+
+        confirmWalletAction.textContent =
+            "Processing...";
+
+        let success = false;
+
+        if(
+            walletAction ===
+            "deposit"
+        ){
+
+            success =
+                await backendDeposit(
+                    amount
                 );
 
+        }else{
 
-            if (
-                !amount ||
-                amount <= 0
-            ) {
-
-                alert(
-                    "Enter a valid amount."
+            success =
+                await backendWithdraw(
+                    amount
                 );
-
-                return;
-
-            }
-
-
-            confirmWalletAction.disabled =
-                true;
-
-            confirmWalletAction.textContent =
-                "Processing...";
-
-
-            let success = false;
-
-
-            if (
-                walletAction ===
-                "deposit"
-            ) {
-
-                success =
-                    await backendDeposit(
-                        amount
-                    );
-
-            } else {
-
-                success =
-                    await backendWithdraw(
-                        amount
-                    );
-
-            }
-
-
-            confirmWalletAction.disabled =
-                false;
-
-            confirmWalletAction.textContent =
-                "Confirm";
-
-
-            if (success) {
-
-                walletModal.classList.remove(
-                    "show"
-                );
-
-                walletAmount.value =
-                    "";
-
-                await loadTransactions();
-
-            }
 
         }
-    );
 
-}
+        confirmWalletAction.disabled =
+            false;
+
+        confirmWalletAction.textContent =
+            "Confirm";
+
+        if(success){
+
+            walletModal.classList.remove(
+                "show"
+            );
+
+            walletAmount.value =
+                "";
+
+            await loadTransactions();
+
+        }
+
+    }
+);
 
 
 /* =====================================================
    LOAD USER
 ===================================================== */
 
-async function loadUser() {
+async function loadUser(){
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -3359,25 +2883,19 @@ async function loadUser() {
                 )
             );
 
-
-        if (!response.ok) {
+        if(!response.ok){
             return false;
         }
-
 
         const data =
             await response.json();
 
-
-        if (
+        if(
             !data.success ||
             !data.user
-        ) {
-
+        ){
             return false;
-
         }
-
 
         balance =
             Number(
@@ -3387,26 +2905,23 @@ async function loadUser() {
         startingBalance =
             balance;
 
-
         updateBalance();
 
-
-        if (
+        if(
             data.user.wallet_address &&
             walletAddressEl
-        ) {
+        ){
 
             walletAddressEl.textContent =
                 data.user.wallet_address;
 
         }
 
-
         return true;
 
-    } catch (error) {
+    }catch(error){
 
-        console.warn(
+        console.error(
             "loadUser:",
             error
         );
@@ -3422,9 +2937,9 @@ async function loadUser() {
    CREATE USER
 ===================================================== */
 
-async function createUser() {
+async function createUser(){
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -3450,18 +2965,16 @@ async function createUser() {
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (
+        if(
             !response.ok ||
             !data.success
-        ) {
+        ){
 
-            console.warn(
-                "Create user response:",
+            console.error(
+                "Create user failed:",
                 data
             );
 
@@ -3469,11 +2982,18 @@ async function createUser() {
 
         }
 
+        if(data.user){
 
-        balance =
-            Number(
-                data.user.balance
-            ) || 0;
+            balance =
+                Number(
+                    data.user.balance
+                ) || 0;
+
+        }else{
+
+            balance = 0;
+
+        }
 
         startingBalance =
             balance;
@@ -3482,9 +3002,9 @@ async function createUser() {
 
         return true;
 
-    } catch (error) {
+    }catch(error){
 
-        console.warn(
+        console.error(
             "createUser:",
             error
         );
@@ -3500,13 +3020,13 @@ async function createUser() {
    LOAD TRANSACTIONS
 ===================================================== */
 
-async function loadTransactions() {
+async function loadTransactions(){
 
-    if (!walletTransactions) {
+    if(!walletTransactions){
         return;
     }
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -3518,29 +3038,24 @@ async function loadTransactions() {
                 "/transactions"
             );
 
-
-        if (!response.ok) {
+        if(!response.ok){
             return;
         }
-
 
         const data =
             await response.json();
 
-
-        if (!data.success) {
+        if(!data.success){
             return;
         }
-
 
         walletTransactions.innerHTML =
             "";
 
-
-        if (
+        if(
             !data.transactions ||
             data.transactions.length === 0
-        ) {
+        ){
 
             walletTransactions.innerHTML =
                 `
@@ -3553,9 +3068,8 @@ async function loadTransactions() {
 
         }
 
-
         data.transactions.forEach(
-            transaction => {
+            function(transaction){
 
                 addWalletTransaction(
                     transaction.type,
@@ -3568,9 +3082,9 @@ async function loadTransactions() {
             }
         );
 
-    } catch (error) {
+    }catch(error){
 
-        console.warn(
+        console.error(
             "Transactions:",
             error
         );
@@ -3588,12 +3102,7 @@ function addWalletTransaction(
     type,
     amount,
     createdAt
-) {
-
-    if (!walletTransactions) {
-        return;
-    }
-
+){
 
     const item =
         document.createElement(
@@ -3603,33 +3112,27 @@ function addWalletTransaction(
     item.className =
         "history-item";
 
-
     const deposit =
         String(type)
-            .toLowerCase() ===
+        .toLowerCase() ===
         "deposit";
-
 
     const color =
         deposit
-            ? "green"
-            : "red";
-
+        ? "green"
+        : "red";
 
     const sign =
         deposit
-            ? "+"
-            : "-";
-
+        ? "+"
+        : "-";
 
     const time =
         createdAt
-            ? new Date(
-                createdAt
-            ).toLocaleString()
-            : new Date()
-                .toLocaleString();
-
+        ? new Date(
+            createdAt
+        ).toLocaleString()
+        : new Date().toLocaleString();
 
     item.innerHTML = `
 
@@ -3647,7 +3150,6 @@ function addWalletTransaction(
 
     `;
 
-
     walletTransactions.appendChild(
         item
     );
@@ -3659,34 +3161,20 @@ function addWalletTransaction(
    INITIAL BACKEND
 ===================================================== */
 
-async function initBackend() {
-
-    console.log(
-        "BEcoin backend initializing..."
-    );
-
+async function initBackend(){
 
     const loaded =
         await loadUser();
 
-
-    if (!loaded) {
-
-        console.log(
-            "User not found. Creating user..."
-        );
+    if(!loaded){
 
         await createUser();
 
     }
 
-
     await loadTransactions();
 
 }
-
-
-initBackend();
 
 
 /* =====================================================
@@ -3698,86 +3186,71 @@ const coinSelect =
         "coin"
     );
 
+coinSelect.addEventListener(
+    "change",
+    function(){
 
-if (coinSelect) {
+        const symbols = {
 
-    coinSelect.addEventListener(
-        "change",
-        function() {
+            bitcoin:
+                "BTC/USD",
 
-            const symbols = {
+            ethereum:
+                "ETH/USD",
 
-                bitcoin:
-                    "BTC/USD",
+            binancecoin:
+                "BNB/USD",
 
-                ethereum:
-                    "ETH/USD",
+            solana:
+                "SOL/USD",
 
-                binancecoin:
-                    "BNB/USD",
+            ripple:
+                "XRP/USD",
 
-                solana:
-                    "SOL/USD",
+            tether:
+                "USDT/USD"
 
-                ripple:
-                    "XRP/USD",
+        };
 
-                tether:
-                    "USDT/USD"
+        const selectedSymbol =
+            document.getElementById(
+                "selectedSymbol"
+            );
 
-            };
+        selectedSymbol.textContent =
+            symbols[
+                this.value
+            ] || "BTC/USD";
 
-
-            const selectedSymbol =
-                document.getElementById(
-                    "selectedSymbol"
-                );
-
-
-            if (selectedSymbol) {
-
-                selectedSymbol.textContent =
-                    symbols[
-                        this.value
-                    ] ||
-                    "BTC/USD";
-
-            }
-
-        }
-    );
-
-}
+    }
+);
 
 
 /* =====================================================
    RESET
 ===================================================== */
 
-function resetAccountDisplay() {
+document.getElementById(
+    "resetBtn"
+).addEventListener(
+    "click",
+    function(){
 
-    if (
-        !confirm(
-            "Reset display?"
-        )
-    ) {
-        return;
-    }
+        if(
+            !confirm(
+                "Reset display?"
+            )
+        ){
+            return;
+        }
 
+        balance =
+            startingBalance;
 
-    balance =
-        startingBalance;
+        stake = 100;
 
-    wins = 0;
-    losses = 0;
-    stake = 100;
-
-
-    updateBalance();
-    updateStake();
-
-
-    if (historyEl) {
+        updateBalance();
+        updateStake();
 
         historyEl.innerHTML =
             `
@@ -3787,24 +3260,7 @@ function resetAccountDisplay() {
             `;
 
     }
-
-}
-
-
-const resetBtn =
-    document.getElementById(
-        "resetBtn"
-    );
-
-
-if (resetBtn) {
-
-    resetBtn.addEventListener(
-        "click",
-        resetAccountDisplay
-    );
-
-}
+);
 
 
 /* =====================================================
@@ -3822,12 +3278,12 @@ const marketCoins = {
 };
 
 
-function updateMarket() {
+function updateMarket(){
 
     Object.keys(
         marketCoins
     ).forEach(
-        key => {
+        function(key){
 
             marketCoins[key] *=
                 1 +
@@ -3840,7 +3296,6 @@ function updateMarket() {
         }
     );
 
-
     const ids = {
 
         btc:"btcPrice",
@@ -3851,28 +3306,26 @@ function updateMarket() {
 
     };
 
-
     Object.keys(ids)
-        .forEach(
-            key => {
+    .forEach(
+        function(key){
 
-                const element =
-                    document.getElementById(
-                        ids[key]
+            const element =
+                document.getElementById(
+                    ids[key]
+                );
+
+            if(element){
+
+                element.textContent =
+                    money(
+                        marketCoins[key]
                     );
 
-
-                if (element) {
-
-                    element.textContent =
-                        money(
-                            marketCoins[key]
-                        );
-
-                }
-
             }
-        );
+
+        }
+    );
 
 }
 
@@ -3881,38 +3334,82 @@ function updateMarket() {
    SUPPORT CHAT
 ===================================================== */
 
-function openSupport() {
+function setSupportStatus(
+    message
+){
 
-    if (!supportChat) {
-        return;
-    }
-
-
-    supportChat.classList.add(
-        "show"
-    );
-
-
-    if (supportInput) {
-
-        setTimeout(
-            () => {
-                supportInput.focus();
-            },
-            100
-        );
-
+    if(supportStatus){
+        supportStatus.textContent =
+            message;
     }
 
 }
 
 
-function closeSupportChat() {
+function addSupportMessage(
+    message,
+    type
+){
 
-    if (!supportChat) {
+    if(!supportMessages){
         return;
     }
 
+    const element =
+        document.createElement(
+            "div"
+        );
+
+    element.className =
+        "support-message " +
+        (
+            type === "user"
+            ? "user"
+            : "agent"
+        );
+
+    element.textContent =
+        message;
+
+    supportMessages.appendChild(
+        element
+    );
+
+    supportMessages.scrollTop =
+        supportMessages.scrollHeight;
+
+}
+
+
+function openSupport(){
+
+    if(!supportChat){
+        return;
+    }
+
+    supportChat.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        function(){
+
+            if(supportInput){
+                supportInput.focus();
+            }
+
+        },
+        100
+    );
+
+}
+
+
+function closeSupportChat(){
+
+    if(!supportChat){
+        return;
+    }
 
     supportChat.classList.remove(
         "show"
@@ -3921,123 +3418,84 @@ function closeSupportChat() {
 }
 
 
-const liveSupportBtn =
-    document.getElementById(
-        "liveSupportBtn"
-    );
+/* Open chat buttons */
 
-const closeSupport =
-    document.getElementById(
-        "closeSupport"
-    );
+document.getElementById(
+    "liveSupportBtn"
+).addEventListener(
+    "click",
+    openSupport
+);
 
-const sendSupport =
-    document.getElementById(
-        "sendSupport"
-    );
+document.getElementById(
+    "openChatBtn"
+).addEventListener(
+    "click",
+    openSupport
+);
 
-
-const openChatBtn =
-    document.getElementById(
-        "openChatBtn"
-    );
-
-
-if (liveSupportBtn) {
-
-    liveSupportBtn.addEventListener(
-        "click",
-        openSupport
-    );
-
-}
+document.getElementById(
+    "closeSupport"
+).addEventListener(
+    "click",
+    closeSupportChat
+);
 
 
-if (openChatBtn) {
+/* FAQ */
 
-    openChatBtn.addEventListener(
-        "click",
-        openSupport
-    );
+document.getElementById(
+    "faqBtn"
+).addEventListener(
+    "click",
+    function(){
 
-}
+        alert(
+            "BEcoin FAQ:\n\n" +
+            "1. This is a simulated trading platform.\n" +
+            "2. UP/DOWN trading is demo trading.\n" +
+            "3. Never share your wallet seed phrase or private key."
+        );
 
-
-if (closeSupport) {
-
-    closeSupport.addEventListener(
-        "click",
-        closeSupportChat
-    );
-
-}
-
-
-/* =====================================================
-   ADD SUPPORT MESSAGE
-===================================================== */
-
-function addSupportMessage(
-    message,
-    type
-) {
-
-    if (!supportMessages) {
-        return;
     }
+);
 
 
-    const element =
-        document.createElement(
-            "div"
+/* Safety */
+
+document.getElementById(
+    "safetyBtn"
+).addEventListener(
+    "click",
+    function(){
+
+        alert(
+            "Never share your wallet seed phrase, private key, password, or recovery phrase."
         );
 
-
-    element.className =
-        "support-message " +
-        (
-            type === "user"
-                ? "user"
-                : "agent"
-        );
-
-
-    element.textContent =
-        message;
-
-
-    supportMessages.appendChild(
-        element
-    );
-
-
-    supportMessages.scrollTop =
-        supportMessages.scrollHeight;
-
-}
+    }
+);
 
 
 /* =====================================================
    SEND SUPPORT MESSAGE
 ===================================================== */
 
-function sendSupportMessage() {
+function sendSupportMessage(){
 
-    if (!supportInput) {
+    if(!supportInput){
         return;
     }
-
 
     const message =
         supportInput.value.trim();
 
-
-    if (!message) {
+    if(!message){
         return;
     }
 
 
-    /* Show user message */
+    /* Always show user's message */
 
     addSupportMessage(
         message,
@@ -4045,39 +3503,399 @@ function sendSupportMessage() {
     );
 
 
-    /* Clear input */
-
-    supportInput.value =
-        "";
+    supportInput.value = "";
 
 
-    /* Send to backend */
+    /* Socket unavailable */
 
-    if (
-        socket &&
-        socket.connected
-    ) {
+    if(
+        !socket ||
+        !socket.connected
+    ){
 
-        socket.emit(
-            "support_message",
-            {
-                user_code:
-                    USER_CODE,
+        setSupportStatus(
+            "Support server is not connected."
+        );
 
-                message:
-                    message,
+        addSupportMessage(
+            "Your message is shown here, but the support server is currently unavailable. Please try again when the connection is restored.",
+            "agent"
+        );
 
-                timestamp:
-                    new Date()
-                        .toISOString()
+        return;
+    }
+
+
+    /* Send message */
+
+    socket.emit(
+        "support_message",
+        {
+            user_code:
+                USER_CODE,
+
+            message:
+                message,
+
+            timestamp:
+                new Date().toISOString(),
+
+            sender:
+                "user"
+        }
+    );
+
+}
+
+
+document.getElementById(
+    "sendSupport"
+).addEventListener(
+    "click",
+    sendSupportMessage
+);
+
+
+supportInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            event.preventDefault();
+
+            sendSupportMessage();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SOCKET.IO CONNECT
+===================================================== */
+
+function initSocket(){
+
+    if(
+        typeof io !==
+        "function"
+    ){
+
+        console.error(
+            "Socket.IO library not loaded."
+        );
+
+        if(supportOnlineStatus){
+
+            supportOnlineStatus.textContent =
+                "● Socket unavailable";
+
+            supportOnlineStatus.style.color =
+                "#ef4444";
+
+        }
+
+        setSupportStatus(
+            "Socket.IO library failed to load."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        socket =
+            io(
+                API_URL,
+                {
+                    transports:[
+                        "websocket",
+                        "polling"
+                    ],
+
+                    reconnection:true,
+
+                    reconnectionAttempts:
+                        Infinity,
+
+                    reconnectionDelay:
+                        1000,
+
+                    timeout:
+                        10000
+                }
+            );
+
+
+        socket.on(
+            "connect",
+            function(){
+
+                console.log(
+                    "Socket connected:",
+                    socket.id
+                );
+
+                if(supportOnlineStatus){
+
+                    supportOnlineStatus.textContent =
+                        "● Online Support";
+
+                    supportOnlineStatus.style.color =
+                        "#22c55e";
+
+                }
+
+                setSupportStatus(
+                    "Connected to support server."
+                );
+
+
+                socket.emit(
+                    "join_support",
+                    {
+                        user_code:
+                            USER_CODE
+                    }
+                );
+
             }
         );
 
-    } else {
 
-        addSupportMessage(
-            "Support connection is currently unavailable. Please try again.",
-            "agent"
+        socket.on(
+            "disconnect",
+            function(reason){
+
+                console.log(
+                    "Socket disconnected:",
+                    reason
+                );
+
+                if(supportOnlineStatus){
+
+                    supportOnlineStatus.textContent =
+                        "● Offline Support";
+
+                    supportOnlineStatus.style.color =
+                        "#ef4444";
+
+                }
+
+                setSupportStatus(
+                    "Support connection lost. Reconnecting..."
+                );
+
+            }
+        );
+
+
+        socket.on(
+            "connect_error",
+            function(error){
+
+                console.error(
+                    "Socket connection error:",
+                    error
+                );
+
+                if(supportOnlineStatus){
+
+                    supportOnlineStatus.textContent =
+                        "● Connection Error";
+
+                    supportOnlineStatus.style.color =
+                        "#ef4444";
+
+                }
+
+                setSupportStatus(
+                    "Unable to connect to support server."
+                );
+
+            }
+        );
+
+
+        /* Receive support message */
+
+        socket.on(
+            "support_message",
+            function(data){
+
+                if(!data){
+                    return;
+                }
+
+                if(!data.message){
+                    return;
+                }
+
+
+                /*
+                 * Backend may send our own message
+                 * back to us. Do not duplicate it.
+                 */
+
+                if(
+                    data.user_code ===
+                    USER_CODE &&
+                    (
+                        data.sender ===
+                        "user"
+                    )
+                ){
+
+                    return;
+
+                }
+
+
+                addSupportMessage(
+                    data.message,
+                    data.sender === "user"
+                    ? "user"
+                    : "agent"
+                );
+
+            }
+        );
+
+
+        /* Support status */
+
+        socket.on(
+            "support_status",
+            function(data){
+
+                if(!supportOnlineStatus){
+                    return;
+                }
+
+                if(
+                    data &&
+                    data.online
+                ){
+
+                    supportOnlineStatus.textContent =
+                        "● Online Support";
+
+                    supportOnlineStatus.style.color =
+                        "#22c55e";
+
+                }else{
+
+                    supportOnlineStatus.textContent =
+                        "● Offline Support";
+
+                    supportOnlineStatus.style.color =
+                        "#ef4444";
+
+                }
+
+            }
+        );
+
+
+        /* Typing */
+
+        socket.on(
+            "support_typing",
+            function(data){
+
+                if(
+                    !data ||
+                    data.user_code ===
+                    USER_CODE
+                ){
+                    return;
+                }
+
+                if(!supportMessages){
+                    return;
+                }
+
+                let typing =
+                    document.getElementById(
+                        "supportTyping"
+                    );
+
+                if(data.typing){
+
+                    if(!typing){
+
+                        typing =
+                            document.createElement(
+                                "div"
+                            );
+
+                        typing.id =
+                            "supportTyping";
+
+                        typing.className =
+                            "support-message agent";
+
+                        typing.textContent =
+                            "Support is typing...";
+
+                        supportMessages.appendChild(
+                            typing
+                        );
+
+                    }
+
+                }else{
+
+                    if(typing){
+                        typing.remove();
+                    }
+
+                }
+
+                supportMessages.scrollTop =
+                    supportMessages.scrollHeight;
+
+            }
+        );
+
+
+        /* Error */
+
+        socket.on(
+            "support_error",
+            function(data){
+
+                console.error(
+                    "Support error:",
+                    data
+                );
+
+                addSupportMessage(
+                    data && data.message
+                    ? data.message
+                    : "Support server error.",
+                    "agent"
+                );
+
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "Socket initialization error:",
+            error
+        );
+
+        setSupportStatus(
+            "Support connection could not start."
         );
 
     }
@@ -4085,414 +3903,126 @@ function sendSupportMessage() {
 }
 
 
-if (sendSupport) {
-
-    sendSupport.addEventListener(
-        "click",
-        sendSupportMessage
-    );
-
-}
-
-
-if (supportInput) {
-
-    supportInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                sendSupportMessage();
-
-            }
-
-        }
-    );
-
-}
-
-
 /* =====================================================
-   RECEIVE SUPPORT MESSAGE
+   SUPPORT TYPING
 ===================================================== */
 
-if (socket) {
+supportInput.addEventListener(
+    "input",
+    function(){
 
-    socket.on(
-        "support_message",
-        data => {
+        if(
+            socket &&
+            socket.connected
+        ){
 
-            if (!data) {
-                return;
-            }
+            socket.emit(
+                "support_typing",
+                {
+                    user_code:
+                        USER_CODE,
 
-
-            /*
-             * Prevent duplicate display
-             * of our own message.
-             */
-
-            if (
-                data.user_code ===
-                USER_CODE &&
-                data.sender ===
-                "user"
-            ) {
-
-                return;
-
-            }
-
-
-            if (data.message) {
-
-                addSupportMessage(
-                    data.message,
-                    data.sender === "user"
-                        ? "user"
-                        : "agent"
-                );
-
-            }
-
-        }
-    );
-
-
-    socket.on(
-        "support_status",
-        data => {
-
-            if (!supportStatus) {
-                return;
-            }
-
-
-            if (
-                data &&
-                data.online
-            ) {
-
-                supportStatus.textContent =
-                    "● Online Support";
-
-                supportStatus.className =
-                    "green";
-
-            } else {
-
-                supportStatus.textContent =
-                    "● Offline Support";
-
-                supportStatus.className =
-                    "red";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   TYPING INDICATOR
-===================================================== */
-
-if (supportInput) {
-
-    supportInput.addEventListener(
-        "input",
-        () => {
-
-            if (
-                socket &&
-                socket.connected
-            ) {
-
-                socket.emit(
-                    "support_typing",
-                    {
-                        user_code:
-                            USER_CODE,
-
-                        typing:
-                            supportInput
-                                .value
-                                .length > 0
-                    }
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-if (socket) {
-
-    socket.on(
-        "support_typing",
-        data => {
-
-            if (
-                !data ||
-                data.user_code ===
-                USER_CODE
-            ) {
-                return;
-            }
-
-
-            if (!supportMessages) {
-                return;
-            }
-
-
-            let typing =
-                document.getElementById(
-                    "supportTyping"
-                );
-
-
-            if (data.typing) {
-
-                if (!typing) {
-
-                    typing =
-                        document.createElement(
-                            "div"
-                        );
-
-                    typing.id =
-                        "supportTyping";
-
-                    typing.className =
-                        "support-message agent";
-
-                    typing.textContent =
-                        "Support is typing...";
-
-                    supportMessages.appendChild(
-                        typing
-                    );
-
+                    typing:
+                        supportInput.value.length > 0
                 }
-
-            } else {
-
-                if (typing) {
-                    typing.remove();
-                }
-
-            }
-
-
-            supportMessages.scrollTop =
-                supportMessages.scrollHeight;
+            );
 
         }
-    );
 
-}
+    }
+);
 
 
 /* =====================================================
    WALLET CONNECT
 ===================================================== */
 
-if (connectWalletButton) {
+connectWalletButton.addEventListener(
+    "click",
+    async function(){
 
-    connectWalletButton.addEventListener(
-        "click",
-        async () => {
+        if(!window.ethereum){
 
-            if (!window.ethereum) {
+            alert(
+                "No Web3 wallet detected. Install MetaMask or another compatible wallet."
+            );
 
-                alert(
-                    "No Web3 wallet detected. Install MetaMask or another compatible wallet."
+            return;
+
+        }
+
+        try{
+
+            const accounts =
+                await window.ethereum.request({
+                    method:
+                        "eth_requestAccounts"
+                });
+
+            if(
+                accounts &&
+                accounts.length
+            ){
+
+                const address =
+                    accounts[0];
+
+                walletAddressEl.textContent =
+                    address;
+
+                connectWalletButton.textContent =
+                    address.slice(0,6) +
+                    "..." +
+                    address.slice(-4);
+
+                connectWalletButton.classList.add(
+                    "connected"
                 );
 
-                return;
 
-            }
+                /* Sync backend */
 
+                try{
 
-            try {
+                    await fetch(
+                        API_URL +
+                        "/api/users",
+                        {
+                            method:"POST",
 
-                const accounts =
-                    await window.ethereum.request({
-                        method:
-                            "eth_requestAccounts"
-                    });
+                            headers:{
+                                "Content-Type":
+                                    "application/json"
+                            },
 
+                            body:JSON.stringify({
 
-                if (
-                    accounts &&
-                    accounts.length
-                ) {
-
-                    const address =
-                        accounts[0];
-
-
-                    if (walletAddressEl) {
-
-                        walletAddressEl.textContent =
-                            address;
-
-                    }
-
-
-                    connectWalletButton.textContent =
-                        address.slice(0,6) +
-                        "..." +
-                        address.slice(-4);
-
-
-                    connectWalletButton.classList.add(
-                        "connected"
-                    );
-
-
-                    /* Backend wallet sync */
-
-                    try {
-
-                        await fetch(
-                            API_URL +
-                            "/api/users",
-                            {
-                                method:
-                                    "POST",
-
-                                headers:{
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify({
-                                        user_code:
-                                            USER_CODE,
-
-                                        wallet_address:
-                                            address
-                                    })
-                            }
-                        );
-
-                    } catch (
-                        backendError
-                    ) {
-
-                        console.warn(
-                            "Wallet sync failed:",
-                            backendError
-                        );
-
-                    }
-
-
-                    /* Socket wallet update */
-
-                    if (
-                        socket &&
-                        socket.connected
-                    ) {
-
-                        socket.emit(
-                            "wallet_connected",
-                            {
                                 user_code:
                                     USER_CODE,
 
                                 wallet_address:
                                     address
-                            }
-                        );
 
-                    }
+                            })
+                        }
+                    );
 
-                }
+                }catch(error){
 
-            } catch (error) {
-
-                console.error(
-                    "Wallet connection:",
-                    error
-                );
-
-                alert(
-                    error.message ||
-                    "Wallet connection failed."
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   METAMASK ACCOUNT CHANGE
-===================================================== */
-
-if (
-    window.ethereum &&
-    typeof window.ethereum.on ===
-    "function"
-) {
-
-    window.ethereum.on(
-        "accountsChanged",
-        accounts => {
-
-            if (
-                accounts &&
-                accounts.length
-            ) {
-
-                const address =
-                    accounts[0];
-
-
-                if (walletAddressEl) {
-
-                    walletAddressEl.textContent =
-                        address;
-
-                }
-
-
-                if (connectWalletButton) {
-
-                    connectWalletButton.textContent =
-                        address.slice(0,6) +
-                        "..." +
-                        address.slice(-4);
-
-                    connectWalletButton.classList.add(
-                        "connected"
+                    console.warn(
+                        "Wallet sync failed:",
+                        error
                     );
 
                 }
 
 
-                if (
+                /* Socket update */
+
+                if(
                     socket &&
                     socket.connected
-                ) {
+                ){
 
                     socket.emit(
                         "wallet_connected",
@@ -4507,78 +4037,87 @@ if (
 
                 }
 
-            } else {
+            }
 
-                if (walletAddressEl) {
+        }catch(error){
 
-                    walletAddressEl.textContent =
-                        "Not connected";
+            console.error(
+                "Wallet connection error:",
+                error
+            );
 
-                }
+            alert(
+                error.message ||
+                "Wallet connection failed."
+            );
+
+        }
+
+    }
+);
 
 
-                if (connectWalletButton) {
+/* =====================================================
+   METAMASK ACCOUNT CHANGE
+===================================================== */
 
-                    connectWalletButton.textContent =
-                        "Connect Wallet";
+if(window.ethereum){
 
-                    connectWalletButton.classList.remove(
-                        "connected"
+    window.ethereum.on(
+        "accountsChanged",
+        function(accounts){
+
+            if(
+                accounts &&
+                accounts.length
+            ){
+
+                const address =
+                    accounts[0];
+
+                walletAddressEl.textContent =
+                    address;
+
+                connectWalletButton.textContent =
+                    address.slice(0,6) +
+                    "..." +
+                    address.slice(-4);
+
+                connectWalletButton.classList.add(
+                    "connected"
+                );
+
+                if(
+                    socket &&
+                    socket.connected
+                ){
+
+                    socket.emit(
+                        "wallet_connected",
+                        {
+                            user_code:
+                                USER_CODE,
+
+                            wallet_address:
+                                address
+                        }
                     );
 
                 }
 
+            }else{
+
+                walletAddressEl.textContent =
+                    "Not connected";
+
+                connectWalletButton.textContent =
+                    "Connect Wallet";
+
+                connectWalletButton.classList.remove(
+                    "connected"
+                );
+
             }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   FAQ
-===================================================== */
-
-const faqBtn =
-    document.getElementById(
-        "faqBtn"
-    );
-
-if (faqBtn) {
-
-    faqBtn.addEventListener(
-        "click",
-        () => {
-
-            alert(
-                "FAQ: BEcoin is currently running in simulated demo mode."
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   SAFETY
-===================================================== */
-
-const safetyBtn =
-    document.getElementById(
-        "safetyBtn"
-    );
-
-if (safetyBtn) {
-
-    safetyBtn.addEventListener(
-        "click",
-        () => {
-
-            alert(
-                "Never share your wallet seed phrase, private key, password or recovery phrase."
-            );
 
         }
     );
@@ -4590,17 +4129,15 @@ if (safetyBtn) {
    INITIAL PRICE HISTORY
 ===================================================== */
 
-for (
+for(
     let i = 0;
     i < 50;
     i++
-) {
+){
 
     currentPrice +=
-        (
-            Math.random() -
-            0.5
-        ) * 10;
+        (Math.random() - 0.5) *
+        10;
 
     priceHistory.push(
         currentPrice
@@ -4609,7 +4146,7 @@ for (
 }
 
 
-if (priceNowEl) {
+if(priceNowEl){
 
     priceNowEl.textContent =
         money(currentPrice);
@@ -4618,13 +4155,23 @@ if (priceNowEl) {
 
 
 updateBalance();
+
 updateStake();
+
 updateMarket();
 
+
+/* =====================================================
+   START
+===================================================== */
 
 requestAnimationFrame(
     resizeCanvas
 );
+
+initSocket();
+
+initBackend();
 
 
 /* =====================================================
@@ -4632,11 +4179,11 @@ requestAnimationFrame(
 ===================================================== */
 
 setInterval(
-    () => {
+    function(){
 
         updateMarket();
 
-        if (!roundActive) {
+        if(!roundActive){
             movePrice();
         }
 
@@ -4662,17 +4209,8 @@ window.addEventListener(
 window.openSupport =
     openSupport;
 
-window.resetAccountDisplay =
-    resetAccountDisplay;
-
-console.log(
-    "BEcoin frontend loaded successfully."
-);
-
-console.log(
-    "User ID:",
-    USER_CODE
-);
+window.closeSupport =
+    closeSupportChat;
 
 </script>
 
