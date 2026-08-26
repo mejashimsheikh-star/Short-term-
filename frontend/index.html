@@ -1,1852 +1,1562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070a0f">
-    <title>BEcoin </title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <style>
-        :root {
-            --bg: #070a0f;
-            --panel: #0d1219;
-            --panel2: #111821;
-            --border: #202a36;
-            --text: #f5f7fa;
-            --muted: #7d8997;
-            --accent: #f5c542;
-            --green: #22c55e;
-            --red: #ef4444;
-            --blue: #3b82f6;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(
-                    circle at 10% 0%,
-                    rgba(245,197,66,.08),
-                    transparent 30%
-                ),
-                var(--bg);
-            color: var(--text);
-            font-family: "IBM Plex Mono", monospace;
-            padding-bottom: 90px;
-        }
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .app {
-            width: min(1180px, 94%);
-            margin: auto;
-        }
-
-        /* =========================
-           DEMO WARNING
-        ========================= */
-
-        .demo-banner {
-            margin: 14px 0;
-            padding: 10px;
-            text-align: center;
-            color: var(--accent);
-            background: rgba(245,197,66,.06);
-            border: 1px solid rgba(245,197,66,.25);
-            font-size: 11px;
-        }
-
-        /* =========================
-           HEADER
-        ========================= */
-
-        .header {
-            min-height: 72px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            display: grid;
-            place-items: center;
-            background: var(--accent);
-            color: #080a0d;
-            border-radius: 9px;
-            font-family: "Space Grotesk", sans-serif;
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        .brand h1 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 24px;
-        }
-
-        .brand small {
-            display: block;
-            color: var(--muted);
-            font-size: 8px;
-            letter-spacing: 1.3px;
-        }
-
-        #connectWallet {
-            padding: 10px 14px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        #connectWallet:hover {
-            background: var(--accent);
-            color: #080a0d;
-        }
-
-        /* =========================
-           PAGES
-        ========================= */
-
-        .page {
-            display: none;
-            padding-top: 22px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .page-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 24px;
-            margin-bottom: 6px;
-        }
-
-        .page-subtitle {
-            color: var(--muted);
-            font-size: 11px;
-            margin-bottom: 20px;
-        }
-
-        /* =========================
-           CARDS
-        ========================= */
-
-        .card {
-            background: linear-gradient(
-                145deg,
-                var(--panel),
-                #0a0f15
-            );
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            padding: 18px;
-        }
-
-        .card-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 17px;
-            margin-bottom: 14px;
-        }
-
-        .label {
-            color: var(--muted);
-            font-size: 9px;
-            letter-spacing: 1.2px;
-            margin-bottom: 6px;
-        }
-
-        /* =========================
-           HOME
-        ========================= */
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-
-        .value {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .balance-card {
-            padding: 22px;
-            margin-bottom: 18px;
-        }
-
-        .balance {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 34px;
-            font-weight: 700;
-        }
-
-        .demo {
-            color: var(--accent);
-            font-size: 10px;
-            margin-left: 5px;
-        }
-
-        .pnl {
-            color: var(--green);
-            font-size: 11px;
-            margin-top: 5px;
-        }
-
-        /* =========================
-           MARKET
-        ========================= */
-
-        .market-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .market-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 13px;
-            border-radius: 7px;
-        }
-
-        .coin-name {
-            color: var(--muted);
-            font-size: 9px;
-            margin-bottom: 7px;
-        }
-
-        .coin-price {
-            font-size: 12px;
-        }
-
-        .coin-change {
-            font-size: 9px;
-            margin-top: 5px;
-        }
-
-        .green {
-            color: var(--green) !important;
-        }
-
-        .red {
-            color: var(--red) !important;
-        }
-
-        /* =========================
-           TRADE
-        ========================= */
-
-        .trade-grid {
-            display: grid;
-            grid-template-columns: 1.4fr .8fr;
-            gap: 15px;
-        }
-
-        .price-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            margin-bottom: 12px;
-        }
-
-        .symbol {
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        .price {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 34px;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        #chart {
-            width: 100%;
-            height: 260px;
-            display: block;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            margin: 12px 0;
-        }
-
-        .timer-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        .timer {
-            width: 43px;
-            height: 43px;
-            display: grid;
-            place-items: center;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        .prediction-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .prediction-buttons button {
-            padding: 14px;
-            border-radius: 6px;
-            font-weight: 700;
-        }
-
-        .up {
-            color: var(--green);
-            background: rgba(34,197,94,.08);
-            border: 1px solid var(--green);
-        }
-
-        .down {
-            color: var(--red);
-            background: rgba(239,68,68,.08);
-            border: 1px solid var(--red);
-        }
-
-        .stake-row {
-            display: grid;
-            grid-template-columns: 42px 1fr 42px;
-            gap: 7px;
-            margin-top: 9px;
-        }
-
-        .stake-row button {
-            height: 38px;
-            background: var(--panel2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 5px;
-        }
-
-        .stake-value {
-            display: grid;
-            place-items: center;
-            font-size: 11px;
-        }
-
-        /* =========================
-           FORM
-        ========================= */
-
-        .field {
-            margin-bottom: 14px;
-        }
-
-        .field label {
-            display: block;
-            color: var(--muted);
-            font-size: 9px;
-            margin-bottom: 7px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            color: var(--text);
-            background: var(--panel2);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            outline: none;
-        }
-
-        input:focus,
-        select:focus {
-            border-color: var(--accent);
-        }
-
-        .buy-sell {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .buy-sell button {
-            padding: 13px;
-            border: 0;
-            border-radius: 6px;
-            font-weight: 700;
-        }
-
-        .buy {
-            background: var(--green);
-            color: #031008;
-        }
-
-        .sell {
-            background: var(--red);
-            color: white;
-        }
-
-        /* =========================
-           WALLET
-        ========================= */
-
-        .wallet-balance {
-            text-align: center;
-            padding: 28px;
-            margin-bottom: 15px;
-        }
-
-        .wallet-balance .amount {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            margin: 8px 0;
-        }
-
-        .wallet-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .wallet-action {
-            padding: 18px;
-            text-align: left;
-            border: 1px solid var(--border);
-            background: var(--panel);
-            color: var(--text);
-            border-radius: 8px;
-        }
-
-        .wallet-action strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .wallet-action span {
-            color: var(--muted);
-            font-size: 9px;
-        }
-
-        .wallet-action:hover {
-            border-color: var(--accent);
-        }
-
-        .transaction {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            padding: 13px;
-            border-bottom: 1px solid var(--border);
-            font-size: 10px;
-        }
-
-        /* =========================
-           SUPPORT
-        ========================= */
-
-        .support-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .support-card {
-            padding: 20px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
-
-        .support-icon {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .support-card h3 {
-            font-family: "Space Grotesk", sans-serif;
-            margin-bottom: 7px;
-        }
-
-        .support-card p {
-            color: var(--muted);
-            font-size: 10px;
-            line-height: 1.7;
-        }
-
-        .support-btn {
-            margin-top: 13px;
-            width: 100%;
-            padding: 10px;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 5px;
-        }
-
-        /* =========================
-           SETTINGS
-        ========================= */
-
-        .settings-list {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            overflow: hidden;
-        }
-
-        .setting {
-            min-height: 62px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .setting:last-child {
-            border-bottom: 0;
-        }
-
-        .setting-title {
-            font-size: 12px;
-        }
-
-        .setting-desc {
-            color: var(--muted);
-            font-size: 9px;
-            margin-top: 4px;
-        }
-
-        .setting select {
-            width: auto;
-            min-width: 120px;
-        }
-
-        /* =========================
-           HISTORY
-        ========================= */
-
-        .history {
-            margin-top: 18px;
-            overflow: hidden;
-        }
-
-        .history-title {
-            padding: 13px;
-            color: var(--accent);
-            border-bottom: 1px solid var(--border);
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        .history-item {
-            display: grid;
-            grid-template-columns: 80px 1fr 1fr 100px;
-            gap: 10px;
-            padding: 13px;
-            border-bottom: 1px solid var(--border);
-            font-size: 10px;
-        }
-
-        .empty {
-            padding: 25px;
-            color: var(--muted);
-            text-align: center;
-            font-size: 10px;
-        }
-
-        /* =========================
-           BOTTOM NAVIGATION
-        ========================= */
-
-        .bottom-nav {
-            position: fixed;
-            z-index: 100;
-            left: 50%;
-            bottom: 14px;
-            transform: translateX(-50%);
-            width: min(700px, 94%);
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            padding: 7px;
-            background: rgba(13,18,25,.96);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,.5);
-            backdrop-filter: blur(15px);
-        }
-
-        .nav-btn {
-            padding: 9px 4px;
-            background: transparent;
-            border: 0;
-            color: var(--muted);
-            border-radius: 7px;
-            font-size: 9px;
-        }
-
-        .nav-icon {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 3px;
-        }
-
-        .nav-btn.active {
-            color: var(--accent);
-            background: rgba(245,197,66,.07);
-        }
-
-        /* =========================
-           MODAL
-        ========================= */
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 200;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0,0,0,.72);
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-box {
-            width: min(420px, 100%);
-            padding: 20px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-
-        .close {
-            border: 0;
-            background: transparent;
-            color: var(--muted);
-            font-size: 20px;
-        }
-
-        .modal-action {
-            width: 100%;
-            margin-top: 8px;
-            padding: 12px;
-            border: 0;
-            background: var(--accent);
-            color: #080a0d;
-            border-radius: 6px;
-            font-weight: 700;
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 900px) {
-
-            .market-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .trade-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 650px) {
-
-            .app {
-                width: 92%;
-            }
-
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-
-            .market-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .support-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .wallet-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .history-item {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .price {
-                font-size: 28px;
-            }
-
-            #chart {
-                height: 210px;
-            }
-
-            .bottom-nav {
-                bottom: 8px;
-            }
-        }
-        /* =========================
-   LIVE SUPPORT BUTTON
-========================= */
-
-.live-support-btn {
-    position: fixed;
-    right: 22px;
-    bottom: 100px;
-
-    width: 62px;
-    height: 62px;
-
-    border-radius: 50%;
-    border: 2px solid var(--accent);
-
-    background: var(--panel);
-    color: var(--accent);
-
-    font-size: 25px;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 0 25px rgba(245,197,66,.18);
-
-    z-index: 150;
-
-    transition: .2s;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#070a0f">
+
+<title>BEcoin Trading Platform</title>
+
+<style>
+:root{
+    --bg:#070a0f;
+    --panel:#0d1219;
+    --panel2:#111821;
+    --border:#202a36;
+    --text:#f5f7fa;
+    --muted:#7d8997;
+    --accent:#f5c542;
+    --green:#22c55e;
+    --red:#ef4444;
 }
 
-.live-support-btn:hover {
-    transform: scale(1.08);
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-/* =========================
-   CHAT WINDOW
-========================= */
-
-.support-chat {
-    position: fixed;
-
-    right: 22px;
-    bottom: 175px;
-
-    width: 350px;
-    max-width: calc(100% - 30px);
-
-    height: 480px;
-
-    display: none;
-    flex-direction: column;
-
-    background: var(--panel);
-
-    border: 1px solid var(--border);
-
-    border-radius: 12px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.55);
-
-    z-index: 200;
+body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,sans-serif;
+    padding-bottom:90px;
 }
 
-.support-chat.show {
-    display: flex;
+button,input,select{
+    font:inherit;
 }
 
-/* =========================
-   CHAT HEADER
-========================= */
-
-.support-chat-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 15px;
-
-    background: var(--panel2);
-
-    border-bottom: 1px solid var(--border);
+button{
+    cursor:pointer;
 }
 
-.support-chat-header strong {
-    display: block;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 14px;
+.app{
+    width:min(1180px,94%);
+    margin:auto;
 }
 
-.support-chat-header small {
-    display: block;
-
-    margin-top: 4px;
-
-    color: var(--green);
-
-    font-size: 8px;
+.demo-banner{
+    margin:14px 0;
+    padding:10px;
+    text-align:center;
+    color:var(--accent);
+    background:rgba(245,197,66,.06);
+    border:1px solid rgba(245,197,66,.25);
+    font-size:12px;
 }
 
-.support-chat-header button {
-    border: 0;
-
-    background: transparent;
-
-    color: var(--muted);
-
-    font-size: 22px;
-
-    cursor: pointer;
+.header{
+    min-height:72px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
 }
 
-/* =========================
-   MESSAGES
-========================= */
-
-.support-messages {
-    flex: 1;
-
-    overflow-y: auto;
-
-    padding: 15px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.support-message {
-    max-width: 82%;
-
-    padding: 10px 12px;
-
-    border-radius: 8px;
-
-    font-size: 10px;
-
-    line-height: 1.6;
+.brand-icon{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    background:var(--accent);
+    color:#080a0d;
+    border-radius:9px;
+    font-weight:700;
+    font-size:22px;
 }
 
-.support-message.agent {
-    align-self: flex-start;
-
-    background: var(--panel2);
-
-    border: 1px solid var(--border);
+.brand h1{
+    font-size:24px;
 }
 
-.support-message.user {
-    align-self: flex-end;
-
-    background: rgba(245,197,66,.12);
-
-    border: 1px solid
-        rgba(245,197,66,.3);
-
-    color: var(--text);
+.brand small{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    letter-spacing:1px;
 }
 
-/* =========================
-   INPUT
-========================= */
-
-.support-input {
-    display: grid;
-
-    grid-template-columns: 1fr 45px;
-
-    gap: 7px;
-
-    padding: 10px;
-
-    border-top: 1px solid var(--border);
-
-    background: var(--panel2);
+#connectWallet{
+    padding:10px 14px;
+    background:transparent;
+    border:1px solid var(--accent);
+    color:var(--accent);
+    border-radius:6px;
 }
 
-.support-input input {
-    width: 100%;
-
-    padding: 11px;
-
-    background: var(--bg);
-
-    border: 1px solid var(--border);
-
-    color: var(--text);
-
-    border-radius: 6px;
-
-    outline: none;
+#connectWallet:hover{
+    background:var(--accent);
+    color:#080a0d;
 }
 
-.support-input input:focus {
-    border-color: var(--accent);
+.page{
+    display:none;
+    padding-top:22px;
 }
 
-.support-input button {
-    border: 0;
-
-    border-radius: 6px;
-
-    background: var(--accent);
-
-    color: #080a0d;
-
-    font-weight: 700;
-
-    cursor: pointer;
+.page.active{
+    display:block;
 }
 
-/* =========================
-   MOBILE
-========================= */
+.page-title{
+    font-size:24px;
+    margin-bottom:6px;
+}
 
-@media (max-width: 600px) {
+.page-subtitle{
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:20px;
+}
 
-    .live-support-btn {
-        right: 15px;
-        bottom: 88px;
+.card{
+    background:linear-gradient(145deg,var(--panel),#0a0f15);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:18px;
+}
 
-        width: 56px;
-        height: 56px;
+.card-title{
+    font-size:17px;
+    margin-bottom:14px;
+}
+
+.label{
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.2px;
+    margin-bottom:6px;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.value{
+    font-size:18px;
+    font-weight:600;
+}
+
+.balance-card{
+    padding:22px;
+    margin-bottom:18px;
+}
+
+.balance{
+    font-size:34px;
+    font-weight:700;
+}
+
+.demo{
+    color:var(--accent);
+    font-size:10px;
+    margin-left:5px;
+}
+
+.pnl{
+    font-size:11px;
+    margin-top:5px;
+}
+
+.green{
+    color:var(--green)!important;
+}
+
+.red{
+    color:var(--red)!important;
+}
+
+.market-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.market-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:13px;
+    border-radius:7px;
+}
+
+.coin-name{
+    color:var(--muted);
+    font-size:9px;
+    margin-bottom:7px;
+}
+
+.coin-price{
+    font-size:12px;
+}
+
+.coin-change{
+    font-size:9px;
+    margin-top:5px;
+}
+
+.trade-grid{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:15px;
+}
+
+.price-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    margin-bottom:12px;
+}
+
+.symbol{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.price{
+    font-size:34px;
+    font-weight:700;
+    margin-top:5px;
+}
+
+#chart{
+    width:100%;
+    height:260px;
+    display:block;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    margin:12px 0;
+}
+
+.timer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.timer{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border:2px solid var(--accent);
+    border-radius:50%;
+    color:var(--accent);
+    font-weight:700;
+}
+
+.prediction-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:15px;
+}
+
+.prediction-buttons button{
+    padding:14px;
+    border-radius:6px;
+    font-weight:700;
+}
+
+.up{
+    color:var(--green);
+    background:rgba(34,197,94,.08);
+    border:1px solid var(--green);
+}
+
+.down{
+    color:var(--red);
+    background:rgba(239,68,68,.08);
+    border:1px solid var(--red);
+}
+
+.prediction-buttons button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.stake-row{
+    display:grid;
+    grid-template-columns:42px 1fr 42px;
+    gap:7px;
+    margin-top:9px;
+}
+
+.stake-row button{
+    height:38px;
+    background:var(--panel2);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:5px;
+}
+
+.stake-value{
+    display:grid;
+    place-items:center;
+    font-size:11px;
+}
+
+.field{
+    margin-bottom:14px;
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    margin-bottom:7px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    color:var(--text);
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:6px;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:var(--accent);
+}
+
+.buy-sell{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.buy-sell button{
+    padding:13px;
+    border:0;
+    border-radius:6px;
+    font-weight:700;
+}
+
+.buy{
+    background:var(--green);
+    color:#031008;
+}
+
+.sell{
+    background:var(--red);
+    color:white;
+}
+
+.history{
+    margin-top:18px;
+    overflow:hidden;
+}
+
+.history-title{
+    padding:13px;
+    color:var(--accent);
+    border-bottom:1px solid var(--border);
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+.history-item{
+    display:grid;
+    grid-template-columns:80px 1fr 1fr 100px;
+    gap:10px;
+    padding:13px;
+    border-bottom:1px solid var(--border);
+    font-size:10px;
+}
+
+.empty{
+    padding:25px;
+    color:var(--muted);
+    text-align:center;
+    font-size:10px;
+}
+
+.wallet-balance{
+    text-align:center;
+    padding:28px;
+    margin-bottom:15px;
+}
+
+.wallet-balance .amount{
+    font-size:36px;
+    font-weight:700;
+    margin:8px 0;
+}
+
+.wallet-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.wallet-action{
+    padding:18px;
+    text-align:left;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text);
+    border-radius:8px;
+}
+
+.wallet-action strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.wallet-action span{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.transaction{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    padding:13px;
+    border-bottom:1px solid var(--border);
+    font-size:10px;
+}
+
+.support-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.support-card{
+    padding:20px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+}
+
+.support-icon{
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+.support-card h3{
+    margin-bottom:7px;
+}
+
+.support-card p{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.7;
+}
+
+.support-btn{
+    margin-top:13px;
+    width:100%;
+    padding:10px;
+    background:transparent;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:5px;
+}
+
+.settings-list{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:9px;
+    overflow:hidden;
+}
+
+.setting{
+    min-height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:13px 16px;
+    border-bottom:1px solid var(--border);
+}
+
+.setting:last-child{
+    border-bottom:0;
+}
+
+.setting-title{
+    font-size:12px;
+}
+
+.setting-desc{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:4px;
+}
+
+.setting select{
+    width:auto;
+    min-width:120px;
+}
+
+.bottom-nav{
+    position:fixed;
+    z-index:100;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(700px,94%);
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    padding:7px;
+    background:rgba(13,18,25,.96);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+}
+
+.nav-btn{
+    padding:9px 4px;
+    background:transparent;
+    border:0;
+    color:var(--muted);
+    border-radius:7px;
+    font-size:9px;
+}
+
+.nav-icon{
+    display:block;
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.nav-btn.active{
+    color:var(--accent);
+    background:rgba(245,197,66,.07);
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(420px,100%);
+    padding:20px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.close{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font-size:20px;
+}
+
+.modal-action{
+    width:100%;
+    margin-top:8px;
+    padding:12px;
+    border:0;
+    background:var(--accent);
+    color:#080a0d;
+    border-radius:6px;
+    font-weight:700;
+}
+
+.live-support-btn{
+    position:fixed;
+    right:22px;
+    bottom:100px;
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    border:2px solid var(--accent);
+    background:var(--panel);
+    color:var(--accent);
+    font-size:25px;
+    z-index:150;
+}
+
+.support-chat{
+    position:fixed;
+    right:22px;
+    bottom:175px;
+    width:350px;
+    max-width:calc(100% - 30px);
+    height:480px;
+    display:none;
+    flex-direction:column;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.55);
+    z-index:200;
+}
+
+.support-chat.show{
+    display:flex;
+}
+
+.support-chat-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px;
+    background:var(--panel2);
+    border-bottom:1px solid var(--border);
+}
+
+.support-chat-header strong{
+    display:block;
+    font-size:14px;
+}
+
+.support-chat-header small{
+    display:block;
+    margin-top:4px;
+    color:var(--green);
+    font-size:8px;
+}
+
+.support-chat-header button{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font-size:22px;
+}
+
+.support-messages{
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.support-message{
+    max-width:82%;
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:10px;
+    line-height:1.6;
+}
+
+.support-message.agent{
+    align-self:flex-start;
+    background:var(--panel2);
+    border:1px solid var(--border);
+}
+
+.support-message.user{
+    align-self:flex-end;
+    background:rgba(245,197,66,.12);
+    border:1px solid rgba(245,197,66,.3);
+}
+
+.support-input{
+    display:grid;
+    grid-template-columns:1fr 45px;
+    gap:7px;
+    padding:10px;
+    border-top:1px solid var(--border);
+    background:var(--panel2);
+}
+
+.support-input button{
+    border:0;
+    border-radius:6px;
+    background:var(--accent);
+    color:#080a0d;
+    font-weight:700;
+}
+
+.status{
+    margin-top:10px;
+    font-size:10px;
+}
+
+@media(max-width:900px){
+
+    .market-grid{
+        grid-template-columns:repeat(3,1fr);
     }
 
-    .support-chat {
-        right: 10px;
-        bottom: 155px;
-
-        width: calc(100% - 20px);
-
-        height: 70vh;
+    .trade-grid{
+        grid-template-columns:1fr;
     }
 }
-    </style>
+
+@media(max-width:650px){
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .market-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .support-grid{
+        grid-template-columns:1fr;
+    }
+
+    .wallet-actions{
+        grid-template-columns:1fr;
+    }
+
+    .history-item{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .price{
+        font-size:28px;
+    }
+
+    #chart{
+        height:210px;
+    }
+
+    .support-chat{
+        right:10px;
+        bottom:155px;
+        width:calc(100% - 20px);
+        height:70vh;
+    }
+
+    .live-support-btn{
+        right:15px;
+        bottom:88px;
+        width:56px;
+        height:56px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-    <!-- =========================
-         DEMO BANNER
-    ========================== -->
+<div class="demo-banner">
+⚠ BEcoin DEMO TRADING PLATFORM — VIRTUAL FUNDS ONLY
+</div>
 
-    <div class="demo-banner">
-        ⚠ BECOIN Bitcoin and Ethereum 
-    </div>
+<header class="header">
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+<div class="brand">
 
-    <header class="header">
+<div class="brand-icon">₿</div>
 
-        <div class="brand">
-            <div class="brand-icon">₿</div>
-
-            <div>
-                <h1>BEcoin</h1>
-                <small>BECoinTRADING PLATFORM</small>
-            </div>
-        </div>
-
-        <button id="connectWallet">
-            Connect Wallet
-        </button>
-
-    </header>
-
-    <!-- =====================================================
-         HOME PAGE
-    ====================================================== -->
-
-    <section
-        class="page active"
-        id="homePage">
-
-        <h2 class="page-title">
-            Welcome to BEcoin
-        </h2>
-
-        <p class="page-subtitle">
-            Practice trading with BECoin.
-        </p>
-
-        <!-- USER DASHBOARD -->
-
-        <div class="dashboard">
-
-            <div class="card">
-                <div class="label">
-                    USER ID
-                </div>
-
-                <div class="value">
-                    BEC-000001
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="label">
-                    WALLET
-                </div>
-
-                <div
-                    class="value"
-                    id="walletAddress">
-                    Not Connected
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="label">
-                    PORTFOLIO
-                </div>
-
-                <div class="value">
-                    $<span id="portfolio">
-                        10,000.00
-                    </span>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- BALANCE -->
-
-        <div class="card balance-card">
-
-            <div class="label">
-                VIRTUAL BALANCE
-            </div>
-
-            <div>
-                <span
-                    class="balance"
-                    id="balance">
-                    10,000.00
-                </span>
-
-                <span class="demo">
-                    DEMO
-                </span>
-            </div>
-
-            <div
-                class="pnl"
-                id="pnl">
-                +0.00 session
-            </div>
-
-        </div>
-
-        <!-- MARKET -->
-
-        <h2 class="page-title">
-            Live Market
-        </h2>
-
-        <div class="market-grid">
-
-            <div class="market-card">
-                <div class="coin-name">BTC</div>
-                <div
-                    class="coin-price"
-                    id="btcPrice">
-                    $0.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="btcChange">
-                    +0.00%
-                </div>
-            </div>
-
-            <div class="market-card">
-                <div class="coin-name">ETH</div>
-                <div
-                    class="coin-price"
-                    id="ethPrice">
-                    $0.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="ethChange">
-                    +0.00%
-                </div>
-            </div>
-
-            <div class="market-card">
-                <div class="coin-name">BNB</div>
-                <div
-                    class="coin-price"
-                    id="bnbPrice">
-                    $0.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="bnbChange">
-                    +0.00%
-                </div>
-            </div>
-
-            <div class="market-card">
-                <div class="coin-name">SOL</div>
-                <div
-                    class="coin-price"
-                    id="solPrice">
-                    $0.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="solChange">
-                    +0.00%
-                </div>
-            </div>
-
-            <div class="market-card">
-                <div class="coin-name">XRP</div>
-                <div
-                    class="coin-price"
-                    id="xrpPrice">
-                    $0.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="xrpChange">
-                    +0.00%
-                </div>
-            </div>
-
-            <div class="market-card">
-                <div class="coin-name">USDT</div>
-                <div
-                    class="coin-price"
-                    id="usdtPrice">
-                    $1.00
-                </div>
-                <div
-                    class="coin-change green"
-                    id="usdtChange">
-                    +0.00%
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- =====================================================
-         TRADE PAGE
-    ====================================================== -->
-
-    <section
-        class="page"
-        id="tradePage">
-
-        <h2 class="page-title">
-            BEcoin Trade
-        </h2>
-
-        <p class="page-subtitle">
-            Buy, sell or predict the next simulated price movement.
-        </p>
-
-        <div class="trade-grid">
-
-            <!-- CHART -->
-
-            <div class="card">
-
-                <div class="price-box">
-
-                    <div>
-                        <div class="symbol">
-                            <span id="selectedSymbol">
-                                BTC/USD
-                            </span>
-                            · SIMULATED
-                        </div>
-
-                        <div
-                            class="price"
-                            id="priceNow">
-                            $1,000.00
-                        </div>
-                    </div>
-
-                    <div
-                        id="priceDelta"
-                        class="green">
-                        +0.00%
-                    </div>
-
-                </div>
-
-                <canvas id="chart"></canvas>
-
-                <!-- ROUND -->
-
-                <div class="timer-row">
-
-                    <span id="roundLabel">
-                        Round closes in
-                    </span>
-
-                    <div class="timer">
-                        <span id="ringText">
-                            5
-                        </span>
-                    </div>
-
-                </div>
-
-                <!-- UP DOWN -->
-
-                <div class="prediction-buttons">
-
-                    <button
-                        class="up"
-                        id="btnUp">
-                        ▲ UP
-                    </button>
-
-                    <button
-                        class="down"
-                        id="btnDown">
-                        ▼ DOWN
-                    </button>
-
-                </div>
-
-                <!-- STAKE -->
-
-                <div class="stake-row">
-
-                    <button id="stakeMinus">
-                        −
-                    </button>
-
-                    <div
-                        class="stake-value"
-                        id="stakeVal">
-                        100 DEMO
-                    </div>
-
-                    <button id="stakePlus">
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- BUY SELL -->
-
-            <div class="card">
-
-                <h3 class="card-title">
-                    Spot Trade
-                </h3>
-
-                <div class="field">
-
-                    <label>
-                        SELECT ASSET
-                    </label>
-
-                    <select id="coin">
-
-                        <option value="bitcoin">
-                            Bitcoin / BTC
-                        </option>
-
-                        <option value="ethereum">
-                            Ethereum / ETH
-                        </option>
-
-                        <option value="binancecoin">
-                            BNB
-                        </option>
-
-                        <option value="solana">
-                            Solana / SOL
-                        </option>
-
-                        <option value="ripple">
-                            XRP
-                        </option>
-
-                        <option value="tether">
-                            USDT
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="field">
-
-                    <label>
-                        AMOUNT / USD
-                    </label>
-
-                    <input
-                        type="number"
-                        id="amount"
-                        min="1"
-                        placeholder="Enter amount">
-
-                </div>
-
-                <div class="buy-sell">
-
-                    <button
-                        class="buy"
-                        id="buyButton">
-                        BUY
-                    </button>
-
-                    <button
-                        class="sell"
-                        id="sellButton">
-                        SELL
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- HISTORY -->
-
-        <div class="card history">
-
-            <div class="history-title">
-                TRADE & ROUND HISTORY
-            </div>
-
-            <div id="history">
-
-                <div class="empty">
-                    No trades yet.
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- =====================================================
-         WALLET PAGE
-    ====================================================== -->
-
-    <section
-        class="page"
-        id="walletPage">
-
-        <h2 class="page-title">
-            BEcoin Wallet
-        </h2>
-
-        <p class="page-subtitle">
-            Manage your virtual wallet balance.
-        </p>
-
-        <div class="card wallet-balance">
-
-            <div class="label">
-                AVAILABLE BALANCE
-            </div>
-
-            <div class="amount">
-                $<span id="walletBalance">
-                    10,000.00
-                </span>
-            </div>
-
-            <div class="demo">
-                VIRTUAL FUNDS ONLY
-            </div>
-
-        </div>
-
-        <!-- WALLET ACTIONS -->
-
-        <div class="wallet-actions">
-
-            <button
-                class="wallet-action"
-                id="depositBtn">
-
-                <strong>
-                    ＋ Deposit
-                </strong>
-
-                <span>
-                    Add funds
-                </span>
-
-            </button>
-
-            <button
-                class="wallet-action"
-                id="withdrawBtn">
-
-                <strong>
-                    − Withdraw
-                </strong>
-
-                <span>
-                    Remove funds
-                </span>
-
-            </button>
-
-        </div>
-
-        <!-- TRANSACTION HISTORY -->
-
-        <div class="card">
-
-            <h3 class="card-title">
-                Transaction History
-            </h3>
-
-            <div id="walletTransactions">
-
-                <div class="empty">
-                    No wallet transactions yet.
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- =====================================================
-         CUSTOMER SERVICE
-    ====================================================== -->
-
-    <section
-        class="page"
-        id="supportPage">
-
-        <h2 class="page-title">
-            Customer Service
-        </h2>
-
-        <p class="page-subtitle">
-            Need help? Find answers or contact BEcoin support.
-        </p>
-
-        <div class="support-grid">
-
-            <div class="support-card">
-
-                <div class="support-icon">
-                    ❓
-                </div>
-
-                <h3>
-                    FAQ
-                </h3>
-
-                <p>
-                    Learn how BEcoin trading,
-                    balance and UP/DOWN
-                    rounds work.
-                </p>
-
-                <button
-                    class="support-btn"
-                    onclick="alert('FAQ section coming soon.')">
-                    View FAQ
-                </button>
-
-            </div>
-
-            <div class="support-card">
-
-                <div class="support-icon">
-                    💬
-                </div>
-
-                <h3>
-                    Live Support
-                </h3>
-
-                <p>
-                    Contact customer support
-                    for help with your account.
-                </p>
-
-                <button
-                    class="support-btn"
-                    onclick="alert('Live support is currently unavailable in mode.')">
-                    Contact Support
-                </button>
-
-            </div>
-
-            <div class="support-card">
-
-                <div class="support-icon">
-                    🛡️
-                </div>
-
-                <h3>
-                    Account Safety
-                </h3>
-
-                <p>
-                    BEcoin demo mode does not
-                    process real deposits or withdrawals.
-                </p>
-
-                <button
-                    class="support-btn"
-                    onclick="alert('Your BEcoin demo balance is virtual only.')">
-                    Learn More
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- =====================================================
-         SETTINGS PAGE
-    ====================================================== -->
-
-    <section
-        class="page"
-        id="settingsPage">
-
-        <h2 class="page-title">
-            Settings
-        </h2>
-
-        <p class="page-subtitle">
-            Manage your BEcoin preferences.
-        </p>
-
-        <div class="settings-list">
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">
-                        Account
-                    </div>
-
-                    <div class="setting-desc">
-                        BEC-000001
-                    </div>
-                </div>
-
-                <span>
-                    DEMO
-                </span>
-
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">
-                        Language
-                    </div>
-
-                    <div class="setting-desc">
-                        Choose interface language
-                    </div>
-                </div>
-
-                <select id="language">
-
-                    <option>
-                        English
-                    </option>
-
-                    <option>
-                        বাংলা
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">
-                        Notifications
-                    </div>
-
-                    <div class="setting-desc">
-                        Trading round notifications
-                    </div>
-                </div>
-
-                <input
-                    type="checkbox"
-                    id="notifications"
-                    checked
-                    style="width:20px">
-
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">
-                        Demo Mode
-                    </div>
-
-                    <div class="setting-desc">
-                        Real money trading is disabled
-                    </div>
-                </div>
-
-                <span class="green">
-                    ON
-                </span>
-
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <div class="setting-title">
-                        Reset Demo Account
-                    </div>
-
-                    <div class="setting-desc">
-                        Reset balance to 10,000 DEMO
-                    </div>
-                </div>
-
-                <button
-                    class="support-btn"
-                    style="width:auto;margin:0"
-                    onclick="resetDemo()">
-                    Reset
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
+<div>
+<h1>BEcoin</h1>
+<small>DEMO TRADING PLATFORM</small>
+</div>
 
 </div>
 
-<!-- =====================================================
-     BOTTOM NAVIGATION
-====================================================== -->
+<button id="connectWallet">
+Connect Wallet
+</button>
+
+</header>
+
+
+<!-- HOME -->
+
+<section class="page active" id="homePage">
+
+<h2 class="page-title">Welcome to BEcoin</h2>
+
+<p class="page-subtitle">
+Practice trading with virtual DEMO funds.
+</p>
+
+<div class="dashboard">
+
+<div class="card">
+
+<div class="label">USER ID</div>
+
+<div class="value" id="userCode">
+Loading...
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="label">WALLET</div>
+
+<div class="value" id="walletAddress">
+Not Connected
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="label">PORTFOLIO</div>
+
+<div class="value">
+$<span id="portfolio">0.00</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="card balance-card">
+
+<div class="label">
+VIRTUAL BALANCE
+</div>
+
+<div>
+
+<span class="balance" id="balance">
+0.00
+</span>
+
+<span class="demo">
+DEMO
+</span>
+
+</div>
+
+<div class="pnl" id="pnl">
++0.00 session
+</div>
+
+</div>
+
+<h2 class="page-title">
+Live Market
+</h2>
+
+<div class="market-grid">
+
+<div class="market-card">
+<div class="coin-name">BTC</div>
+<div class="coin-price" id="btcPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
+
+<div class="market-card">
+<div class="coin-name">ETH</div>
+<div class="coin-price" id="ethPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
+
+<div class="market-card">
+<div class="coin-name">BNB</div>
+<div class="coin-price" id="bnbPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
+
+<div class="market-card">
+<div class="coin-name">SOL</div>
+<div class="coin-price" id="solPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
+
+<div class="market-card">
+<div class="coin-name">XRP</div>
+<div class="coin-price" id="xrpPrice">$0.00</div>
+<div class="coin-change green">LIVE</div>
+</div>
+
+<div class="market-card">
+<div class="coin-name">USDT</div>
+<div class="coin-price">$1.00</div>
+<div class="coin-change green">STABLE</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TRADE -->
+
+<section class="page" id="tradePage">
+
+<h2 class="page-title">
+BEcoin Trade
+</h2>
+
+<p class="page-subtitle">
+Simulated UP/DOWN trading.
+</p>
+
+<div class="trade-grid">
+
+<div class="card">
+
+<div class="price-box">
+
+<div>
+
+<div class="symbol">
+<span id="selectedSymbol">
+BTC/USD
+</span>
+· SIMULATED
+</div>
+
+<div class="price" id="priceNow">
+$1,000.00
+</div>
+
+</div>
+
+<div id="priceDelta" class="green">
++0.00%
+</div>
+
+</div>
+
+<canvas id="chart"></canvas>
+
+<div class="timer-row">
+
+<span id="roundLabel">
+Round ready
+</span>
+
+<div class="timer">
+<span id="ringText">5</span>
+</div>
+
+</div>
+
+<div class="prediction-buttons">
+
+<button class="up" id="btnUp">
+▲ UP
+</button>
+
+<button class="down" id="btnDown">
+▼ DOWN
+</button>
+
+</div>
+
+<div class="stake-row">
+
+<button id="stakeMinus">
+−
+</button>
+
+<div class="stake-value" id="stakeVal">
+100 DEMO
+</div>
+
+<button id="stakePlus">
++
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3 class="card-title">
+Spot Trade
+</h3>
+
+<div class="field">
+
+<label>
+SELECT ASSET
+</label>
+
+<select id="coin">
+
+<option value="bitcoin">
+Bitcoin / BTC
+</option>
+
+<option value="ethereum">
+Ethereum / ETH
+</option>
+
+<option value="binancecoin">
+BNB
+</option>
+
+<option value="solana">
+Solana / SOL
+</option>
+
+<option value="ripple">
+XRP
+</option>
+
+<option value="tether">
+USDT
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>
+AMOUNT / USD
+</label>
+
+<input
+type="number"
+id="amount"
+min="1"
+placeholder="Enter amount">
+
+</div>
+
+<div class="buy-sell">
+
+<button class="buy" id="buyButton">
+BUY
+</button>
+
+<button class="sell" id="sellButton">
+SELL
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card history">
+
+<div class="history-title">
+TRADE HISTORY
+</div>
+
+<div id="history">
+
+<div class="empty">
+No trades yet.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- WALLET -->
+
+<section class="page" id="walletPage">
+
+<h2 class="page-title">
+BEcoin Wallet
+</h2>
+
+<p class="page-subtitle">
+Manage your virtual DEMO balance.
+</p>
+
+<div class="card wallet-balance">
+
+<div class="label">
+AVAILABLE BALANCE
+</div>
+
+<div class="amount">
+$<span id="walletBalance">
+0.00
+</span>
+</div>
+
+<div class="demo">
+VIRTUAL FUNDS ONLY
+</div>
+
+</div>
+
+<div class="wallet-actions">
+
+<button class="wallet-action" id="depositBtn">
+
+<strong>
+＋ Deposit
+</strong>
+
+<span>
+Add DEMO funds
+</span>
+
+</button>
+
+<button class="wallet-action" id="withdrawBtn">
+
+<strong>
+− Withdraw
+</strong>
+
+<span>
+Remove DEMO funds
+</span>
+
+</button>
+
+</div>
+
+<div class="card">
+
+<h3 class="card-title">
+Transaction History
+</h3>
+
+<div id="walletTransactions">
+
+<div class="empty">
+No wallet transactions yet.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUPPORT -->
+
+<section class="page" id="supportPage">
+
+<h2 class="page-title">
+Customer Service
+</h2>
+
+<p class="page-subtitle">
+Need help? Contact BEcoin support.
+</p>
+
+<div class="support-grid">
+
+<div class="support-card">
+
+<div class="support-icon">
+❓
+</div>
+
+<h3>
+FAQ
+</h3>
+
+<p>
+Learn how BEcoin demo trading works.
+</p>
+
+<button
+class="support-btn"
+onclick="alert('FAQ coming soon.')">
+View FAQ
+</button>
+
+</div>
+
+<div class="support-card">
+
+<div class="support-icon">
+💬
+</div>
+
+<h3>
+Live Support
+</h3>
+
+<p>
+Chat with BEcoin support.
+</p>
+
+<button
+class="support-btn"
+onclick="openSupport()">
+Open Chat
+</button>
+
+</div>
+
+<div class="support-card">
+
+<div class="support-icon">
+🛡️
+</div>
+
+<h3>
+Account Safety
+</h3>
+
+<p>
+This platform uses virtual DEMO funds only.
+</p>
+
+<button
+class="support-btn"
+onclick="alert('DEMO balance is virtual only.')">
+Learn More
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="page" id="settingsPage">
+
+<h2 class="page-title">
+Settings
+</h2>
+
+<p class="page-subtitle">
+Manage your BEcoin preferences.
+</p>
+
+<div class="settings-list">
+
+<div class="setting">
+
+<div>
+
+<div class="setting-title">
+Account
+</div>
+
+<div class="setting-desc" id="settingsUser">
+Loading...
+</div>
+
+</div>
+
+<span class="demo">
+DEMO
+</span>
+
+</div>
+
+<div class="setting">
+
+<div>
+
+<div class="setting-title">
+Language
+</div>
+
+<div class="setting-desc">
+Choose interface language
+</div>
+
+</div>
+
+<select id="language">
+
+<option>English</option>
+<option>বাংলা</option>
+
+</select>
+
+</div>
+
+<div class="setting">
+
+<div>
+
+<div class="setting-title">
+Notifications
+</div>
+
+<div class="setting-desc">
+Trading notifications
+</div>
+
+</div>
+
+<input
+type="checkbox"
+id="notifications"
+checked
+style="width:20px">
+
+</div>
+
+<div class="setting">
+
+<div>
+
+<div class="setting-title">
+Demo Mode
+</div>
+
+<div class="setting-desc">
+Real-money trading disabled
+</div>
+
+</div>
+
+<span class="green">
+ON
+</span>
+
+</div>
+
+<div class="setting">
+
+<div>
+
+<div class="setting-title">
+Reset Demo Account
+</div>
+
+<div class="setting-desc">
+Reset local display
+</div>
+
+</div>
+
+<button
+class="support-btn"
+style="width:auto;margin:0"
+onclick="resetDemo()">
+Reset
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- NAVIGATION -->
 
 <nav class="bottom-nav">
 
-    <button
-        class="nav-btn active"
-        data-page="homePage">
+<button class="nav-btn active" data-page="homePage">
+<span class="nav-icon">🏠</span>
+Home
+</button>
 
-        <span class="nav-icon">
-            🏠
-        </span>
+<button class="nav-btn" data-page="tradePage">
+<span class="nav-icon">📈</span>
+Trade
+</button>
 
-        Home
+<button class="nav-btn" data-page="walletPage">
+<span class="nav-icon">👛</span>
+Wallet
+</button>
 
-    </button>
+<button class="nav-btn" data-page="supportPage">
+<span class="nav-icon">🎧</span>
+Support
+</button>
 
-    <button
-        class="nav-btn"
-        data-page="tradePage">
-
-        <span class="nav-icon">
-            📈
-        </span>
-
-        Trade
-
-    </button>
-
-    <button
-        class="nav-btn"
-        data-page="walletPage">
-
-        <span class="nav-icon">
-            👛
-        </span>
-
-        Wallet
-
-    </button>
-
-    <button
-        class="nav-btn"
-        data-page="supportPage">
-
-        <span class="nav-icon">
-            🎧
-        </span>
-
-        Support
-
-    </button>
-
-    <button
-        class="nav-btn"
-        data-page="settingsPage">
-
-        <span class="nav-icon">
-            ⚙️
-        </span>
-
-        Settings
-
-    </button>
+<button class="nav-btn" data-page="settingsPage">
+<span class="nav-icon">⚙️</span>
+Settings
+</button>
 
 </nav>
 
-<!-- =====================================================
-     DEPOSIT / WITHDRAW MODAL
-====================================================== -->
 
-<div
-    class="modal"
-    id="walletModal">
+<!-- WALLET MODAL -->
 
-    <div class="modal-box">
+<div class="modal" id="walletModal">
 
-        <div class="modal-header">
+<div class="modal-box">
 
-            <h3 id="modalTitle">
-                Deposit
-            </h3>
+<div class="modal-header">
 
-            <button
-                class="close"
-                id="closeModal">
-                ×
-            </button>
+<h3 id="modalTitle">
+Deposit DEMO
+</h3>
 
-        </div>
-
-        <div class="field">
-
-            <label>
-                DEMO AMOUNT
-            </label>
-
-            <input
-                type="number"
-                id="walletAmount"
-                min="1"
-                placeholder="Enter amount">
-
-        </div>
-
-        <button
-            class="modal-action"
-            id="confirmWalletAction">
-            Confirm
-
-        </button>
-
-    </div>
+<button class="close" id="closeModal">
+×
+</button>
 
 </div>
 
+<div class="field">
+
+<label>
+DEMO AMOUNT
+</label>
+
+<input
+type="number"
+id="walletAmount"
+min="1"
+placeholder="Enter amount">
+
+</div>
+
+<button
+class="modal-action"
+id="confirmWalletAction">
+Confirm
+</button>
+
+</div>
+
+</div>
+
+
+<!-- LIVE SUPPORT -->
+
+<button
+class="live-support-btn"
+id="liveSupportBtn"
+type="button">
+💬
+</button>
+
+<div
+class="support-chat"
+id="supportChat">
+
+<div class="support-chat-header">
+
+<div>
+
+<strong>
+BEcoin Support
+</strong>
+
+<small>
+● Online Support
+</small>
+
+</div>
+
+<button
+id="closeSupport"
+type="button">
+×
+</button>
+
+</div>
+
+<div
+class="support-messages"
+id="supportMessages">
+
+<div class="support-message agent">
+Hello! 👋<br>
+Welcome to BEcoin Support.
+How can we help you?
+</div>
+
+</div>
+
+<div class="support-input">
+
+<input
+type="text"
+id="supportInput"
+placeholder="Type your message...">
+
+<button
+id="sendSupport"
+type="button">
+➤
+</button>
+
+</div>
+
+</div>
+
+
 <script>
+
 /* =====================================================
    BECOIN FRONTEND
-   Backend connected
+   BACKEND
 ===================================================== */
 
-const API_URL = "https://short-term-95sa.onrender.com";
-const USER_CODE = "BEC-000001";
+const API_URL =
+"https://short-term-95sa.onrender.com";
 
-let balance = 10000;
-let startingBalance = 10000;
+/*
+ IMPORTANT:
+
+ For now this is the demo user code.
+
+ If your backend creates/returns another user_id,
+ replace this with the real authenticated user_id.
+*/
+
+const USER_CODE =
+localStorage.getItem("becoin_user_id") ||
+"BEC-000001";
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let balance = 0;
+let startingBalance = 0;
 
 let stake = 100;
+
 let currentPrice = 1000;
 let previousPrice = 1000;
 
-let prediction = null;
 let roundActive = false;
 let roundTimer = null;
 
@@ -1857,1104 +1567,1360 @@ let priceHistory = [];
 
 let walletAction = "deposit";
 
+
 /* =====================================================
    ELEMENTS
 ===================================================== */
 
-const balanceEl = document.getElementById("balance");
-const portfolioEl = document.getElementById("portfolio");
-const walletBalanceEl = document.getElementById("walletBalance");
-const pnlEl = document.getElementById("pnl");
+const balanceEl =
+document.getElementById("balance");
 
-const priceNowEl = document.getElementById("priceNow");
-const priceDeltaEl = document.getElementById("priceDelta");
+const portfolioEl =
+document.getElementById("portfolio");
 
-const ringTextEl = document.getElementById("ringText");
-const roundLabelEl = document.getElementById("roundLabel");
+const walletBalanceEl =
+document.getElementById("walletBalance");
 
-const stakeValEl = document.getElementById("stakeVal");
-const historyEl = document.getElementById("history");
+const pnlEl =
+document.getElementById("pnl");
+
+const userCodeEl =
+document.getElementById("userCode");
+
+const settingsUser =
+document.getElementById("settingsUser");
+
+const priceNowEl =
+document.getElementById("priceNow");
+
+const priceDeltaEl =
+document.getElementById("priceDelta");
+
+const ringTextEl =
+document.getElementById("ringText");
+
+const roundLabelEl =
+document.getElementById("roundLabel");
+
+const stakeValEl =
+document.getElementById("stakeVal");
+
+const historyEl =
+document.getElementById("history");
 
 const walletTransactions =
-    document.getElementById("walletTransactions");
+document.getElementById("walletTransactions");
 
-const canvas = document.getElementById("chart");
-const ctx = canvas.getContext("2d");
+const canvas =
+document.getElementById("chart");
+
+const ctx =
+canvas.getContext("2d");
+
+
+userCodeEl.textContent =
+USER_CODE;
+
+settingsUser.textContent =
+USER_CODE;
+
 
 /* =====================================================
    PAGE NAVIGATION
 ===================================================== */
 
-document.querySelectorAll(".nav-btn").forEach(button => {
+document.querySelectorAll(".nav-btn")
+.forEach(button => {
 
-    button.addEventListener("click", () => {
+button.addEventListener("click",() => {
 
-        const page = button.dataset.page;
+const page =
+button.dataset.page;
 
-        document.querySelectorAll(".page").forEach(p => {
-            p.classList.remove("active");
-        });
+document.querySelectorAll(".page")
+.forEach(p => {
 
-        document.getElementById(page).classList.add("active");
-
-        document.querySelectorAll(".nav-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-        setTimeout(resizeCanvas, 50);
-    });
+p.classList.remove("active");
 
 });
 
+document.getElementById(page)
+.classList.add("active");
+
+document.querySelectorAll(".nav-btn")
+.forEach(btn => {
+
+btn.classList.remove("active");
+
+});
+
+button.classList.add("active");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+setTimeout(
+resizeCanvas,
+50
+);
+
+});
+
+});
+
+
 /* =====================================================
-   MONEY FORMAT
+   MONEY
 ===================================================== */
 
-function money(value) {
+function money(value){
 
-    return "$" +
-        Number(value).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+return "$" +
+Number(value).toLocaleString(
+undefined,
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
 
 }
 
+
 /* =====================================================
-   BALANCE UI
+   BALANCE
 ===================================================== */
 
-function updateBalance() {
+function updateBalance(){
 
-    const formatted = Number(balance).toLocaleString(
-        undefined,
-        {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }
-    );
-
-    balanceEl.textContent = formatted;
-    portfolioEl.textContent = formatted;
-    walletBalanceEl.textContent = formatted;
-
-    const pnl = balance - startingBalance;
-
-    pnlEl.textContent =
-        (pnl >= 0 ? "+" : "") +
-        pnl.toFixed(2) +
-        " session";
-
-    pnlEl.className =
-        pnl >= 0
-            ? "pnl green"
-            : "pnl red";
+const formatted =
+Number(balance).toLocaleString(
+undefined,
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
 }
+);
+
+balanceEl.textContent =
+formatted;
+
+portfolioEl.textContent =
+formatted;
+
+walletBalanceEl.textContent =
+formatted;
+
+const pnl =
+balance - startingBalance;
+
+pnlEl.textContent =
+(pnl >= 0 ? "+" : "") +
+pnl.toFixed(2) +
+" session";
+
+pnlEl.className =
+pnl >= 0
+? "pnl green"
+: "pnl red";
+
+}
+
 
 /* =====================================================
    STAKE
 ===================================================== */
 
-function updateStake() {
+function updateStake(){
 
-    stakeValEl.textContent =
-        stake.toLocaleString() + " DEMO";
+stakeValEl.textContent =
+stake.toLocaleString() +
+" DEMO";
 
 }
 
-document.getElementById("stakeMinus").onclick = () => {
+document.getElementById(
+"stakeMinus"
+).onclick = () => {
 
-    stake = Math.max(50, stake - 50);
+stake =
+Math.max(
+50,
+stake - 50
+);
 
-    updateStake();
+updateStake();
+
+};
+
+
+document.getElementById(
+"stakePlus"
+).onclick = () => {
+
+stake =
+Math.min(
+5000,
+stake + 50
+);
+
+updateStake();
 
 };
 
-document.getElementById("stakePlus").onclick = () => {
-
-    stake = Math.min(5000, stake + 50);
-
-    updateStake();
-
-};
 
 /* =====================================================
-   PRICE ENGINE
+   PRICE
 ===================================================== */
 
-function movePrice() {
+function movePrice(){
 
-    previousPrice = currentPrice;
+previousPrice =
+currentPrice;
 
-    currentPrice +=
-        (Math.random() - 0.5) * 18;
+currentPrice +=
+(Math.random() - .5) * 18;
 
-    if (currentPrice < 100) {
-        currentPrice = 100;
-    }
+if(currentPrice < 100){
 
-    const change =
-        ((currentPrice - previousPrice) /
-        previousPrice) * 100;
+currentPrice = 100;
 
-    priceNowEl.textContent =
-        money(currentPrice);
-
-    priceDeltaEl.textContent =
-        (change >= 0 ? "+" : "") +
-        change.toFixed(2) +
-        "%";
-
-    priceDeltaEl.className =
-        change >= 0
-            ? "green"
-            : "red";
-
-    priceHistory.push(currentPrice);
-
-    if (priceHistory.length > 60) {
-        priceHistory.shift();
-    }
-
-    drawChart();
 }
+
+const change =
+((currentPrice -
+previousPrice) /
+previousPrice) *
+100;
+
+priceNowEl.textContent =
+money(currentPrice);
+
+priceDeltaEl.textContent =
+(change >= 0 ? "+" : "") +
+change.toFixed(2) +
+"%";
+
+priceDeltaEl.className =
+change >= 0
+? "green"
+: "red";
+
+priceHistory.push(
+currentPrice
+);
+
+if(priceHistory.length > 60){
+
+priceHistory.shift();
+
+}
+
+drawChart();
+
+}
+
 
 /* =====================================================
    CHART
 ===================================================== */
 
-function resizeCanvas() {
+function resizeCanvas(){
 
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-    drawChart();
+if(!canvas){
+return;
 }
 
-function drawChart() {
+const rect =
+canvas.getBoundingClientRect();
 
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+const dpr =
+window.devicePixelRatio || 1;
 
-    ctx.clearRect(0, 0, width, height);
+canvas.width =
+rect.width * dpr;
 
-    if (priceHistory.length < 2) {
-        return;
-    }
+canvas.height =
+rect.height * dpr;
 
-    const min = Math.min(...priceHistory);
-    const max = Math.max(...priceHistory);
+ctx.setTransform(
+dpr,
+0,
+0,
+dpr,
+0,
+0
+);
 
-    const range = max - min || 1;
+drawChart();
 
-    /* Grid */
-
-    ctx.strokeStyle = "#202a36";
-    ctx.lineWidth = 1;
-
-    for (let i = 1; i < 5; i++) {
-
-        const y = (height / 5) * i;
-
-        ctx.beginPath();
-
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-
-        ctx.stroke();
-    }
-
-    /* Price line */
-
-    ctx.beginPath();
-
-    priceHistory.forEach((price, index) => {
-
-        const x =
-            index /
-            (priceHistory.length - 1) *
-            width;
-
-        const y =
-            height -
-            ((price - min) / range) *
-            (height - 20) -
-            10;
-
-        if (index === 0) {
-
-            ctx.moveTo(x, y);
-
-        } else {
-
-            ctx.lineTo(x, y);
-
-        }
-
-    });
-
-    ctx.strokeStyle = "#f5c542";
-    ctx.lineWidth = 2;
-
-    ctx.stroke();
 }
+
+
+function drawChart(){
+
+const width =
+canvas.clientWidth;
+
+const height =
+canvas.clientHeight;
+
+ctx.clearRect(
+0,
+0,
+width,
+height
+);
+
+if(priceHistory.length < 2){
+return;
+}
+
+const min =
+Math.min(...priceHistory);
+
+const max =
+Math.max(...priceHistory);
+
+const range =
+max - min || 1;
+
+
+/* GRID */
+
+ctx.strokeStyle =
+"#202a36";
+
+ctx.lineWidth = 1;
+
+for(let i=1;i<5;i++){
+
+const y =
+(height / 5) * i;
+
+ctx.beginPath();
+
+ctx.moveTo(
+0,
+y
+);
+
+ctx.lineTo(
+width,
+y
+);
+
+ctx.stroke();
+
+}
+
+
+/* LINE */
+
+ctx.beginPath();
+
+priceHistory.forEach(
+(price,index) => {
+
+const x =
+index /
+(priceHistory.length - 1) *
+width;
+
+const y =
+height -
+((price-min)/range) *
+(height-20) -
+10;
+
+if(index === 0){
+
+ctx.moveTo(
+x,
+y
+);
+
+}else{
+
+ctx.lineTo(
+x,
+y
+);
+
+}
+
+});
+
+ctx.strokeStyle =
+"#f5c542";
+
+ctx.lineWidth = 2;
+
+ctx.stroke();
+
+}
+
 
 /* =====================================================
    PREDICTION
 ===================================================== */
 
-function startPrediction(direction) {
+function startPrediction(direction){
 
-    if (roundActive) {
-        return;
-    }
+if(roundActive){
+return;
+}
 
-    if (stake > balance) {
+if(stake > balance){
 
-        alert("Insufficient DEMO balance.");
+alert(
+"Insufficient DEMO balance."
+);
 
-        return;
-    }
+return;
+}
 
-    prediction = direction;
+roundActive = true;
 
-    roundActive = true;
+const startingPrice =
+currentPrice;
 
-    const startingPrice = currentPrice;
+balance -= stake;
 
-    let seconds = 5;
+updateBalance();
 
-    balance -= stake;
+document.getElementById(
+"btnUp"
+).disabled = true;
 
-    updateBalance();
+document.getElementById(
+"btnDown"
+).disabled = true;
 
-    document.getElementById("btnUp").disabled = true;
-    document.getElementById("btnDown").disabled = true;
+roundLabelEl.textContent =
+direction === "UP"
+? "Prediction: ▲ UP"
+: "Prediction: ▼ DOWN";
 
-    roundLabelEl.textContent =
-        direction === "UP"
-            ? "Prediction: ▲ UP"
-            : "Prediction: ▼ DOWN";
+let seconds = 5;
 
-    ringTextEl.textContent = seconds;
+ringTextEl.textContent =
+seconds;
 
-    roundTimer = setInterval(() => {
+roundTimer =
+setInterval(() => {
 
-        seconds--;
+seconds--;
 
-        ringTextEl.textContent = seconds;
+ringTextEl.textContent =
+seconds;
 
-        movePrice();
-        movePrice();
+movePrice();
+movePrice();
 
-        if (seconds <= 0) {
+if(seconds <= 0){
 
-            clearInterval(roundTimer);
+clearInterval(
+roundTimer
+);
 
-            finishPrediction(
-                startingPrice,
-                currentPrice,
-                direction
-            );
-
-        }
-
-    }, 1000);
+finishPrediction(
+startingPrice,
+currentPrice,
+direction
+);
 
 }
 
-function finishPrediction(start, end, direction) {
+},1000);
 
-    const won =
-        direction === "UP"
-            ? end > start
-            : end < start;
-
-    if (won) {
-
-        wins++;
-
-        balance += stake * 1.80;
-
-    } else {
-
-        losses++;
-
-    }
-
-    addHistory(
-        direction,
-        start,
-        end,
-        stake,
-        won
-    );
-
-    updateStats();
-    updateBalance();
-
-    roundActive = false;
-    prediction = null;
-
-    document.getElementById("btnUp").disabled = false;
-    document.getElementById("btnDown").disabled = false;
-
-    roundLabelEl.textContent =
-        "Round closes in";
-
-    ringTextEl.textContent = "5";
 }
 
-document.getElementById("btnUp").onclick =
-    () => startPrediction("UP");
 
-document.getElementById("btnDown").onclick =
-    () => startPrediction("DOWN");
+function finishPrediction(
+start,
+end,
+direction
+){
+
+const won =
+direction === "UP"
+? end > start
+: end < start;
+
+if(won){
+
+wins++;
+
+balance +=
+stake * 1.8;
+
+}else{
+
+losses++;
+
+}
+
+addHistory(
+direction,
+start,
+end,
+stake,
+won
+);
+
+updateBalance();
+
+roundActive = false;
+
+document.getElementById(
+"btnUp"
+).disabled = false;
+
+document.getElementById(
+"btnDown"
+).disabled = false;
+
+roundLabelEl.textContent =
+"Round ready";
+
+ringTextEl.textContent =
+"5";
+
+}
+
+
+document.getElementById(
+"btnUp"
+).onclick =
+() => startPrediction("UP");
+
+
+document.getElementById(
+"btnDown"
+).onclick =
+() => startPrediction("DOWN");
+
 
 /* =====================================================
-   TRADE HISTORY
+   HISTORY
 ===================================================== */
 
 function addHistory(
-    direction,
-    start,
-    end,
-    amount,
-    won
-) {
+direction,
+start,
+end,
+amount,
+won
+){
 
-    const empty =
-        historyEl.querySelector(".empty");
+const empty =
+historyEl.querySelector(".empty");
 
-    if (empty) {
-        empty.remove();
-    }
-
-    const item =
-        document.createElement("div");
-
-    item.className = "history-item";
-
-    const result =
-        won
-            ? "WIN +" + (amount * 0.8).toFixed(2)
-            : "LOSS -" + amount.toFixed(2);
-
-    item.innerHTML = `
-
-        <div class="${direction === "UP" ? "green" : "red"}">
-            ${direction === "UP" ? "▲ UP" : "▼ DOWN"}
-        </div>
-
-        <div>
-            ${money(start)} → ${money(end)}
-        </div>
-
-        <div>
-            ${amount.toFixed(2)} DEMO
-        </div>
-
-        <div class="${won ? "green" : "red"}">
-            ${result}
-        </div>
-
-    `;
-
-    historyEl.prepend(item);
+if(empty){
+empty.remove();
 }
 
-/* =====================================================
-   STATS
-===================================================== */
+const item =
+document.createElement("div");
 
-function updateStats() {
+item.className =
+"history-item";
 
-    const total = wins + losses;
+const result =
+won
+? "WIN +" +
+(amount * .8).toFixed(2)
+: "LOSS -" +
+amount.toFixed(2);
 
-    if (total > 0) {
+item.innerHTML = `
 
-        roundLabelEl.title =
-            "Wins: " +
-            wins +
-            " | Losses: " +
-            losses +
-            " | Win Rate: " +
-            ((wins / total) * 100).toFixed(1) +
-            "%";
+<div class="${direction==="UP"?"green":"red"}">
+${direction==="UP"?"▲ UP":"▼ DOWN"}
+</div>
 
-    }
+<div>
+${money(start)} → ${money(end)}
+</div>
+
+<div>
+${amount.toFixed(2)} DEMO
+</div>
+
+<div class="${won?"green":"red"}">
+${result}
+</div>
+
+`;
+
+historyEl.prepend(item);
 
 }
+
 
 /* =====================================================
    SPOT BUY
 ===================================================== */
 
-document.getElementById("buyButton").onclick =
-    () => {
+document.getElementById(
+"buyButton"
+).onclick = () => {
 
-        const amount =
-            Number(
-                document.getElementById("amount").value
-            );
+const amount =
+Number(
+document.getElementById(
+"amount"
+).value
+);
 
-        if (!amount || amount <= 0) {
+if(!amount || amount <= 0){
 
-            alert("Enter a valid DEMO amount.");
+alert(
+"Enter a valid DEMO amount."
+);
 
-            return;
-        }
+return;
+}
 
-        if (amount > balance) {
+if(amount > balance){
 
-            alert("Insufficient DEMO balance.");
+alert(
+"Insufficient DEMO balance."
+);
 
-            return;
-        }
+return;
+}
 
-        balance -= amount;
+balance -= amount;
 
-        updateBalance();
+updateBalance();
 
-        addSpotHistory("BUY", amount);
+addSpotHistory(
+"BUY",
+amount
+);
 
-        alert("Virtual BUY completed.");
+};
 
-    };
 
 /* =====================================================
    SPOT SELL
 ===================================================== */
 
-document.getElementById("sellButton").onclick =
-    () => {
+document.getElementById(
+"sellButton"
+).onclick = () => {
 
-        const amount =
-            Number(
-                document.getElementById("amount").value
-            );
+const amount =
+Number(
+document.getElementById(
+"amount"
+).value
+);
 
-        if (!amount || amount <= 0) {
+if(!amount || amount <= 0){
 
-            alert("Enter a valid DEMO amount.");
+alert(
+"Enter a valid DEMO amount."
+);
 
-            return;
-        }
-
-        balance += amount;
-
-        updateBalance();
-
-        addSpotHistory("SELL", amount);
-
-        alert("Virtual SELL completed.");
-
-    };
-
-function addSpotHistory(action, amount) {
-
-    const empty =
-        historyEl.querySelector(".empty");
-
-    if (empty) {
-        empty.remove();
-    }
-
-    const item =
-        document.createElement("div");
-
-    item.className = "history-item";
-
-    item.innerHTML = `
-
-        <div class="${action === "BUY" ? "green" : "red"}">
-            ${action}
-        </div>
-
-        <div>
-            BTC/USD
-        </div>
-
-        <div>
-            ${amount.toFixed(2)} DEMO
-        </div>
-
-        <div>
-            ${money(currentPrice)}
-        </div>
-
-    `;
-
-    historyEl.prepend(item);
+return;
 }
+
+balance += amount;
+
+updateBalance();
+
+addSpotHistory(
+"SELL",
+amount
+);
+
+};
+
+
+function addSpotHistory(
+action,
+amount
+){
+
+const empty =
+historyEl.querySelector(".empty");
+
+if(empty){
+empty.remove();
+}
+
+const item =
+document.createElement("div");
+
+item.className =
+"history-item";
+
+item.innerHTML = `
+
+<div class="${action==="BUY"?"green":"red"}">
+${action}
+</div>
+
+<div>
+BTC/USD
+</div>
+
+<div>
+${amount.toFixed(2)} DEMO
+</div>
+
+<div>
+${money(currentPrice)}
+</div>
+
+`;
+
+historyEl.prepend(item);
+
+}
+
 
 /* =====================================================
    WALLET MODAL
 ===================================================== */
 
 const walletModal =
-    document.getElementById("walletModal");
+document.getElementById(
+"walletModal"
+);
 
 const walletAmount =
-    document.getElementById("walletAmount");
+document.getElementById(
+"walletAmount"
+);
 
 const modalTitle =
-    document.getElementById("modalTitle");
+document.getElementById(
+"modalTitle"
+);
 
 const confirmWalletAction =
-    document.getElementById("confirmWalletAction");
+document.getElementById(
+"confirmWalletAction"
+);
 
-document.getElementById("depositBtn").onclick =
-    () => {
 
-        walletAction = "deposit";
+document.getElementById(
+"depositBtn"
+).onclick = () => {
 
-        modalTitle.textContent =
-            "Deposit DEMO";
+walletAction =
+"deposit";
 
-        walletAmount.value = "";
+modalTitle.textContent =
+"Deposit DEMO";
 
-        walletModal.classList.add("show");
+walletAmount.value = "";
 
-    };
+walletModal.classList.add(
+"show"
+);
 
-document.getElementById("withdrawBtn").onclick =
-    () => {
+};
 
-        walletAction = "withdraw";
 
-        modalTitle.textContent =
-            "Withdraw DEMO";
+document.getElementById(
+"withdrawBtn"
+).onclick = () => {
 
-        walletAmount.value = "";
+walletAction =
+"withdraw";
 
-        walletModal.classList.add("show");
+modalTitle.textContent =
+"Withdraw DEMO";
 
-    };
+walletAmount.value = "";
 
-document.getElementById("closeModal").onclick =
-    () => {
+walletModal.classList.add(
+"show"
+);
 
-        walletModal.classList.remove("show");
+};
 
-    };
+
+document.getElementById(
+"closeModal"
+).onclick = () => {
+
+walletModal.classList.remove(
+"show"
+);
+
+};
+
 
 /* =====================================================
-   BACKEND DEPOSIT / WITHDRAW
+   BACKEND DEPOSIT
 ===================================================== */
 
-async function backendDeposit(amount) {
+async function backendDeposit(
+amount
+){
 
-    try {
+try{
 
-        const response =
-            await fetch(
-                `${API_URL}/api/wallet/deposit`,
-                {
-                    method: "POST",
+const response =
+await fetch(
+API_URL +
+"/api/wallet/deposit",
+{
+method:"POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+headers:{
+"Content-Type":
+"application/json"
+},
 
-                    body: JSON.stringify({
-                        user_code: USER_CODE,
-                        amount: Number(amount)
-                    })
-                }
-            );
+body:JSON.stringify({
 
-        const data =
-            await response.json();
+user_code:
+USER_CODE,
 
-        if (!data.success) {
+amount:
+Number(amount)
 
-            alert(
-                data.message ||
-                "Deposit failed"
-            );
+})
 
-            return false;
-        }
+}
+);
 
-        balance = Number(data.balance);
+const data =
+await response.json();
 
-        updateBalance();
+if(!response.ok ||
+!data.success){
 
-        return true;
+alert(
+data.message ||
+"Deposit failed."
+);
 
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Backend connection failed."
-        );
-
-        return false;
-    }
+return false;
 }
 
-async function backendWithdraw(amount) {
+balance =
+Number(data.balance);
 
-    try {
+updateBalance();
 
-        const response =
-            await fetch(
-                `${API_URL}/api/wallet/withdraw`,
-                {
-                    method: "POST",
+return true;
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+}catch(error){
 
-                    body: JSON.stringify({
-                        user_code: USER_CODE,
-                        amount: Number(amount)
-                    })
-                }
-            );
+console.error(error);
 
-        const data =
-            await response.json();
+alert(
+"Backend connection failed."
+);
 
-        if (!data.success) {
+return false;
 
-            alert(
-                data.message ||
-                "Withdrawal failed"
-            );
-
-            return false;
-        }
-
-        balance = Number(data.balance);
-
-        updateBalance();
-
-        return true;
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Backend connection failed."
-        );
-
-        return false;
-    }
 }
+
+}
+
+
+/* =====================================================
+   BACKEND WITHDRAW
+===================================================== */
+
+async function backendWithdraw(
+amount
+){
+
+try{
+
+const response =
+await fetch(
+API_URL +
+"/api/wallet/withdraw",
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+
+user_code:
+USER_CODE,
+
+amount:
+Number(amount)
+
+})
+
+}
+);
+
+const data =
+await response.json();
+
+if(!response.ok ||
+!data.success){
+
+alert(
+data.message ||
+"Withdrawal failed."
+);
+
+return false;
+}
+
+balance =
+Number(data.balance);
+
+updateBalance();
+
+return true;
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Backend connection failed."
+);
+
+return false;
+
+}
+
+}
+
 
 /* =====================================================
    WALLET CONFIRM
 ===================================================== */
 
 confirmWalletAction.onclick =
-    async () => {
+async () => {
 
-        const amount =
-            Number(walletAmount.value);
+const amount =
+Number(
+walletAmount.value
+);
 
-        if (!amount || amount <= 0) {
+if(!amount || amount <= 0){
 
-            alert("Enter a valid amount.");
+alert(
+"Enter a valid amount."
+);
 
-            return;
-        }
+return;
+}
 
-        confirmWalletAction.disabled = true;
+confirmWalletAction.disabled =
+true;
 
-        confirmWalletAction.textContent =
-            "Processing...";
+confirmWalletAction.textContent =
+"Processing...";
 
-        let success = false;
+let success = false;
 
-        if (walletAction === "deposit") {
+if(walletAction === "deposit"){
 
-            success =
-                await backendDeposit(amount);
+success =
+await backendDeposit(
+amount
+);
 
-        } else {
+}else{
 
-            success =
-                await backendWithdraw(amount);
+success =
+await backendWithdraw(
+amount
+);
 
-        }
+}
 
-        confirmWalletAction.disabled = false;
+confirmWalletAction.disabled =
+false;
 
-        confirmWalletAction.textContent =
-            "Confirm";
+confirmWalletAction.textContent =
+"Confirm";
 
-        if (success) {
+if(success){
 
-            walletAmount.value = "";
+walletModal.classList.remove(
+"show"
+);
 
-            walletModal.classList.remove("show");
+walletAmount.value = "";
 
-            await loadTransactions();
-        }
+await loadTransactions();
 
-    };
+}
+
+};
+
 
 /* =====================================================
    LOAD USER
 ===================================================== */
 
-async function loadUser() {
+async function loadUser(){
 
-    try {
+try{
 
-        const response =
-            await fetch(
-                `${API_URL}/api/users/${USER_CODE}`
-            );
+const response =
+await fetch(
+API_URL +
+"/api/users/" +
+encodeURIComponent(USER_CODE)
+);
 
-        const data =
-            await response.json();
+if(!response.ok){
 
-        if (!data.success) {
+return false;
 
-            console.log(
-                "User not found:",
-                data
-            );
-
-            return false;
-        }
-
-        balance =
-            Number(data.user.balance);
-
-        startingBalance = balance;
-
-        updateBalance();
-
-        if (data.user.wallet_address) {
-
-            document.getElementById(
-                "walletAddress"
-            ).textContent =
-                data.user.wallet_address;
-
-        }
-
-        console.log(
-            "User loaded successfully:",
-            data.user
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Failed to load user:",
-            error
-        );
-
-        return false;
-    }
 }
+
+const data =
+await response.json();
+
+if(!data.success){
+
+return false;
+
+}
+
+balance =
+Number(
+data.user.balance
+);
+
+startingBalance =
+balance;
+
+updateBalance();
+
+if(data.user.wallet_address){
+
+document.getElementById(
+"walletAddress"
+).textContent =
+data.user.wallet_address;
+
+}
+
+return true;
+
+}catch(error){
+
+console.error(
+"loadUser:",
+error
+);
+
+return false;
+
+}
+
+}
+
 
 /* =====================================================
    CREATE USER
 ===================================================== */
 
-async function createUser() {
+async function createUser(){
 
-    try {
+try{
 
-        const response =
-            await fetch(
-                `${API_URL}/api/users`,
-                {
-                    method: "POST",
+const response =
+await fetch(
+API_URL +
+"/api/users",
+{
+method:"POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+headers:{
+"Content-Type":
+"application/json"
+},
 
-                    body: JSON.stringify({
-                        user_code: USER_CODE,
-                        wallet_address: null
-                    })
-                }
-            );
+body:JSON.stringify({
 
-        const data =
-            await response.json();
+user_code:
+USER_CODE,
 
-        console.log(
-            "Create user:",
-            data
-        );
+wallet_address:
+null
 
-        if (!data.success) {
+})
 
-            console.log(
-                "User creation failed:",
-                data
-            );
+}
+);
 
-            return false;
-        }
+const data =
+await response.json();
 
-        balance =
-            Number(data.user.balance);
+if(!response.ok ||
+!data.success){
 
-        startingBalance = balance;
+console.error(
+"Create user:",
+data
+);
 
-        updateBalance();
+return false;
 
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Create user failed:",
-            error
-        );
-
-        return false;
-    }
 }
 
+balance =
+Number(
+data.user.balance
+);
+
+startingBalance =
+balance;
+
+updateBalance();
+
+return true;
+
+}catch(error){
+
+console.error(
+"createUser:",
+error
+);
+
+return false;
+
+}
+
+}
+
+
 /* =====================================================
-   LOAD WALLET TRANSACTIONS
+   TRANSACTIONS
 ===================================================== */
 
-async function loadTransactions() {
+async function loadTransactions(){
 
-    try {
+try{
 
-        const response =
-            await fetch(
-                `${API_URL}/api/wallet/${USER_CODE}/transactions`
-            );
+const response =
+await fetch(
+API_URL +
+"/api/wallet/" +
+encodeURIComponent(USER_CODE) +
+"/transactions"
+);
 
-        const data =
-            await response.json();
-
-        if (!data.success) {
-
-            console.log(
-                "Transaction loading failed:",
-                data
-            );
-
-            return;
-        }
-
-        walletTransactions.innerHTML = "";
-
-        if (!data.transactions ||
-            data.transactions.length === 0) {
-
-            walletTransactions.innerHTML =
-                `
-                <div class="empty">
-                    No wallet transactions yet.
-                </div>
-                `;
-
-            return;
-        }
-
-        data.transactions.forEach(transaction => {
-
-            addWalletTransaction(
-                transaction.type,
-                Number(transaction.amount),
-                transaction.created_at
-            );
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Transaction loading failed:",
-            error
-        );
-
-    }
+if(!response.ok){
+return;
 }
 
+const data =
+await response.json();
+
+if(!data.success){
+return;
+}
+
+walletTransactions.innerHTML = "";
+
+if(
+!data.transactions ||
+data.transactions.length === 0
+){
+
+walletTransactions.innerHTML =
+`
+<div class="empty">
+No wallet transactions yet.
+</div>
+`;
+
+return;
+
+}
+
+data.transactions.forEach(
+transaction => {
+
+addWalletTransaction(
+transaction.type,
+Number(transaction.amount),
+transaction.created_at
+);
+
+});
+
+}catch(error){
+
+console.error(
+"Transactions:",
+error
+);
+
+}
+
+}
+
+
 /* =====================================================
-   WALLET TRANSACTION UI
+   TRANSACTION UI
 ===================================================== */
 
 function addWalletTransaction(
-    type,
-    amount,
-    createdAt = null
-) {
+type,
+amount,
+createdAt
+){
 
-    const empty =
-        walletTransactions.querySelector(".empty");
+const item =
+document.createElement("div");
 
-    if (empty) {
-        empty.remove();
-    }
+item.className =
+"transaction";
 
-    const item =
-        document.createElement("div");
+const deposit =
+String(type).toLowerCase()
+=== "deposit";
 
-    item.className = "transaction";
+const color =
+deposit
+? "green"
+: "red";
 
-    const isDeposit =
-        String(type).toLowerCase() ===
-        "deposit";
+const sign =
+deposit
+? "+"
+: "-";
 
-    const color =
-        isDeposit ? "green" : "red";
+const time =
+createdAt
+? new Date(
+createdAt
+).toLocaleString()
+: new Date().toLocaleString();
 
-    const sign =
-        isDeposit ? "+" : "-";
+item.innerHTML = `
 
-    const time =
-        createdAt
-            ? new Date(createdAt).toLocaleString()
-            : new Date().toLocaleString();
+<div>
+${time}
+</div>
 
-    item.innerHTML = `
+<div class="${color}">
+${type}
+</div>
 
-        <div>
-            ${time}
-        </div>
+<div class="${color}">
+${sign}${amount.toFixed(2)} DEMO
+</div>
 
-        <div class="${color}">
-            ${type}
-        </div>
+`;
 
-        <div class="${color}">
-            ${sign}${Number(amount).toFixed(2)} DEMO
-        </div>
+walletTransactions.appendChild(
+item
+);
 
-    `;
-
-    walletTransactions.prepend(item);
 }
+
 
 /* =====================================================
-   INITIAL BACKEND LOAD
+   INITIAL BACKEND
 ===================================================== */
 
-async function initBackend() {
+async function initBackend(){
 
-    console.log(
-        "Connecting to BEcoin backend..."
-    );
+console.log(
+"Connecting to BEcoin backend..."
+);
 
-    const loaded =
-        await loadUser();
+const loaded =
+await loadUser();
 
-    if (!loaded) {
+if(!loaded){
 
-        console.log(
-            "Creating demo user..."
-        );
-
-        await createUser();
-
-    }
-
-    await loadTransactions();
+await createUser();
 
 }
+
+await loadTransactions();
+
+}
+
 
 /* =====================================================
    COIN SELECT
 ===================================================== */
 
-document.getElementById("coin")
-    .addEventListener("change", function () {
+document.getElementById(
+"coin"
+).addEventListener(
+"change",
+function(){
 
-        const symbols = {
+const symbols = {
 
-            bitcoin: "BTC/USD",
-            ethereum: "ETH/USD",
-            binancecoin: "BNB/USD",
-            solana: "SOL/USD",
-            ripple: "XRP/USD",
-            tether: "USDT/USD"
+bitcoin:"BTC/USD",
+ethereum:"ETH/USD",
+binancecoin:"BNB/USD",
+solana:"SOL/USD",
+ripple:"XRP/USD",
+tether:"USDT/USD"
 
-        };
+};
 
-        document.getElementById(
-            "selectedSymbol"
-        ).textContent =
-            symbols[this.value];
-
-    });
-
-/* =====================================================
-   RESET DEMO
-===================================================== */
-
-function resetDemo() {
-
-    if (!confirm(
-        "Reset your DEMO account to 10,000?"
-    )) {
-        return;
-    }
-
-    balance = 10000;
-
-    startingBalance = 10000;
-
-    wins = 0;
-
-    losses = 0;
-
-    stake = 100;
-
-    updateBalance();
-
-    updateStake();
-
-    historyEl.innerHTML =
-        `
-        <div class="empty">
-            No trades yet.
-        </div>
-        `;
-
-    walletTransactions.innerHTML =
-        `
-        <div class="empty">
-            No wallet transactions yet.
-        </div>
-        `;
+document.getElementById(
+"selectedSymbol"
+).textContent =
+symbols[this.value];
 
 }
+);
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetDemo(){
+
+if(!confirm(
+"Reset local demo display?"
+)){
+
+return;
+
+}
+
+balance =
+startingBalance;
+
+wins = 0;
+losses = 0;
+stake = 100;
+
+updateBalance();
+updateStake();
+
+historyEl.innerHTML =
+`
+<div class="empty">
+No trades yet.
+</div>
+`;
+
+}
+
 
 /* =====================================================
    MARKET
@@ -2962,216 +2928,245 @@ function resetDemo() {
 
 const marketCoins = {
 
-    btc: {
-        price: 105000
-    },
-
-    eth: {
-        price: 3400
-    },
-
-    bnb: {
-        price: 690
-    },
-
-    sol: {
-        price: 190
-    },
-
-    xrp: {
-        price: 2.9
-    },
-
-    usdt: {
-        price: 1
-    }
+btc:105000,
+eth:3400,
+bnb:690,
+sol:190,
+xrp:2.9
 
 };
 
-function updateMarket() {
 
-    Object.keys(marketCoins).forEach(key => {
+function updateMarket(){
 
-        if (key !== "usdt") {
+Object.keys(
+marketCoins
+).forEach(key => {
 
-            marketCoins[key].price *=
-                1 +
-                (Math.random() - 0.5) *
-                0.004;
+marketCoins[key] *=
+1 +
+(Math.random()-.5)
+*.004;
 
-        }
+});
 
-    });
+document.getElementById(
+"btcPrice"
+).textContent =
+money(marketCoins.btc);
 
-    document.getElementById("btcPrice")
-        .textContent =
-        money(marketCoins.btc.price);
+document.getElementById(
+"ethPrice"
+).textContent =
+money(marketCoins.eth);
 
-    document.getElementById("ethPrice")
-        .textContent =
-        money(marketCoins.eth.price);
+document.getElementById(
+"bnbPrice"
+).textContent =
+money(marketCoins.bnb);
 
-    document.getElementById("bnbPrice")
-        .textContent =
-        money(marketCoins.bnb.price);
+document.getElementById(
+"solPrice"
+).textContent =
+money(marketCoins.sol);
 
-    document.getElementById("solPrice")
-        .textContent =
-        money(marketCoins.sol.price);
-
-    document.getElementById("xrpPrice")
-        .textContent =
-        money(marketCoins.xrp.price);
-
-    document.getElementById("usdtPrice")
-        .textContent =
-        "$1.00";
+document.getElementById(
+"xrpPrice"
+).textContent =
+money(marketCoins.xrp);
 
 }
 
-/* =====================================================
-   LIVE SUPPORT
-===================================================== */
 
-const liveSupportBtn =
-    document.getElementById(
-        "liveSupportBtn"
-    );
+/* =====================================================
+   SUPPORT
+===================================================== */
 
 const supportChat =
-    document.getElementById(
-        "supportChat"
-    );
-
-const closeSupport =
-    document.getElementById(
-        "closeSupport"
-    );
-
-const sendSupport =
-    document.getElementById(
-        "sendSupport"
-    );
+document.getElementById(
+"supportChat"
+);
 
 const supportInput =
-    document.getElementById(
-        "supportInput"
-    );
+document.getElementById(
+"supportInput"
+);
 
 const supportMessages =
-    document.getElementById(
-        "supportMessages"
-    );
+document.getElementById(
+"supportMessages"
+);
 
-if (liveSupportBtn) {
 
-    liveSupportBtn.onclick = () => {
+function openSupport(){
 
-        supportChat.classList.add("show");
+supportChat.classList.add(
+"show"
+);
 
-        supportInput.focus();
-
-    };
-
-}
-
-if (closeSupport) {
-
-    closeSupport.onclick = () => {
-
-        supportChat.classList.remove("show");
-
-    };
+supportInput.focus();
 
 }
 
-function sendSupportMessage() {
 
-    const message =
-        supportInput.value.trim();
+document.getElementById(
+"liveSupportBtn"
+).onclick =
+openSupport;
 
-    if (!message) {
-        return;
-    }
 
-    const userMessage =
-        document.createElement("div");
+document.getElementById(
+"closeSupport"
+).onclick = () => {
 
-    userMessage.className =
-        "support-message user";
+supportChat.classList.remove(
+"show"
+);
 
-    userMessage.textContent =
-        message;
+};
 
-    supportMessages.appendChild(
-        userMessage
-    );
 
-    supportInput.value = "";
+function sendSupportMessage(){
 
-    supportMessages.scrollTop =
-        supportMessages.scrollHeight;
+const message =
+supportInput.value.trim();
 
-    setTimeout(() => {
+if(!message){
+return;
+}
 
-        const reply =
-            document.createElement("div");
+const userMessage =
+document.createElement("div");
 
-        reply.className =
-            "support-message agent";
+userMessage.className =
+"support-message user";
 
-        reply.textContent =
-            "Thanks for contacting BEcoin Support. An agent will assist you shortly.";
+userMessage.textContent =
+message;
 
-        supportMessages.appendChild(
-            reply
-        );
+supportMessages.appendChild(
+userMessage
+);
 
-        supportMessages.scrollTop =
-            supportMessages.scrollHeight;
+supportInput.value = "";
 
-    }, 800);
+supportMessages.scrollTop =
+supportMessages.scrollHeight;
+
+
+/*
+ This is currently a local demo reply.
+
+ Real admin live chat requires
+ a websocket/chat API on the backend.
+*/
+
+setTimeout(() => {
+
+const reply =
+document.createElement("div");
+
+reply.className =
+"support-message agent";
+
+reply.textContent =
+"Thanks for contacting BEcoin Support. Your message has been received.";
+
+supportMessages.appendChild(
+reply
+);
+
+supportMessages.scrollTop =
+supportMessages.scrollHeight;
+
+},700);
 
 }
 
-if (sendSupport) {
 
-    sendSupport.onclick =
-        sendSupportMessage;
+document.getElementById(
+"sendSupport"
+).onclick =
+sendSupportMessage;
 
-}
 
-if (supportInput) {
+supportInput.addEventListener(
+"keydown",
+event => {
 
-    supportInput.addEventListener(
-        "keydown",
-        event => {
+if(event.key === "Enter"){
 
-            if (event.key === "Enter") {
-
-                sendSupportMessage();
-
-            }
-
-        }
-    );
+sendSupportMessage();
 
 }
+
+}
+);
+
 
 /* =====================================================
-   INITIAL APP
+   CONNECT WALLET
 ===================================================== */
 
-for (let i = 0; i < 50; i++) {
+document.getElementById(
+"connectWallet"
+).onclick =
+async () => {
 
-    currentPrice +=
-        (Math.random() - 0.5) * 10;
+if(!window.ethereum){
 
-    priceHistory.push(
-        currentPrice
-    );
+alert(
+"No Web3 wallet detected. DEMO mode will continue."
+);
+
+return;
 
 }
+
+try{
+
+const accounts =
+await window.ethereum.request({
+method:"eth_requestAccounts"
+});
+
+if(accounts.length){
+
+document.getElementById(
+"walletAddress"
+).textContent =
+accounts[0];
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}
+
+};
+
+
+/* =====================================================
+   INITIAL PRICE HISTORY
+===================================================== */
+
+for(
+let i=0;
+i<50;
+i++
+){
+
+currentPrice +=
+(Math.random()-.5)*10;
+
+priceHistory.push(
+currentPrice
+);
+
+}
+
 
 resizeCanvas();
 
@@ -3183,88 +3178,33 @@ updateMarket();
 
 initBackend();
 
+
 /* =====================================================
-   MARKET INTERVAL
+   INTERVALS
 ===================================================== */
 
-setInterval(() => {
+setInterval(
+() => {
 
-    updateMarket();
+updateMarket();
 
-    if (!roundActive) {
+if(!roundActive){
 
-        movePrice();
+movePrice();
 
-    }
+}
 
-}, 1200);
+},
+1200
+);
+
 
 window.addEventListener(
-    "resize",
-    resizeCanvas
+"resize",
+resizeCanvas
 );
 
 </script>
-<!-- =========================
-     LIVE CUSTOMER SUPPORT
-========================== -->
-
-<button
-    class="live-support-btn"
-    id="liveSupportBtn"
-    type="button">
-    💬
-</button>
-
-<div
-    class="support-chat"
-    id="supportChat">
-
-    <div class="support-chat-header">
-
-        <div>
-            <strong>BEcoin Support</strong>
-            <small>
-                ● Online Support
-            </small>
-        </div>
-
-        <button
-            id="closeSupport"
-            type="button">
-            ×
-        </button>
-
-    </div>
-
-    <div
-        class="support-messages"
-        id="supportMessages">
-
-        <div class="support-message agent">
-            Hello! 👋<br>
-            Welcome to BEcoin Support.
-            How can we help you?
-        </div>
-
-    </div>
-
-    <div class="support-input">
-
-        <input
-            type="text"
-            id="supportInput"
-            placeholder="Type your message...">
-
-        <button
-            id="sendSupport"
-            type="button">
-            ➤
-        </button>
-
-    </div>
-
-</div>
 
 </body>
 </html>
