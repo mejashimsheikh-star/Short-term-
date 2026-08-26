@@ -737,7 +737,212 @@ app.get(
         }
     }
 );
+// ======================================================
+// ADMIN - CREATE USER
+// ======================================================
 
+app.post(
+    "/api/admin/users",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const {
+                user_code,
+                wallet_address,
+                balance = 10000
+            } = req.body;
+
+            // -----------------------------
+            // Validate user code
+            // -----------------------------
+
+            if (
+                typeof user_code !== "string" ||
+                user_code.trim().length < 3 ||
+                user_code.trim().length > 50
+            ) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "User code must be between 3 and 50 characters"
+                });
+            }
+
+            const cleanUserCode =
+                user_code.trim();
+
+            // -----------------------------
+            // Validate wallet
+            // -----------------------------
+
+            if (
+                wallet_address !== undefined &&
+                wallet_address !== null &&
+                typeof wallet_address !== "string"
+            ) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Invalid wallet address"
+                });
+            }
+
+            // -----------------------------
+            // Validate balance
+            // -----------------------------
+
+            const numericBalance =
+                Number(balance);
+
+            if (
+                !Number.isFinite(numericBalance) ||
+                numericBalance < 0
+            ) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Balance must be a valid non-negative number"
+                });
+            }
+
+            if (numericBalance > 1000000000) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Initial balance is too large"
+                });
+            }
+
+            // -----------------------------
+            // Check duplicate user
+            // -----------------------------
+
+            const existing =
+                await pool.query(
+                    `
+                    SELECT user_id
+                    FROM users
+                    WHERE user_code = $1
+                    `,
+                    [cleanUserCode]
+                );
+
+            if (existing.rows.length > 0) {
+
+                return res.status(409).json({
+                    success: false,
+                    message:
+                        "User code already exists"
+                });
+            }
+
+            // -----------------------------
+            // Create user
+            // -----------------------------
+
+            const result =
+                await pool.query(
+                    `
+                    INSERT INTO users
+                    (
+                        user_code,
+                        wallet_address,
+                        balance,
+                        role,
+                        status
+                    )
+                    VALUES
+                    ($1, $2, $3, 'user', 'active')
+                    RETURNING
+                        user_id,
+                        user_code,
+                        wallet_address,
+                        balance,
+                        role,
+                        status,
+                        created_at,
+                        updated_at
+                    `,
+                    [
+                        cleanUserCode,
+                        wallet_address
+                            ? wallet_address.trim()
+                            : null,
+                        numericBalance
+                    ]
+                );
+
+            const user =
+                result.rows[0];
+
+            // -----------------------------
+            // Audit log
+            // -----------------------------
+
+            await auditLog({
+                adminId:
+                    req.admin.admin_id,
+
+                action:
+                    "USER_CREATED",
+
+                targetType:
+                    "user",
+
+                targetId:
+                    user.user_id,
+
+                details: {
+                    user_code:
+                        user.user_code,
+
+                    initial_balance:
+                        numericBalance
+                }
+            });
+
+            // -----------------------------
+            // Response
+            // -----------------------------
+
+            return res.status(201).json({
+                success: true,
+                message:
+                    "User created successfully",
+                user
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Admin create user error:",
+                error
+            );
+
+            // PostgreSQL duplicate error
+            if (error.code === "23505") {
+
+                return res.status(409).json({
+                    success: false,
+                    message:
+                        "User code already exists"
+                });
+            }
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "Failed to create user"
+            });
+        }
+    }
+);
 // ======================================================
 // ADMIN - CHANGE BALANCE
 // ======================================================
