@@ -986,7 +986,7 @@ Round ready
 </button>
 
 <div class="stake-value" id="stakeVal">
-100 DEMO
+100 
 </div>
 
 <button id="stakePlus">
@@ -1114,8 +1114,8 @@ $<span id="walletBalance">
 </span>
 </div>
 
-<div class="demo">
-VIRTUAL FUNDS ONLY
+<div class="Re">
+Real FUNDS ONLY
 </div>
 
 </div>
@@ -1129,7 +1129,7 @@ VIRTUAL FUNDS ONLY
 </strong>
 
 <span>
-Add DEMO funds
+Add funds
 </span>
 
 </button>
@@ -1141,7 +1141,7 @@ Add DEMO funds
 </strong>
 
 <span>
-Remove DEMO funds
+Remove funds
 </span>
 
 </button>
@@ -1192,7 +1192,7 @@ FAQ
 </h3>
 
 <p>
-Learn how BEcoin demo trading works.
+Learn how BEcoin trading works.
 </p>
 
 <button
@@ -1235,13 +1235,10 @@ Open Chat
 Account Safety
 </h3>
 
-<p>
-This platform uses virtual DEMO funds only.
-</p>
 
 <button
 class="support-btn"
-onclick="alert('DEMO balance is virtual only.')">
+onclick="alert('BEcoin.')">
 Learn More
 </button>
 
@@ -1280,8 +1277,8 @@ Loading...
 
 </div>
 
-<span class="demo">
-DEMO
+<span class="real">
+BEcoin
 </span>
 
 </div>
@@ -1340,7 +1337,7 @@ Demo Mode
 </div>
 
 <div class="setting-desc">
-Real-money trading disabled
+Real-money trading enable
 </div>
 
 </div>
@@ -1356,7 +1353,7 @@ ON
 <div>
 
 <div class="setting-title">
-Reset Demo Account
+Reset account 
 </div>
 
 <div class="setting-desc">
@@ -1368,7 +1365,7 @@ Reset local display
 <button
 class="support-btn"
 style="width:auto;margin:0"
-onclick="resetDemo()">
+onclick="reset()">
 Reset
 </button>
 
@@ -1422,7 +1419,7 @@ Settings
 <div class="modal-header">
 
 <h3 id="modalTitle">
-Deposit DEMO
+Deposit 
 </h3>
 
 <button class="close" id="closeModal">
@@ -1434,7 +1431,7 @@ Deposit DEMO
 <div class="field">
 
 <label>
-DEMO AMOUNT
+ AMOUNT
 </label>
 
 <input
@@ -1534,7 +1531,6 @@ const API_URL =
 /*
  IMPORTANT:
 
- For now this is the demo user code.
 
  If your backend creates/returns another user_id,
  replace this with the real authenticated user_id.
@@ -1737,7 +1733,7 @@ function updateStake(){
 
 stakeValEl.textContent =
 stake.toLocaleString() +
-" DEMO";
+;
 
 }
 
@@ -1976,7 +1972,7 @@ return;
 if(stake > balance){
 
 alert(
-"Insufficient DEMO balance."
+"Insufficient balance."
 );
 
 return;
@@ -2147,7 +2143,7 @@ ${money(start)} → ${money(end)}
 </div>
 
 <div>
-${amount.toFixed(2)} DEMO
+${amount.toFixed(2)} 
 </div>
 
 <div class="${won?"green":"red"}">
@@ -2179,7 +2175,7 @@ document.getElementById(
 if(!amount || amount <= 0){
 
 alert(
-"Enter a valid DEMO amount."
+"Enter a valid  amount."
 );
 
 return;
@@ -2188,7 +2184,7 @@ return;
 if(amount > balance){
 
 alert(
-"Insufficient DEMO balance."
+"Insufficient balance."
 );
 
 return;
@@ -2271,7 +2267,7 @@ BTC/USD
 </div>
 
 <div>
-${amount.toFixed(2)} DEMO
+${amount.toFixed(2)}
 </div>
 
 <div>
@@ -2318,7 +2314,7 @@ walletAction =
 "deposit";
 
 modalTitle.textContent =
-"Deposit DEMO";
+"Deposit ";
 
 walletAmount.value = "";
 
@@ -2337,7 +2333,7 @@ walletAction =
 "withdraw";
 
 modalTitle.textContent =
-"Withdraw DEMO";
+"Withdraw ";
 
 walletAmount.value = "";
 
@@ -2892,10 +2888,10 @@ symbols[this.value];
    RESET
 ===================================================== */
 
-function resetDemo(){
+function reset(){
 
 if(!confirm(
-"Reset local demo display?"
+"Reset  display?"
 )){
 
 return;
@@ -3116,7 +3112,7 @@ async () => {
 if(!window.ethereum){
 
 alert(
-"No Web3 wallet detected. DEMO mode will continue."
+"No Web3 wallet detected."
 );
 
 return;
