@@ -435,32 +435,55 @@ async function createTables() {
     // TRADE SETTINGS
     // --------------------------------------------------
 
-    await pool.query(`
-        CREATE TABLE IF NOT EXISTS trade_settings (
-            id INTEGER PRIMARY KEY,
-            duration_seconds INTEGER NOT NULL DEFAULT 60,
-            enabled BOOLEAN NOT NULL DEFAULT true,
-            updated_by UUID,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    `);
+// --------------------------------------------------
+// TRADE SETTINGS
+// --------------------------------------------------
 
-    await pool.query(`
-        INSERT INTO trade_settings
-        (
-            id,
-            duration_seconds,
-            enabled
-        )
-        VALUES
-        (1, 60, true)
-        ON CONFLICT (id)
-        DO NOTHING
-    `);
+await pool.query(`
+    CREATE TABLE IF NOT EXISTS trade_settings (
+        id INTEGER PRIMARY KEY,
+        duration_seconds INTEGER NOT NULL DEFAULT 60,
+        enabled BOOLEAN NOT NULL DEFAULT true,
+        updated_by UUID,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+`);
 
-    console.log("All database tables ready");
-}
+await pool.query(`
+    ALTER TABLE trade_settings
+    ADD COLUMN IF NOT EXISTS duration_seconds INTEGER
+    NOT NULL DEFAULT 60
+`);
 
+await pool.query(`
+    ALTER TABLE trade_settings
+    ADD COLUMN IF NOT EXISTS enabled BOOLEAN
+    NOT NULL DEFAULT true
+`);
+
+await pool.query(`
+    ALTER TABLE trade_settings
+    ADD COLUMN IF NOT EXISTS updated_by UUID
+`);
+
+await pool.query(`
+    ALTER TABLE trade_settings
+    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP
+`);
+
+await pool.query(`
+    INSERT INTO trade_settings
+    (
+        id,
+        duration_seconds,
+        enabled
+    )
+    VALUES
+    (1, 60, true)
+    ON CONFLICT (id)
+    DO NOTHING
+`);
 // ======================================================
 // ADMIN LOGIN
 // ======================================================
