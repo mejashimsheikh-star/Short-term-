@@ -47,7 +47,7 @@ button{
     margin:auto;
 }
 
-.demo-banner{
+.banner{
     margin:14px 0;
     padding:10px;
     text-align:center;
@@ -168,10 +168,7 @@ button{
     font-weight:700;
 }
 
-.demo{
-    color:var(--accent);
-    font-size:10px;
-    margin-left:5px;
+
 }
 
 .pnl{
@@ -775,8 +772,8 @@ input:focus,select:focus{
 
 <div class="app">
 
-<div class="demo-banner">
-⚠ BEcoin DEMO TRADING PLATFORM — VIRTUAL FUNDS ONLY
+<div class="banner">
+⚠ BEcoin TRADING PLATFORM 
 </div>
 
 <header class="header">
@@ -787,7 +784,7 @@ input:focus,select:focus{
 
 <div>
 <h1>BEcoin</h1>
-<small>DEMO TRADING PLATFORM</small>
+<small>BEcoin TRADING PLATFORM</small>
 </div>
 
 </div>
@@ -805,7 +802,7 @@ Connect Wallet
 <h2 class="page-title">Welcome to BEcoin</h2>
 
 <p class="page-subtitle">
-Practice trading with virtual DEMO funds.
+Practice trading with BEcoin
 </p>
 
 <div class="dashboard">
@@ -854,8 +851,8 @@ VIRTUAL BALANCE
 0.00
 </span>
 
-<span class="demo">
-DEMO
+<span class="real">
+real
 </span>
 
 </div>
@@ -984,7 +981,7 @@ Round ready
 </button>
 
 <div class="stake-value" id="stakeVal">
-100 DEMO
+100 
 </div>
 
 <button id="stakePlus">
@@ -1094,7 +1091,7 @@ BEcoin Wallet
 </h2>
 
 <p class="page-subtitle">
-Manage your virtual DEMO balance.
+Manage your balance.
 </p>
 
 <div class="card wallet-balance">
@@ -1109,11 +1106,6 @@ $<span id="walletBalance">
 </span>
 </div>
 
-<div class="demo">
-VIRTUAL FUNDS ONLY
-</div>
-
-</div>
 
 <div class="wallet-actions">
 
@@ -1124,7 +1116,7 @@ VIRTUAL FUNDS ONLY
 </strong>
 
 <span>
-Add DEMO funds
+Add funds
 </span>
 
 </button>
@@ -1136,7 +1128,7 @@ Add DEMO funds
 </strong>
 
 <span>
-Remove DEMO funds
+Removefunds
 </span>
 
 </button>
@@ -1186,7 +1178,7 @@ FAQ
 </h3>
 
 <p>
-Learn how BEcoin demo trading works.
+Learn how BEcoin trading works.
 </p>
 
 <button
@@ -1229,13 +1221,10 @@ Open Chat
 Account Safety
 </h3>
 
-<p>
-This platform uses virtual DEMO funds only.
-</p>
 
 <button
 class="support-btn"
-onclick="alert('DEMO balance is virtual only.')">
+onclick="alert('  BEcoin')">
 Learn More
 </button>
 
@@ -1273,8 +1262,8 @@ Loading...
 
 </div>
 
-<span class="demo">
-DEMO
+<span class="real">
+
 </span>
 
 </div>
@@ -1329,11 +1318,11 @@ style="width:20px">
 <div>
 
 <div class="setting-title">
-Demo Mode
+Real
 </div>
 
 <div class="setting-desc">
-Real-money trading disabled
+Real-money trading ebable
 </div>
 
 </div>
@@ -1349,7 +1338,7 @@ ON
 <div>
 
 <div class="setting-title">
-Reset Demo Account
+Reset Account
 </div>
 
 <div class="setting-desc">
@@ -1361,7 +1350,7 @@ Reset local display
 <button
 class="support-btn"
 style="width:auto;margin:0"
-onclick="resetDemo()">
+onclick="reset()">
 Reset
 </button>
 
@@ -1413,7 +1402,7 @@ Settings
 <div class="modal-header">
 
 <h3 id="modalTitle">
-Deposit DEMO
+Deposit 
 </h3>
 
 <button class="close" id="closeModal">
@@ -1425,7 +1414,7 @@ Deposit DEMO
 <div class="field">
 
 <label>
-DEMO AMOUNT
+ AMOUNT
 </label>
 
 <input
@@ -1520,14 +1509,6 @@ type="button">
 const API_URL =
 "https://short-term-95sa.onrender.com";
 
-/*
- IMPORTANT:
-
- For now this is the demo user code.
-
- If your backend creates/returns another user_id,
- replace this with the real authenticated user_id.
-*/
 
 const USER_CODE =
 localStorage.getItem("becoin_user_id") ||
@@ -1719,7 +1700,7 @@ function updateStake(){
 
 stakeValEl.textContent =
 stake.toLocaleString() +
-" DEMO";
+;
 
 }
 
@@ -1951,7 +1932,7 @@ return;
 if(stake > balance){
 
 alert(
-"Insufficient DEMO balance."
+"Insufficient balance."
 );
 
 return;
@@ -2118,7 +2099,7 @@ ${money(start)} → ${money(end)}
 </div>
 
 <div>
-${amount.toFixed(2)} DEMO
+${amount.toFixed(2)} 
 </div>
 
 <div class="${won?"green":"red"}">
@@ -2149,7 +2130,7 @@ document.getElementById(
 if(!amount || amount <= 0){
 
 alert(
-"Enter a valid DEMO amount."
+"Enter a valid  amount."
 );
 
 return;
@@ -2158,7 +2139,7 @@ return;
 if(amount > balance){
 
 alert(
-"Insufficient DEMO balance."
+"Insufficient balance."
 );
 
 return;
@@ -2193,7 +2174,7 @@ document.getElementById(
 if(!amount || amount <= 0){
 
 alert(
-"Enter a valid DEMO amount."
+"Enter a valid amount."
 );
 
 return;
@@ -2239,7 +2220,7 @@ BTC/USD
 </div>
 
 <div>
-${amount.toFixed(2)} DEMO
+${amount.toFixed(2)}
 </div>
 
 <div>
@@ -2284,7 +2265,7 @@ walletAction =
 "deposit";
 
 modalTitle.textContent =
-"Deposit DEMO";
+"Deposit ";
 
 walletAmount.value = "";
 
@@ -2302,7 +2283,7 @@ walletAction =
 "withdraw";
 
 modalTitle.textContent =
-"Withdraw DEMO";
+"Withdraw ";
 
 walletAmount.value = "";
 
@@ -2779,7 +2760,7 @@ ${type}
 </div>
 
 <div class="${color}">
-${sign}${amount.toFixed(2)} DEMO
+${sign}${amount.toFixed(2)}
 </div>
 
 `;
@@ -2846,10 +2827,10 @@ symbols[this.value];
    RESET
 ===================================================== */
 
-function resetDemo(){
+function reset(){
 
 if(!confirm(
-"Reset local demo display?"
+"Reset local display?"
 )){
 
 return;
@@ -3001,10 +2982,7 @@ supportMessages.scrollTop =
 supportMessages.scrollHeight;
 
 /*
- This is currently a local demo reply.
-
- Real admin live chat requires
- a websocket/chat API on the backend.
+ websocket/chat API on the backend.
 */
 
 setTimeout(() => {
@@ -3059,7 +3037,7 @@ async () => {
 if(!window.ethereum){
 
 alert(
-"No Web3 wallet detected. DEMO mode will continue."
+"No Web3 wallet detected."
 );
 
 return;
