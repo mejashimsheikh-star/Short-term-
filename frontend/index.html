@@ -169,8 +169,6 @@ button{
 }
 
 
-}
-
 .pnl{
     font-size:11px;
     margin-top:5px;
@@ -1101,11 +1099,10 @@ AVAILABLE BALANCE
 </div>
 
 <div class="amount">
-$<span id="walletBalance">
-0.00
-</span>
+$<span id="walletBalance">0.00</span>
 </div>
 
+</div>
 
 <div class="wallet-actions">
 
@@ -1699,8 +1696,7 @@ pnl >= 0
 function updateStake(){
 
 stakeValEl.textContent =
-stake.toLocaleString() +
-;
+stake.toLocaleString();
 
 }
 
